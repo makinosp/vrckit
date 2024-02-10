@@ -18,10 +18,32 @@ struct VerifyResponse: Codable {
     let verified: Bool
 }
 
+struct ExistsResponse: Codable {
+    let userExists: Bool
+}
+
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
 public struct AuthenticationAPIAsync {
-    
+
+    public static func isExists(client: APIClientAsync, userId: String) async -> Bool? {
+
+        var components = URLComponents(string: "\(authUrl)/exists")!
+        components.queryItems = [URLQueryItem(name: "userId", value: userId.description)]
+        guard let url = components.url else { return nil }
+
+        let (data, _) = await client.VRChatRequest(
+            url: url,
+            httpMethod: "GET"
+        )
+
+        guard let data = data else { return false }
+
+        let exists: ExistsResponse? = decode(data: data)
+
+        return exists?.userExists
+    }
+
     public static func loginUserInfo(client: APIClientAsync) async -> User? {
         let url = URL(string: "\(authUrl)/user")!
         
