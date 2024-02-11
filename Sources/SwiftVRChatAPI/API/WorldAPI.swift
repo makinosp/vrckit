@@ -55,10 +55,12 @@ public struct WorldAPIAsync {
     public static func getWorld(client: APIClientAsync, worldID: String) async -> World? {
         let url = URL(string: "\(worldUrl)/\(worldID)")!
         
-        let (data, _) = await client.VRChatRequest(url: url,
-                             httpMethod: "GET",
-                             apiKey: true)
-        
+        let (data, _) = await client.VRChatRequest(
+            url: url,
+            httpMethod: .get,
+            apiKey: true
+        )
+
         guard let data = data else { return nil }
 
         let world:World? = decode(data: data)
@@ -73,9 +75,11 @@ public struct WorldAPI {
     public static func getWorld(client: APIClient, worldID: String, completionHandler: @escaping @Sendable (World?) -> Void) {
         let url = URL(string: "\(worldUrl)/\(worldID)")!
         
-        client.VRChatRequest(url: url,
-                             httpMethod: "GET",
-                             apiKey: true) { data, response, error in
+        client.VRChatRequest(
+            url: url,
+            httpMethod: .get,
+            apiKey: true
+        ) { data, response, error in
             guard let data = data, error == nil else { return }
 
             let world:World? = decode(data: data)
@@ -92,10 +96,12 @@ public struct WorldAPI {
         let url = URL(string: "\(worldUrl)")!
 //        let url = URL(string: "\(avatarUrl)?featured=\(featured)&n=\(n)")!
         
-        client.VRChatRequest(url: url,
-                             httpMethod: "GET",
-                             auth: true,
-                             apiKey: true) { data, response, error in
+        client.VRChatRequest(
+            url: url,
+            httpMethod: .get,
+            auth: true,
+            apiKey: true
+        ) { data, response, error in
             guard let data = data, error == nil else { return }
 
             let worlds:[World]? = decode(data: data)
@@ -107,10 +113,12 @@ public struct WorldAPI {
     public static func getFavoritedWorld(client: APIClient, completionHandler: @escaping @Sendable ([World]?) -> Void) {
         let url = URL(string: "\(worldUrl)/favorites")!
         
-        client.VRChatRequest(url: url,
-                             httpMethod: "GET",
-                             auth: true,
-                             apiKey: true) { data, response, error in
+        client.VRChatRequest(
+            url: url,
+            httpMethod: .get,
+            auth: true,
+            apiKey: true
+        ) { data, response, error in
             guard let data = data, error == nil else { return }
 
             let worlds:[World]? = decode(data: data)

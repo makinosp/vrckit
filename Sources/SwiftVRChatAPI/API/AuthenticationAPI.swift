@@ -34,7 +34,7 @@ public struct AuthenticationAPIAsync {
 
         let (data, _) = await client.VRChatRequest(
             url: url,
-            httpMethod: "GET"
+            httpMethod: .get
         )
 
         guard let data = data else { return false }
@@ -47,12 +47,14 @@ public struct AuthenticationAPIAsync {
     public static func loginUserInfo(client: APIClientAsync) async -> User? {
         let url = URL(string: "\(authUrl)/user")!
         
-        let (data, _) = await client.VRChatRequest(url: url,
-                             httpMethod: "GET",
-                             authorization: true,
-                             auth: true,
-                             twoFactorAuth: true)
-        
+        let (data, _) = await client.VRChatRequest(
+            url: url,
+            httpMethod: .get,
+            authorization: true,
+            auth: true,
+            twoFactorAuth: true
+        )
+
         guard let data = data else { return nil }
 
         let user:User? = decode(data: data)
@@ -73,12 +75,14 @@ public struct AuthenticationAPIAsync {
             return nil
         }
         
-        let (data, _) = await client.VRChatRequest(url: url,
-                             httpMethod: "POST",
-                             auth: true,
-                             contentType: "application/json",
-                             httpBody: httpBody)
-        
+        let (data, _) = await client.VRChatRequest(
+            url: url,
+            httpMethod: .post,
+            auth: true,
+            contentType: .json,
+            httpBody: httpBody
+        )
+
         guard let data = data else { return nil }
 
         let verifyResponse:VerifyResponse? = decode(data: data)
@@ -100,12 +104,14 @@ public struct AuthenticationAPIAsync {
             return nil
         }
         
-        let (data, _) = await client.VRChatRequest(url: url,
-                             httpMethod: "POST",
-                             auth: true,
-                             contentType: "application/json",
-                             httpBody: httpBody)
-        
+        let (data, _) = await client.VRChatRequest(
+            url: url,
+            httpMethod: .post,
+            auth: true,
+            contentType: .json,
+            httpBody: httpBody
+        )
+
         guard let data = data else { return nil }
 
         let verifyResponse:VerifyResponse? = decode(data: data)
@@ -119,9 +125,11 @@ public struct AuthenticationAPIAsync {
     public static func logout(client: APIClientAsync) async {
         let url = URL(string: "\(baseUrl)/logout")!
         
-        let (_, _) = await client.VRChatRequest(url: url,
-                             httpMethod: "PUT",
-                             auth: true)
+        let (_, _) = await client.VRChatRequest(
+            url: url,
+            httpMethod: .put,
+            auth: true
+        )
 
         client.updateCookies()
     }
@@ -131,11 +139,13 @@ public struct AuthenticationAPI {
     public static func loginUserInfo(client: APIClient, completionHandler: @escaping @Sendable (User?) -> Void) {
         let url = URL(string: "\(authUrl)/user")!
         
-        client.VRChatRequest(url: url,
-                             httpMethod: "GET",
-                             authorization: true,
-                             auth: true,
-                             twoFactorAuth: true) { data, response, error in
+        client.VRChatRequest(
+            url: url,
+            httpMethod: .get,
+            authorization: true,
+            auth: true,
+            twoFactorAuth: true
+        ) { data, response, error in
             guard let data = data, error == nil else { return }
 
             let user:User? = decode(data: data)
@@ -148,9 +158,11 @@ public struct AuthenticationAPI {
     public static func logout(client: APIClient) {
         let url = URL(string: "\(baseUrl)/logout")!
         
-        client.VRChatRequest(url: url,
-                             httpMethod: "PUT",
-                             auth: true) { data, response, error in
+        client.VRChatRequest(
+            url: url,
+            httpMethod: .put,
+            auth: true
+        ) { data, response, error in
             guard error == nil else { return }
 
             client.updateCookies()
@@ -168,11 +180,13 @@ public struct AuthenticationAPI {
             return
         }
         
-        client.VRChatRequest(url: url,
-                             httpMethod: "POST",
-                             auth: true,
-                             contentType: "application/json",
-                             httpBody: httpBody) { data, response, error in
+        client.VRChatRequest(
+            url: url,
+            httpMethod: .post,
+            auth: true,
+            contentType: .json,
+            httpBody: httpBody
+        ) { data, response, error in
             guard let data = data, error == nil else { return }
 
             let verifyResponse:VerifyResponse? = decode(data: data)

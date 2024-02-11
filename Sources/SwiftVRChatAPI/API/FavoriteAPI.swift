@@ -40,11 +40,13 @@ public struct FavoriteAPIAsync {
         
         let url = URL(string: urlRaw)!
         
-        let (data, _) = await client.VRChatRequest(url: url,
-                             httpMethod: "GET",
-                             auth: true,
-                             apiKey: true)
-        
+        let (data, _) = await client.VRChatRequest(
+            url: url,
+            httpMethod: .get,
+            auth: true,
+            apiKey: true
+        )
+
         guard let data = data else { return nil }
 
         let favorites:[Favorite]? = decode(data: data)
@@ -82,13 +84,15 @@ public struct FavoriteAPIAsync {
             return nil
         }
         
-        let (data, _) = await client.VRChatRequest(url: url,
-                             httpMethod: "POST",
-                             auth: true,
-                             apiKey: true,
-                             contentType: "application/json",
-                             httpBody: httpBody)
-        
+        let (data, _) = await client.VRChatRequest(
+            url: url,
+            httpMethod: .post,
+            auth: true,
+            apiKey: true,
+            contentType: .json,
+            httpBody: httpBody
+        )
+
         guard let data = data else { return nil }
         
         let favorite:Favorite? = decode(data: data)
@@ -99,11 +103,13 @@ public struct FavoriteAPIAsync {
     public static func removeFavorite(client: APIClientAsync, favoriteId: String) async -> Favorite? {
         let url = URL(string: "\(favoriteUrl)/\(favoriteId)")!
         
-        let (data, _) = await client.VRChatRequest(url: url,
-                             httpMethod: "DELETE",
-                             auth: true,
-                             apiKey: true)
-        
+        let (data, _) = await client.VRChatRequest(
+            url: url,
+            httpMethod: .delete,
+            auth: true,
+            apiKey: true
+        )
+
         guard let data = data else { return nil }
         
         let favorite:Favorite? = decode(data: data)
@@ -121,10 +127,12 @@ public struct FavoriteAPI {
         
         let url = URL(string: urlRaw)!
         
-        client.VRChatRequest(url: url,
-                             httpMethod: "GET",
-                             auth: true,
-                             apiKey: true) { data, response, error in
+        client.VRChatRequest(
+            url: url,
+            httpMethod: .get,
+            auth: true,
+            apiKey: true
+        ) { data, response, error in
             guard let data = data, error == nil else { return }
 
             let favorites:[Favorite]? = decode(data: data)
