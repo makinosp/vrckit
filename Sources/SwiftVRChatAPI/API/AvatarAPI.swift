@@ -38,10 +38,12 @@ public struct AvatarAPI {
         
         let url = URL(string: "\(avatarUrl)?featured=\(featured)&n=\(n)")!
         
-        client.VRChatRequest(url: url,
-                             httpMethod: "GET",
-                             auth: true,
-                             apiKey: true) { data, response, error in
+        client.VRChatRequest(
+            url: url,
+            httpMethod: .get,
+            auth: true,
+            apiKey: true
+        ) { data, response, error in
             guard let data = data, error == nil else { return }
 
             let avatars:[Avatar]? = decode(data: data)
@@ -57,10 +59,12 @@ public struct AvatarAPI {
         
         let url = URL(string: "\(avatarUrl)/favorites")!
         
-        client.VRChatRequest(url: url,
-                             httpMethod: "GET",
-                             auth: true,
-                             apiKey: true) { data, response, error in
+        client.VRChatRequest(
+            url: url,
+            httpMethod: .get,
+            auth: true,
+            apiKey: true
+        ) { data, response, error in
             guard let data = data, error == nil else { return }
 
             let avatars:[Avatar]? = decode(data: data)

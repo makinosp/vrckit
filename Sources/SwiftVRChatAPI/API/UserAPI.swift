@@ -87,13 +87,15 @@ public struct UserAPIAsync {
         
         let httpBody = try! JSONSerialization.data(withJSONObject: userInfo)
         
-        let (data, _) = await client.VRChatRequest(url: url,
-                                                   httpMethod: "PUT",
-                                                   auth: true,
-                                                   apiKey: true,
-                                                   contentType: "application/json",
-                                                   httpBody: httpBody)
-        
+        let (data, _) = await client.VRChatRequest(
+            url: url,
+            httpMethod: .put,
+            auth: true,
+            apiKey: true,
+            contentType: .json,
+            httpBody: httpBody
+        )
+
         guard let data = data else { return nil }
         
         let user:User? = decode(data: data)
@@ -107,10 +109,12 @@ public struct UserAPI {
     public static func getUser(client: APIClient, userID: String, completionHandler: @escaping @Sendable (User?) -> Void) {
         let url = URL(string: "\(userUrl)/\(userID)")!
         
-        client.VRChatRequest(url: url,
-                             httpMethod: "GET",
-                             auth: true,
-                             apiKey: true) { data, response, error in
+        client.VRChatRequest(
+            url: url,
+            httpMethod: .get,
+            auth: true,
+            apiKey: true
+        ) { data, response, error in
             guard let data = data, error == nil else { return }
 
             let user:User? = decode(data: data)

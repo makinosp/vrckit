@@ -11,6 +11,18 @@ import Foundation
 // MARK: API Client
 //
 
+enum HttpMethod: String {
+    case get
+    case post
+    case patch
+    case put
+    case delete
+}
+
+enum ContentType: String {
+    case json = "application/json"
+}
+
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
 public class APIClientAsync {
@@ -53,14 +65,14 @@ public class APIClientAsync {
     }
     
     func VRChatRequest(url: URL,
-                       httpMethod: String,
+                       httpMethod: HttpMethod,
                        authorization: Bool = false,
                        auth: Bool = false, twoFactorAuth: Bool = false, apiKey: Bool = false,
-                       contentType: String? = nil,
+                       contentType: ContentType? = nil,
                        httpBody: Data? = nil) async -> (Data?, URLResponse?) {
         var request = URLRequest(url: url)
-        request.httpMethod = httpMethod
-        
+        request.httpMethod = httpMethod.rawValue.uppercased()
+
         /// Authorization
         if authorization {
             let authData = ((username ?? "") + ":" + (password ?? "")).data(using: .utf8)!.base64EncodedString()
@@ -82,7 +94,7 @@ public class APIClientAsync {
         
         /// HTTP Body
         if let contentType = contentType, let httpBody = httpBody {
-            request.addValue(contentType, forHTTPHeaderField: "Content-Type")
+            request.addValue(contentType.rawValue, forHTTPHeaderField: "Content-Type")
             request.httpBody = httpBody
         }
         
@@ -139,14 +151,14 @@ public class APIClient {
     }
     
     func VRChatRequest(url: URL,
-                       httpMethod: String,
+                       httpMethod: HttpMethod,
                        authorization: Bool = false,
                        auth: Bool = false, twoFactorAuth: Bool = false, apiKey: Bool = false,
-                       contentType: String? = nil,
+                       contentType: ContentType? = nil,
                        httpBody: Data? = nil,
                        completionHandler: @escaping @Sendable (Data?, URLResponse?, Error?) -> Void) {
         var request = URLRequest(url: url)
-        request.httpMethod = httpMethod
+        request.httpMethod = httpMethod.rawValue.uppercased()
         
         // Authorization
         if authorization {
@@ -177,7 +189,7 @@ public class APIClient {
         
         // HTTP Body
         if let contentType = contentType, let httpBody = httpBody {
-            request.addValue(contentType, forHTTPHeaderField: "Content-Type")
+            request.addValue(contentType.rawValue, forHTTPHeaderField: "Content-Type")
             request.httpBody = httpBody
         }
         
