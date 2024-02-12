@@ -30,7 +30,6 @@ public struct User: Codable {
     
     public let currentAvatarAssetUrl: String?
     public let currentAvatarImageUrl: String?
-    
 
     public let state: String?
     
@@ -60,14 +59,16 @@ let userUrl = "\(baseUrl)/users"
 @available(iOS 15.0, *)
 public struct UserAPIAsync {
     
-    public static func updateUser(client: APIClientAsync, userID: String,
-                                  statusDescription: String? = nil,
-                                  tags: [String]? = nil,
-                                  bio: String? = nil,
-                                  bioLinks: [String]? = nil) async -> User? {
+    public static func updateUser(
+        client: APIClientAsync, userID: String,
+        statusDescription: String? = nil,
+        tags: [String]? = nil,
+        bio: String? = nil,
+        bioLinks: [String]? = nil
+    ) async -> User? {
         let url = URL(string: "\(userUrl)/\(userID)")!
         
-        var userInfo:[String: Any] = [:]
+        var userInfo: [String: Any] = [:]
         
         if let statusDescription = statusDescription {
             userInfo["statusDescription"] = statusDescription
@@ -85,7 +86,13 @@ public struct UserAPIAsync {
             userInfo["bioLinks"] = bioLinks
         }
         
-        let httpBody = try! JSONSerialization.data(withJSONObject: userInfo)
+        let httpBody: Data?
+        do {
+            httpBody = try JSONSerialization.data(withJSONObject: userInfo)
+        } catch let error {
+            print(error.localizedDescription)
+            return nil
+        }
         
         let (data, _) = await client.VRChatRequest(
             url: url,
@@ -98,7 +105,7 @@ public struct UserAPIAsync {
 
         guard let data = data else { return nil }
         
-        let user:User? = decode(data: data)
+        let user: User? = decode(data: data)
         
         return user
     }
@@ -106,7 +113,11 @@ public struct UserAPIAsync {
 
 public struct UserAPI {
 
-    public static func getUser(client: APIClient, userID: String, completionHandler: @escaping @Sendable (User?) -> Void) {
+    public static func getUser(
+        client: APIClient,
+        userID: String,
+        completionHandler: @escaping @Sendable (User?) -> Void
+    ) {
         let url = URL(string: "\(userUrl)/\(userID)")!
         
         client.VRChatRequest(
@@ -114,10 +125,10 @@ public struct UserAPI {
             httpMethod: .get,
             auth: true,
             apiKey: true
-        ) { data, response, error in
+        ) { data, _, error in
             guard let data = data, error == nil else { return }
 
-            let user:User? = decode(data: data)
+            let user: User? = decode(data: data)
             
             completionHandler(user)
         }

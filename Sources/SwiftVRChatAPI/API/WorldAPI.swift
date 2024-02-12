@@ -63,35 +63,40 @@ public struct WorldAPIAsync {
 
         guard let data = data else { return nil }
 
-        let world:World? = decode(data: data)
+        let world: World? = decode(data: data)
         
         return world
     }
 }
 
-
 public struct WorldAPI {
 
-    public static func getWorld(client: APIClient, worldID: String, completionHandler: @escaping @Sendable (World?) -> Void) {
+    public static func getWorld(
+        client: APIClient,
+        worldID: String,
+        completionHandler: @escaping @Sendable (World?) -> Void
+    ) {
         let url = URL(string: "\(worldUrl)/\(worldID)")!
         
         client.VRChatRequest(
             url: url,
             httpMethod: .get,
             apiKey: true
-        ) { data, response, error in
+        ) { data, _, error in
             guard let data = data, error == nil else { return }
 
-            let world:World? = decode(data: data)
+            let world: World? = decode(data: data)
             
             completionHandler(world)
         }
     }
     
-    public static func searchWorld(client: APIClient,
-//                                    featured: Bool = true,
-//                                    n: Int = 60,
-                                    completionHandler: @escaping @Sendable ([World]?) -> Void) {
+    public static func searchWorld(
+        client: APIClient,
+        // featured: Bool = true,
+        // n: Int = 60,
+        completionHandler: @escaping @Sendable ([World]?) -> Void
+    ) {
         
         let url = URL(string: "\(worldUrl)")!
 //        let url = URL(string: "\(avatarUrl)?featured=\(featured)&n=\(n)")!
@@ -101,16 +106,19 @@ public struct WorldAPI {
             httpMethod: .get,
             auth: true,
             apiKey: true
-        ) { data, response, error in
+        ) { data, _, error in
             guard let data = data, error == nil else { return }
 
-            let worlds:[World]? = decode(data: data)
+            let worlds: [World]? = decode(data: data)
             
             completionHandler(worlds)
         }
     }
     
-    public static func getFavoritedWorld(client: APIClient, completionHandler: @escaping @Sendable ([World]?) -> Void) {
+    public static func getFavoritedWorld(
+        client: APIClient,
+        completionHandler: @escaping @Sendable ([World]?) -> Void
+    ) {
         let url = URL(string: "\(worldUrl)/favorites")!
         
         client.VRChatRequest(
@@ -118,10 +126,10 @@ public struct WorldAPI {
             httpMethod: .get,
             auth: true,
             apiKey: true
-        ) { data, response, error in
+        ) { data, _, error in
             guard let data = data, error == nil else { return }
 
-            let worlds:[World]? = decode(data: data)
+            let worlds: [World]? = decode(data: data)
             
             completionHandler(worlds)
         }

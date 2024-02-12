@@ -57,7 +57,7 @@ public struct AuthenticationAPIAsync {
 
         guard let data = data else { return nil }
 
-        let user:User? = decode(data: data)
+        let user: User? = decode(data: data)
 
         client.updateCookies()
         
@@ -69,7 +69,7 @@ public struct AuthenticationAPIAsync {
         
         let httpBody: Data?
         do {
-            httpBody = try JSONSerialization.data(withJSONObject: ["code" : emailOTP], options: .prettyPrinted)
+            httpBody = try JSONSerialization.data(withJSONObject: ["code": emailOTP], options: .prettyPrinted)
         } catch let error {
             print(error.localizedDescription)
             return nil
@@ -85,7 +85,7 @@ public struct AuthenticationAPIAsync {
 
         guard let data = data else { return nil }
 
-        let verifyResponse:VerifyResponse? = decode(data: data)
+        let verifyResponse: VerifyResponse? = decode(data: data)
         
         client.updateCookies()
         
@@ -98,7 +98,7 @@ public struct AuthenticationAPIAsync {
         
         let httpBody: Data?
         do {
-            httpBody = try JSONSerialization.data(withJSONObject: ["code" : TOTP], options: .prettyPrinted)
+            httpBody = try JSONSerialization.data(withJSONObject: ["code": TOTP], options: .prettyPrinted)
         } catch let error {
             print(error.localizedDescription)
             return nil
@@ -114,7 +114,7 @@ public struct AuthenticationAPIAsync {
 
         guard let data = data else { return nil }
 
-        let verifyResponse:VerifyResponse? = decode(data: data)
+        let verifyResponse: VerifyResponse? = decode(data: data)
         
         client.updateCookies()
         
@@ -145,10 +145,10 @@ public struct AuthenticationAPI {
             authorization: true,
             auth: true,
             twoFactorAuth: true
-        ) { data, response, error in
+        ) { data, _, error in
             guard let data = data, error == nil else { return }
 
-            let user:User? = decode(data: data)
+            let user: User? = decode(data: data)
             
             client.updateCookies()
             completionHandler(user)
@@ -162,19 +162,23 @@ public struct AuthenticationAPI {
             url: url,
             httpMethod: .put,
             auth: true
-        ) { data, response, error in
+        ) { _, _, error in
             guard error == nil else { return }
 
             client.updateCookies()
         }
     }
     
-    public static func verify2FAEmail(client: APIClient, emailOTP: String, completionHandler: @escaping @Sendable (Bool?) -> Void) {
+    public static func verify2FAEmail(
+        client: APIClient,
+        emailOTP: String,
+        completionHandler: @escaping @Sendable (Bool?) -> Void
+    ) {
         let url = URL(string: "\(auth2FAUrl)/emailotp/verify")!
         
         let httpBody: Data?
         do {
-            httpBody = try JSONSerialization.data(withJSONObject: ["code" : emailOTP], options: .prettyPrinted)
+            httpBody = try JSONSerialization.data(withJSONObject: ["code": emailOTP], options: .prettyPrinted)
         } catch let error {
             print(error.localizedDescription)
             return
@@ -186,10 +190,10 @@ public struct AuthenticationAPI {
             auth: true,
             contentType: .json,
             httpBody: httpBody
-        ) { data, response, error in
+        ) { data, _, error in
             guard let data = data, error == nil else { return }
 
-            let verifyResponse:VerifyResponse? = decode(data: data)
+            let verifyResponse: VerifyResponse? = decode(data: data)
             
             client.updateCookies()
             completionHandler(verifyResponse?.verified)

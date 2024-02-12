@@ -9,7 +9,8 @@ let package = Package(
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "SwiftVRChatAPI",
-            targets: ["SwiftVRChatAPI"]),
+            targets: ["SwiftVRChatAPI"]
+        )
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -21,9 +22,11 @@ let package = Package(
         .target(
             name: "SwiftVRChatAPI",
             dependencies: [],
-            path: "Sources"),
+            path: "Sources"
+        ),
         .testTarget(
             name: "SwiftVRChatAPITests",
-            dependencies: ["SwiftVRChatAPI"]),
+            dependencies: ["SwiftVRChatAPI"]
+        )
     ]
 )
