@@ -1,5 +1,5 @@
-import XCTest
 @testable import SwiftVRChatAPI
+import XCTest
 
 final class SwiftVRChatAPITests: XCTestCase {
     func testExample() throws {

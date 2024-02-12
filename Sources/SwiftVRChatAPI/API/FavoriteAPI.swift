@@ -49,12 +49,17 @@ public struct FavoriteAPIAsync {
 
         guard let data = data else { return nil }
 
-        let favorites:[Favorite]? = decode(data: data)
+        let favorites: [Favorite]? = decode(data: data)
         
         return favorites
     }
     
-    public static func addFavorite(client: APIClientAsync, type: FavoriteType = .friend, favoriteId: String, tags: [String]? = nil) async -> Favorite? {
+    public static func addFavorite(
+        client: APIClientAsync,
+        type: FavoriteType = .friend,
+        favoriteId: String,
+        tags: [String]? = nil
+    ) async -> Favorite? {
         let url = URL(string: "\(favoriteUrl)")!
         
         var favoriteInfo: [String: Any] = [:]
@@ -95,7 +100,7 @@ public struct FavoriteAPIAsync {
 
         guard let data = data else { return nil }
         
-        let favorite:Favorite? = decode(data: data)
+        let favorite: Favorite? = decode(data: data)
         
         return favorite
     }
@@ -112,16 +117,19 @@ public struct FavoriteAPIAsync {
 
         guard let data = data else { return nil }
         
-        let favorite:Favorite? = decode(data: data)
+        let favorite: Favorite? = decode(data: data)
         
         return favorite
     }
 }
 
-
 public struct FavoriteAPI {
 
-    public static func getFavorites(client: APIClient, n: Int = 60, completionHandler: @escaping @Sendable ([Favorite]?) -> Void) {
+    public static func getFavorites(
+        client: APIClient,
+        n: Int = 60,
+        completionHandler: @escaping @Sendable ([Favorite]?) -> Void
+    ) {
         
         let urlRaw = "\(favoriteUrl)?n=\(n)"
         
@@ -132,10 +140,10 @@ public struct FavoriteAPI {
             httpMethod: .get,
             auth: true,
             apiKey: true
-        ) { data, response, error in
+        ) { data, _, error in
             guard let data = data, error == nil else { return }
 
-            let favorites:[Favorite]? = decode(data: data)
+            let favorites: [Favorite]? = decode(data: data)
             
             completionHandler(favorites)
         }

@@ -11,7 +11,7 @@ import Foundation
 // MARK: API Helper
 //
 
-func decode<T:Codable>(data: Data) -> T? {
+func decode<T: Codable>(data: Data) -> T? {
     do {
         return try JSONDecoder().decode(T.self, from: data)
     } catch let error {

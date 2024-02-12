@@ -43,7 +43,12 @@ public struct InstanceAPI {
     
     static let instanceUrl = "\(baseUrl)/instances"
 
-    public static func getInstance(client: APIClient, worldID: String, instanceID: String, completionHandler: @escaping @Sendable (Instance?) -> Void) {
+    public static func getInstance(
+        client: APIClient,
+        worldID: String,
+        instanceID: String,
+        completionHandler: @escaping @Sendable (Instance?) -> Void
+    ) {
         let url = URL(string: "\(instanceUrl)/\(worldID):\(instanceID)")!
         
         client.VRChatRequest(
@@ -51,10 +56,10 @@ public struct InstanceAPI {
             httpMethod: .get,
             auth: true,
             apiKey: true
-        ) { data, response, error in
+        ) { data, _, error in
             guard let data = data, error == nil else { return }
 
-            let instance:Instance? = decode(data: data)
+            let instance: Instance? = decode(data: data)
             
             completionHandler(instance)
         }
