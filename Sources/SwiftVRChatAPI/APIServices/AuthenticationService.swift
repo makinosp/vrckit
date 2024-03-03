@@ -23,6 +23,7 @@ public struct AuthenticationService {
         case tOtp = "totp"
     }
 
+    /// Check User Exists
     public static func isExists(_ client: APIClientAsync, userId: String) async throws -> Bool {
         var request = URLComponents(string: "\(authUrl)/exists")!
         request.queryItems = [URLQueryItem(name: "userId", value: userId.description)]
@@ -41,6 +42,7 @@ public struct AuthenticationService {
         return exists.userExists
     }
 
+    /// Login and/or Get Current User Info
     public static func loginUserInfo(_ client: APIClientAsync) async throws -> User {
         let url = URL(string: "\(authUrl)/user")!
         let (responseData, _) = try await client.VRChatRequest(
@@ -50,8 +52,10 @@ public struct AuthenticationService {
             auth: true,
             twoFactorAuth: true
         )
-
-        let user = try JSONDecoder().decode(User.self, from: responseData)
+        
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        let user = try decoder.decode(User.self, from: responseData)
         client.updateCookies()
         return user
     }
