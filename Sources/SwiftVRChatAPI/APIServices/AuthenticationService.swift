@@ -19,8 +19,8 @@ public struct AuthenticationService {
     private static let auth2FAUrl = "\(authUrl)/twofactorauth"
 
     public enum VerifyType: String {
-        case emailOtp = "emailotp"
-        case tOtp = "totp"
+        case emailotp
+        case totp
     }
 
     /// Check User Exists
@@ -60,6 +60,7 @@ public struct AuthenticationService {
         return user
     }
     
+    /// Verify 2FA With TOTP or Email OTP
     public static func verify2FA(
         _ client: APIClientAsync,
         verifyType: VerifyType,
@@ -67,7 +68,7 @@ public struct AuthenticationService {
     ) async throws -> Bool {
         let url = URL(string: "\(auth2FAUrl)/\(verifyType.rawValue)/verify")!
         let encoder = JSONEncoder()
-        let requestData = try encoder.encode(VerifyCode(code: otp))
+        let requestData = try encoder.encode(VerifyRequest(code: otp))
 
         let (responseData, _) = try await client.VRChatRequest(
             url: url,
