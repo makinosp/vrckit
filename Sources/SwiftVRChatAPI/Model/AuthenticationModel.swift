@@ -16,3 +16,12 @@ struct VerifyRequest: Codable {
 struct VerifyResponse: Codable {
     let verified: Bool
 }
+
+public enum TwoFactorAuthType: String {
+    case emailotp
+    case totp
+}
+
+public struct RequiresTwoFactorAuthResponse: Codable {
+    let requiresTwoFactorAuth: [String]
+}

@@ -9,8 +9,8 @@
 // MARK: General Model
 //
 
-let domainUrl = "http://localhost:8080"
-let baseUrl = "http://localhost:8080"
+let domainUrl = "https://api.vrchat.cloud"
+let baseUrl = "https://api.vrchat.cloud/api/1"
 
 public struct Response: Codable {
     public let message: String?
