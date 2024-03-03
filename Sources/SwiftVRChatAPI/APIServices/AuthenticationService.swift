@@ -18,11 +18,6 @@ public struct AuthenticationService {
     private static let authUrl = "\(baseUrl)/auth"
     private static let auth2FAUrl = "\(authUrl)/twofactorauth"
 
-    public enum VerifyType: String {
-        case emailotp
-        case totp
-    }
-
     /// Check User Exists
     public static func isExists(_ client: APIClientAsync, userId: String) async throws -> Bool {
         var request = URLComponents(string: "\(authUrl)/exists")!
@@ -59,7 +54,6 @@ public struct AuthenticationService {
         var wrappedUserResponse: WrappedUserResponse
         if let user = try? decoder.decode(User.self, from: responseData) {
             wrappedUserResponse = WrappedUserResponse(user: user, requiresTwoFactorAuth: [])
-            client.updateCookies()
         } else {
             let requiresTwoFactorAuth = try decoder.decode(
                 RequiresTwoFactorAuthResponse.self,
@@ -70,23 +64,25 @@ public struct AuthenticationService {
                 requiresTwoFactorAuth: requiresTwoFactorAuth.requiresTwoFactorAuth.map { $0.lowercased() }
             )
         }
+        client.updateCookies()
         return wrappedUserResponse
     }
     
     /// Verify 2FA With TOTP or Email OTP
     public static func verify2FA(
         _ client: APIClientAsync,
-        verifyType: VerifyType,
-        otp: String
+        verifyType: String,
+        code: String
     ) async throws -> Bool {
-        let url = URL(string: "\(auth2FAUrl)/\(verifyType.rawValue)/verify")!
+        let url = URL(string: "\(auth2FAUrl)/\(verifyType)/verify")!
         let encoder = JSONEncoder()
-        let requestData = try encoder.encode(VerifyRequest(code: otp))
+        let requestData = try encoder.encode(VerifyRequest(code: code))
 
         let (responseData, _) = try await client.VRChatRequest(
             url: url,
             httpMethod: .post,
             auth: true,
+            twoFactorAuth: true,
             contentType: .json,
             httpBody: requestData
         )
