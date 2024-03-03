@@ -1,11 +1,10 @@
-// public struct SwiftVRChatAPI {
-//    public private(set) var text = "Hello, World!"
-//
-//    public init() {
-//    }
-// }
-
 import Foundation
+//
+//  Client.swift
+//
+//
+//  Created by makinosp on 2024/02/12.
+//
 
 //
 // MARK: API Client
@@ -33,8 +32,6 @@ public class APIClientAsync {
     private var auth: String?
     private var twoFactorAuth: String?
     private var apiKey: String?
-    
-    public init() {}
     
     public init(username: String, password: String) {
         self.username = username
@@ -67,10 +64,12 @@ public class APIClientAsync {
         url: URL,
         httpMethod: HttpMethod,
         authorization: Bool = false,
-        auth: Bool = false, twoFactorAuth: Bool = false, apiKey: Bool = false,
+        auth: Bool = false,
+        twoFactorAuth: Bool = false,
+        apiKey: Bool = false,
         contentType: ContentType? = nil,
         httpBody: Data? = nil
-    ) async -> (Data?, URLResponse?) {
+    ) async throws -> (Data, URLResponse) {
         var request = URLRequest(url: url)
         request.httpMethod = httpMethod.rawValue.uppercased()
 
@@ -98,16 +97,8 @@ public class APIClientAsync {
             request.addValue(contentType.rawValue, forHTTPHeaderField: "Content-Type")
             request.httpBody = httpBody
         }
-        
-        do {
-            let (data, response) = try await URLSession.shared.data(for: request)
-            
-            return (data, response)
-        } catch {
-            print(error.localizedDescription)
-            
-            return (nil, nil)
-        }
+
+        return try await URLSession.shared.data(for: request)
     }
 }
 
