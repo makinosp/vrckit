@@ -5,7 +5,7 @@
 //  Created by makinosp on 2024/02/12.
 //
 
-public struct Instance: Codable {
+public struct Instance: Codable, Hashable, Identifiable {
     public let id: String?
     public let location: String?
     public let instanceId: String?

@@ -11,7 +11,7 @@ public enum FavoriteType: String, Codable {
     case friend
 }
 
-public struct Favorite: Codable {
+public struct Favorite: Codable, Identifiable{
 
     public let success: Response?
     public let error: Response?

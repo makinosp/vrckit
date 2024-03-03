@@ -18,7 +18,8 @@ let userUrl = "\(baseUrl)/users"
 public struct UserService {
     
     public static func updateUser(
-        client: APIClientAsync, userID: String,
+        client: APIClientAsync,
+        userID: String,
         statusDescription: String? = nil,
         tags: [String]? = nil,
         bio: String? = nil,

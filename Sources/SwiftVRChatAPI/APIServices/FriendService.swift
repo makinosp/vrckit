@@ -17,7 +17,7 @@ public struct FriendService {
     private static let friendsUrl = "\(baseUrl)/auth/user/friends"
 
     public static func fetchFriends(
-        client: APIClientAsync,
+        _ client: APIClientAsync,
         n: Int = 60,
         offline: Bool = false
     ) async throws -> [Friend] {

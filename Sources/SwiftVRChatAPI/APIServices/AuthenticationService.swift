@@ -15,8 +15,8 @@ import Foundation
 @available(iOS 15.0, *)
 public struct AuthenticationService {
 
-    static let authUrl = "\(baseUrl)/auth"
-    static let auth2FAUrl = "\(baseUrl)/auth/twofactorauth"
+    private static let authUrl = "\(baseUrl)/auth"
+    private static let auth2FAUrl = "\(authUrl)/twofactorauth"
 
     public enum VerifyType: String {
         case emailOtp = "emailotp"
@@ -27,7 +27,10 @@ public struct AuthenticationService {
         var request = URLComponents(string: "\(authUrl)/exists")!
         request.queryItems = [URLQueryItem(name: "userId", value: userId.description)]
         guard let url = request.url else {
-            throw URLError(.badURL, userInfo: [NSLocalizedDescriptionKey: "Invalid URL: \(authUrl)/exists"])
+            throw URLError(
+                .badURL,
+                userInfo: [NSLocalizedDescriptionKey: "Invalid URL: \(authUrl)/exists"]
+            )
         }
 
         let (responseData, _) = try await client.VRChatRequest(
@@ -53,7 +56,11 @@ public struct AuthenticationService {
         return user
     }
     
-    public static func verify2FA(_ client: APIClientAsync, verifyType: VerifyType, otp: String) async throws -> Bool {
+    public static func verify2FA(
+        _ client: APIClientAsync,
+        verifyType: VerifyType,
+        otp: String
+    ) async throws -> Bool {
         let url = URL(string: "\(auth2FAUrl)/\(verifyType.rawValue)/verify")!
         let encoder = JSONEncoder()
         let requestData = try encoder.encode(VerifyCode(code: otp))

@@ -5,7 +5,7 @@
 //  Created by makinosp on 2024/02/12.
 //
 
-public struct Avatar: Codable {
+public struct Avatar: Codable, Hashable, Identifiable {
     public let id: String?
     public let name: String?
     public let description: String?
