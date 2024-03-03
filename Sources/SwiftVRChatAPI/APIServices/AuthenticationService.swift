@@ -26,7 +26,7 @@ public struct AuthenticationService {
     /// Check User Exists
     public static func isExists(_ client: APIClientAsync, userId: String) async throws -> Bool {
         var request = URLComponents(string: "\(authUrl)/exists")!
-        request.queryItems = [URLQueryItem(name: "userId", value: userId.description)]
+        request.queryItems = [URLQueryItem(name: "username", value: userId.description)]
         guard let url = request.url else {
             throw URLError(
                 .badURL,
@@ -43,7 +43,7 @@ public struct AuthenticationService {
     }
 
     /// Login and/or Get Current User Info
-    public static func loginUserInfo(_ client: APIClientAsync) async throws -> User {
+    public static func loginUserInfo(_ client: APIClientAsync) async throws -> WrappedUserResponse {
         let url = URL(string: "\(authUrl)/user")!
         let (responseData, _) = try await client.VRChatRequest(
             url: url,
@@ -52,12 +52,25 @@ public struct AuthenticationService {
             auth: true,
             twoFactorAuth: true
         )
-        
+
+        // Try decoding with the user structure, and if it fails, decode with the structure for two-step authentication.
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
-        let user = try decoder.decode(User.self, from: responseData)
-        client.updateCookies()
-        return user
+        var wrappedUserResponse: WrappedUserResponse
+        if let user = try? decoder.decode(User.self, from: responseData) {
+            wrappedUserResponse = WrappedUserResponse(user: user, requiresTwoFactorAuth: [])
+            client.updateCookies()
+        } else {
+            let requiresTwoFactorAuth = try decoder.decode(
+                RequiresTwoFactorAuthResponse.self,
+                from: responseData
+            )
+            wrappedUserResponse = WrappedUserResponse(
+                user: nil,
+                requiresTwoFactorAuth: requiresTwoFactorAuth.requiresTwoFactorAuth.map { $0.lowercased() }
+            )
+        }
+        return wrappedUserResponse
     }
     
     /// Verify 2FA With TOTP or Email OTP

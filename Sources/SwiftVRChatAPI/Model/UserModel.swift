@@ -30,3 +30,8 @@ public struct User: Codable, Identifiable {
         public let updatedAt: String
     }
 }
+
+public struct WrappedUserResponse: Codable {
+    public let user: User?
+    public let requiresTwoFactorAuth: [String]
+}

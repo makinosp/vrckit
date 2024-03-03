@@ -16,3 +16,7 @@ struct VerifyRequest: Codable {
 struct VerifyResponse: Codable {
     let verified: Bool
 }
+
+public struct RequiresTwoFactorAuthResponse: Codable {
+    let requiresTwoFactorAuth: [String]
+}
