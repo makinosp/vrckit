@@ -15,7 +15,9 @@ public struct Friend: Codable, Hashable, Identifiable {
     public let displayName: String
     public let fallbackAvatar: String
     public let id: String
+    public let imageUr: String
     public let isFriend: Bool
+    public let lastLogin: Date
     public let lastPlatform: String
     public let status: String
     public let statusDescription: String

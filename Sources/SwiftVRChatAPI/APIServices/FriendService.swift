@@ -35,6 +35,7 @@ public struct FriendService {
         )
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
+        decoder.dateDecodingStrategy = .formatted(.iso8601Full)
         let friends: [Friend] = try decoder.decode([Friend].self, from: responseData)
         return friends
     }
