@@ -13,9 +13,10 @@ public struct Friend: Codable, Hashable, Identifiable {
     public let currentAvatarThumbnailImageUrl: String
     public let developerType: String
     public let displayName: String
-    public let fallbackAvatar: String
     public let id: String
+    public let imageUrl: String
     public let isFriend: Bool
+    public let lastLogin: Date
     public let lastPlatform: String
     public let status: String
     public let statusDescription: String

@@ -22,7 +22,10 @@ public struct FriendService {
         offline: Bool = false
     ) async throws -> [Friend] {
         var request = URLComponents(string: friendsUrl)!
-        request.queryItems = [URLQueryItem(name: "n", value: n.description)]
+        request.queryItems = [
+            URLQueryItem(name: "n", value: n.description),
+            URLQueryItem(name: "offline", value: offline.description)
+        ]
         guard let url = request.url else {
             throw URLError(.badURL, userInfo: [NSLocalizedDescriptionKey: "Invalid URL: \(friendsUrl)"])
         }
@@ -35,6 +38,7 @@ public struct FriendService {
         )
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
+        decoder.dateDecodingStrategy = .formatted(.iso8601Full)
         let friends: [Friend] = try decoder.decode([Friend].self, from: responseData)
         return friends
     }

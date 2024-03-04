@@ -27,7 +27,7 @@ public struct User: Codable, Identifiable {
 
     public struct DisplayName: Codable {
         public let displayName: String
-        public let updatedAt: String
+        public let updatedAt: Date
     }
 }
 
