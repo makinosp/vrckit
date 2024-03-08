@@ -5,23 +5,28 @@
 //  Created by makinosp on 2024/02/12.
 //
 
-struct ExistsResponse: Codable {
+public struct ExistsResponse: Codable {
     let userExists: Bool
 }
 
-struct VerifyRequest: Codable { 
+public struct VerifyRequest: Codable {
     let code: String
 }
 
-struct VerifyResponse: Codable {
+public struct VerifyResponse: Codable {
     let verified: Bool
+}
+
+public struct RequiresTwoFactorAuthResponse: Codable {
+    let requiresTwoFactorAuth: [String]
+}
+
+public struct VerifyAuthTokenResponse: Codable {
+    let ok: Bool
+    let token: String
 }
 
 public enum TwoFactorAuthType: String {
     case emailotp
     case totp
-}
-
-public struct RequiresTwoFactorAuthResponse: Codable {
-    let requiresTwoFactorAuth: [String]
 }
