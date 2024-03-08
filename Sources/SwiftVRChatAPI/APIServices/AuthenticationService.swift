@@ -48,22 +48,26 @@ public struct AuthenticationService {
             twoFactorAuth: true
         )
 
-        // Try decoding with the user structure, and if it fails, decode with the structure for two-step authentication.
+        // Try decoding with the structure for two-step authentication
+        // and if it fails, decode with the user structure.
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
+        decoder.dateDecodingStrategy = .formatted(.iso8601Full)
         var wrappedUserResponse: WrappedUserResponse
-        if let user = try? decoder.decode(User.self, from: responseData) {
-            wrappedUserResponse = WrappedUserResponse(user: user, requiresTwoFactorAuth: [])
-        } else {
-            let requiresTwoFactorAuth = try decoder.decode(
-                RequiresTwoFactorAuthResponse.self,
-                from: responseData
-            )
+
+        if let requiresTwoFactorAuth = try? decoder.decode(
+            RequiresTwoFactorAuthResponse.self,
+            from: responseData
+        ) {
             wrappedUserResponse = WrappedUserResponse(
                 user: nil,
                 requiresTwoFactorAuth: requiresTwoFactorAuth.requiresTwoFactorAuth.map { $0.lowercased() }
             )
+        } else {
+            let user = try decoder.decode(User.self, from: responseData)
+            wrappedUserResponse = WrappedUserResponse(user: user, requiresTwoFactorAuth: [])
         }
+        
         client.updateCookies()
         return wrappedUserResponse
     }
@@ -90,8 +94,22 @@ public struct AuthenticationService {
         client.updateCookies()
         return verifyResponse.verified
     }
-    
-    public func logout(_ client: APIClientAsync) async throws {
+
+    /// Verify Auth Token
+    public static func verifyAuthToken(_ client: APIClientAsync) async throws -> Bool {
+        let url = URL(string: authUrl)!
+        let (responseData, _) = try await client.VRChatRequest(
+            url: url,
+            httpMethod: .get,
+            auth: true,
+            twoFactorAuth: true
+        )
+        let veryfyAuthTokenResponse = try JSONDecoder().decode(VerifyAuthTokenResponse.self, from: responseData)
+        return veryfyAuthTokenResponse.ok
+    }
+
+    /// Logout
+    public static func logout(_ client: APIClientAsync) async throws {
         let url = URL(string: "\(baseUrl)/logout")!
         
         let (_, _) = try await client.VRChatRequest(

@@ -33,7 +33,7 @@ public class APIClientAsync {
     private var twoFactorAuth: String?
     private var apiKey: String?
     
-    public init(username: String, password: String) {
+    public init(username: String? = nil, password: String? = nil) {
         self.username = username
         self.password = password
     }
