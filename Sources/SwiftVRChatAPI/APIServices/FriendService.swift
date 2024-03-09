@@ -16,6 +16,18 @@ import Foundation
 public struct FriendService {
     private static let friendsUrl = "\(baseUrl)/auth/user/friends"
 
+    public enum Status: String, CaseIterable, Identifiable {
+        case joinMe = "join me"
+        case active
+        case askMe = "ask me"
+        case busy
+        case offline
+
+        public var id: Int {
+            self.hashValue
+        }
+    }
+
     public static func fetchFriends(
         _ client: APIClientAsync,
         n: Int = 60,
