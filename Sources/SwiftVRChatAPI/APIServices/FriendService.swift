@@ -30,11 +30,13 @@ public struct FriendService {
 
     public static func fetchFriends(
         _ client: APIClientAsync,
+        offset: Int,
         n: Int = 60,
         offline: Bool = false
     ) async throws -> [Friend] {
         var request = URLComponents(string: friendsUrl)!
         request.queryItems = [
+            URLQueryItem(name: "offset", value: offset.description),
             URLQueryItem(name: "n", value: n.description),
             URLQueryItem(name: "offline", value: offline.description)
         ]
