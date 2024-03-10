@@ -12,7 +12,11 @@
 let domainUrl = "https://api.vrchat.cloud"
 let baseUrl = "https://api.vrchat.cloud/api/1"
 
-public struct Response: Codable {
-    public let message: String?
-    public let status_code: Int?
+public struct ErrorResponse: Codable {
+    public let error: ErrorInfo
+
+    public struct ErrorInfo: Codable {
+        public let message: String
+        public let statusCode: Int
+    }
 }

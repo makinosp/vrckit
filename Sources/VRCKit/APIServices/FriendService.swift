@@ -50,10 +50,7 @@ public struct FriendService {
             auth: true,
             apiKey: true
         )
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        decoder.dateDecodingStrategy = .formatted(.iso8601Full)
-        let friends: [Friend] = try decoder.decode([Friend].self, from: responseData)
+        let friends: [Friend] = try Util.shared.decoder.decode([Friend].self, from: responseData)
         return friends
     }
 }

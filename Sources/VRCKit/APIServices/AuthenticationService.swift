@@ -33,7 +33,7 @@ public struct AuthenticationService {
             url: url,
             httpMethod: .get
         )
-        let exists = try JSONDecoder().decode(ExistsResponse.self, from: responseData)
+        let exists = try Util.shared.decoder.decode(ExistsResponse.self, from: responseData)
         return exists.userExists
     }
 
@@ -50,12 +50,9 @@ public struct AuthenticationService {
 
         // Try decoding with the structure for two-step authentication
         // and if it fails, decode with the user structure.
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        decoder.dateDecodingStrategy = .formatted(.iso8601Full)
         var wrappedUserResponse: WrappedUserResponse
 
-        if let requiresTwoFactorAuth = try? decoder.decode(
+        if let requiresTwoFactorAuth = try? Util.shared.decoder.decode(
             RequiresTwoFactorAuthResponse.self,
             from: responseData
         ) {
@@ -64,7 +61,7 @@ public struct AuthenticationService {
                 requiresTwoFactorAuth: requiresTwoFactorAuth.requiresTwoFactorAuth.map { $0.lowercased() }
             )
         } else {
-            let user = try decoder.decode(User.self, from: responseData)
+            let user = try Util.shared.decoder.decode(User.self, from: responseData)
             wrappedUserResponse = WrappedUserResponse(user: user, requiresTwoFactorAuth: [])
         }
         
@@ -90,13 +87,14 @@ public struct AuthenticationService {
             contentType: .json,
             httpBody: requestData
         )
-        let verifyResponse = try JSONDecoder().decode(VerifyResponse.self, from: responseData)
+        let verifyResponse = try Util.shared.decoder.decode(VerifyResponse.self, from: responseData)
         client.updateCookies()
         return verifyResponse.verified
     }
 
     /// Verify Auth Token
     public static func verifyAuthToken(_ client: APIClientAsync) async throws -> Bool {
+        client.updateCookies()
         let url = URL(string: authUrl)!
         let (responseData, _) = try await client.VRChatRequest(
             url: url,
@@ -104,8 +102,12 @@ public struct AuthenticationService {
             auth: true,
             twoFactorAuth: true
         )
-        let veryfyAuthTokenResponse = try JSONDecoder().decode(VerifyAuthTokenResponse.self, from: responseData)
-        return veryfyAuthTokenResponse.ok
+        if let veryfyAuthTokenResponse = try? Util.shared.decoder.decode(VerifyAuthTokenResponse.self, from: responseData) {
+            return veryfyAuthTokenResponse.ok
+        } else {
+            let errorResponse = try Util.shared.decoder.decode(ErrorResponse.self, from: responseData)
+            return false
+        }
     }
 
     /// Logout

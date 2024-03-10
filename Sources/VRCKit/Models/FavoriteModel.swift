@@ -12,9 +12,6 @@ public enum FavoriteType: String, Codable {
 }
 
 public struct Favorite: Codable, Identifiable {
-    public let success: Response?
-    public let error: Response?
-
     public let id: String?
     public let type: FavoriteType?
     public let favoriteId: String?
