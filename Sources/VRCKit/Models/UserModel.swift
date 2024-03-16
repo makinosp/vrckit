@@ -8,6 +8,7 @@
 import Foundation
 
 public struct User: Codable, Identifiable {
+    public let activeFriends: [String]
     public let allowAvatarCopying: Bool
     public let bio: String
     public let bioLinks: [String]
@@ -15,8 +16,13 @@ public struct User: Codable, Identifiable {
     public let currentAvatarAssetUrl: String
     public let currentAvatarImageUrl: String
     public let currentAvatarThumbnailImageUrl: String
+    public let dateJoined: String
     public let displayName: String
+    public let friends: [String]
     public let id: String
+    public let lastLogin: Date
+    public let offlineFriends: [String]
+    public let onlineFriends: [String]
     public let pastDisplayNames: [DisplayName]
     public let state: String
     public let status: String
@@ -24,6 +30,8 @@ public struct User: Codable, Identifiable {
     public let tags: [String]
     public let twoFactorAuthEnabled: Bool
     public let userIcon: String
+    public let userLanguage: String
+    public let userLanguageCode: String
 
     public struct DisplayName: Codable {
         public let displayName: String
