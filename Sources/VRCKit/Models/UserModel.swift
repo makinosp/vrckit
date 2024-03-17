@@ -10,7 +10,7 @@ import Foundation
 public struct User: Codable, ProfileDetailRepresentable {
     public let activeFriends: [String]
     public let allowAvatarCopying: Bool
-    public let bio: String
+    public let bio: String?
     public let bioLinks: [String]?
     public let currentAvatar: String
     public let currentAvatarAssetUrl: String

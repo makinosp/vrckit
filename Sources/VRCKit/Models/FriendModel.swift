@@ -1,14 +1,14 @@
 //
-//  FriendDetailModel.swift
+//  FriendModel.swift
 //  
 //
-//  Created by makinosp on 2024/03/17.
+//  Created by makinosp on 2024/03/03.
 //
 
 import Foundation
 
-public struct FriendDetail: Codable, FriendDetailRepresentable {
-    public let bio: String
+public struct Friend: Codable, ProfileElementRepresentable {
+    public let bio: String?
     public let bioLinks: [String]?
     public let currentAvatarImageUrl: String
     public let currentAvatarThumbnailImageUrl: String
@@ -25,7 +25,4 @@ public struct FriendDetail: Codable, FriendDetailRepresentable {
     public let userIcon: String
     public let location: String
     public let friendKey: String
-    public let dateJoined: String
-    public var note: String
-    public let lastActivity: Date
 }

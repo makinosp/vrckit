@@ -10,10 +10,14 @@ import Foundation
 final public class Util {
     public static let shared = Util()
     public let decoder: JSONDecoder
+    public let encoder: JSONEncoder
 
     private init() {
         decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
+        decoder.dateDecodingStrategy = .formatted(.iso8601Full)
+        encoder = JSONEncoder()
+        encoder.keyEncodingStrategy = .convertToSnakeCase
         decoder.dateDecodingStrategy = .formatted(.iso8601Full)
     }
 }
