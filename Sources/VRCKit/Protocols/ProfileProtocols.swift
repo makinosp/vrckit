@@ -10,7 +10,7 @@ import Foundation
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
 public protocol ProfileElementRepresentable: Hashable, Identifiable {
-    var bio: String { get }
+    var bio: String? { get }
     var bioLinks: [String]? { get }
     var currentAvatarImageUrl: String { get }
     var currentAvatarThumbnailImageUrl: String { get }
@@ -37,6 +37,6 @@ public protocol ProfileDetailRepresentable: ProfileElementRepresentable {
 
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
-public protocol FriendDetailRepresentable: ProfileDetailRepresentable {
+public protocol UserDetailRepresentable: ProfileDetailRepresentable {
     var note: String { get set }
 }
