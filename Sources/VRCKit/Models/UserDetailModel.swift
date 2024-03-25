@@ -54,4 +54,26 @@ public struct UserDetail: Codable, UserDetailRepresentable {
         note = ""
         lastActivity = Date()
     }
+
+    public var friend: Friend {
+        Friend(
+            bio: bio,
+            bioLinks: bioLinks,
+            currentAvatarImageUrl: currentAvatarImageUrl,
+            currentAvatarThumbnailImageUrl: currentAvatarThumbnailImageUrl,
+            developerType: developerType,
+            displayName: displayName,
+            id: id,
+            isFriend: isFriend,
+            lastLogin: lastLogin,
+            lastPlatform: lastPlatform,
+            profilePicOverride: profilePicOverride,
+            status: status,
+            statusDescription: statusDescription,
+            tags: tags,
+            userIcon: userIcon,
+            location: location,
+            friendKey: friendKey
+        )
+    }
 }
