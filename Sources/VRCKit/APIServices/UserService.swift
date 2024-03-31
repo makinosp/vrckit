@@ -34,6 +34,28 @@ public struct UserService {
         return userDetail
     }
 
+    /// Fetch uesrs
+    public static func fetchUsers(
+        _ client: APIClientAsync,
+        userIds: [String]
+    ) async throws -> [UserDetail] {
+        var users: [(index: Int, user: UserDetail)] = []
+        try await withThrowingTaskGroup(of: (index: Int, user: UserDetail).self) { group in
+            for (index, userId) in userIds.enumerated() {
+                group.addTask {
+                    try await (
+                        index: index,
+                        user: UserService.fetchUser(client, userId: userId)
+                    )
+                }
+            }
+            for try await userDetail in group {
+                users.append(userDetail)
+            }
+        }
+        return users.sorted(by: { $0.index < $1.index }).map(\.user)
+    }
+
     public static func updateUser(
         client: APIClientAsync,
         userID: String,
