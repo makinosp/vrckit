@@ -17,18 +17,19 @@ public struct UserNoteService {
         _ client: APIClientAsync,
         targetUserId: String,
         note: String
-    ) async throws -> UserDetail {
+    ) async throws -> UserNoteResponse {
         let url = URL(string: url)!
         let userNoteRequest = UserNoteRequest(targetUserId: targetUserId, note: note)
-        let requestData = try Util.shared.encoder.encode(userNoteRequest)
+        let requestData = try JSONEncoder().encode(userNoteRequest)
         let (responseData, _) = try await client.VRChatRequest(
             url: url,
             httpMethod: .post,
             auth: true,
             apiKey: true,
+            contentType: .json,
             httpBody: requestData
         )
-        let userDetail: UserDetail = try Util.shared.decoder.decode(UserDetail.self, from: responseData)
-        return userDetail
+        let userNote: UserNoteResponse = try Util.shared.decoder.decode(UserNoteResponse.self, from: responseData)
+        return userNote
     }
 }

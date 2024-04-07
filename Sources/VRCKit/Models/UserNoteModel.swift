@@ -12,10 +12,10 @@ struct UserNoteRequest: Codable {
     var note: String
 }
 
-struct UserNoteResponse: Codable, Identifiable {
-    let id: String
-    let targetUserId: String
-    let note: String
-    let userId: String
-    let createdAt: Date
+public struct UserNoteResponse: Codable, Identifiable {
+    public let id: String
+    public let targetUserId: String
+    public let note: String
+    public let userId: String
+    public let createdAt: Date
 }
