@@ -18,6 +18,6 @@ final public class Util {
         decoder.dateDecodingStrategy = .formatted(.iso8601Full)
         encoder = JSONEncoder()
         encoder.keyEncodingStrategy = .convertToSnakeCase
-        decoder.dateDecodingStrategy = .formatted(.iso8601Full)
+        encoder.dateEncodingStrategy = .formatted(.iso8601Full)
     }
 }
