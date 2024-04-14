@@ -19,7 +19,7 @@ public struct UserDetail: Codable, UserDetailRepresentable {
     public let lastLogin: Date
     public let lastPlatform: String
     public let profilePicOverride: String
-    public let status: String
+    public let status: Status
     public let statusDescription: String
     public let tags: [String]
     public let userIcon: String

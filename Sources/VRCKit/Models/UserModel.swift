@@ -32,7 +32,7 @@ public struct User: Codable, ProfileDetailRepresentable {
     public let pastDisplayNames: [DisplayName]
     public let profilePicOverride: String
     public let state: String
-    public let status: String
+    public let status: Status
     public let statusDescription: String
     public let tags: [String]
     public let twoFactorAuthEnabled: Bool

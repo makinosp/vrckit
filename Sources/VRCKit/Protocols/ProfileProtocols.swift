@@ -21,7 +21,7 @@ public protocol ProfileElementRepresentable: Hashable, Identifiable {
     var lastLogin: Date { get }
     var lastPlatform: String { get }
     var profilePicOverride: String { get }
-    var status: String { get }
+    var status: Status { get }
     var statusDescription: String { get }
     var tags: [String] { get }
     var userIcon: String { get }
