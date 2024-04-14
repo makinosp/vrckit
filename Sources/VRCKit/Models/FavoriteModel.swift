@@ -12,8 +12,17 @@ public enum FavoriteType: String, Codable {
 }
 
 public struct Favorite: Codable, Identifiable {
-    public let id: String?
-    public let type: FavoriteType?
-    public let favoriteId: String?
-    public let tags: [String]?
+    public let id: String
+    public let favoriteId: String
+    public let tags: [String]
+    public let type: FavoriteType
+}
+
+public struct FavoriteGroup: Codable, Identifiable {
+    public let id: String
+    public let displayName: String
+    public let name: String
+    public let tags: [String]
+    public let type: FavoriteType
+    public let visibility: String
 }

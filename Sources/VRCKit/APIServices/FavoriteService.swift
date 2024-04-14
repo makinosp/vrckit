@@ -11,13 +11,30 @@ import Foundation
 // MARK: Favorite API
 //
 
-let favoriteUrl = "\(baseUrl)/favorites"
-
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
-public struct FavoriteAPIAsync {
+public struct FavoriteService {
+    private static let favoriteUrl = "\(baseUrl)/favorites"
+    private static let favoriteGroupUrl = "\(baseUrl)/favorite/groups"
 
-    public static func getFavorites(
+    public static func listFavoriteGroups(
+        _ client: APIClientAsync
+    ) async throws -> [FavoriteGroup] {
+        var request = URLComponents(string: favoriteGroupUrl)!
+        guard let url = request.url else {
+            throw URLError(.badURL, userInfo: [NSLocalizedDescriptionKey: "Invalid URL: \(favoriteGroupUrl)"])
+        }
+
+        let (responseData, _) = try await client.VRChatRequest(
+            url: url,
+            httpMethod: .get,
+            auth: true,
+            apiKey: true
+        )
+        return try Util.shared.decoder.decode([FavoriteGroup].self, from: responseData)
+    }
+
+    public static func listFavorites(
         client: APIClientAsync,
         n: Int = 60
     ) async throws -> [Favorite]? {
