@@ -37,13 +37,17 @@ public struct FavoriteService {
     public static func listFavorites(
         _ client: APIClientAsync,
         n: Int = 60,
-        type: FavoriteType
+        type: FavoriteType,
+        tag: String? = nil
     ) async throws -> [Favorite] {
         var request = URLComponents(string: favoriteUrl)!
         request.queryItems = [
             URLQueryItem(name: "n", value: n.description),
             URLQueryItem(name: "type", value: type.rawValue)
         ]
+        if let tag = tag {
+            request.queryItems?.append(URLQueryItem(name: "tag", value: tag.description))
+        }
         guard let url = request.url else {
             throw URLError(.badURL, userInfo: [NSLocalizedDescriptionKey: "Invalid URL: \(favoriteUrl)"])
         }
@@ -57,7 +61,7 @@ public struct FavoriteService {
         let favorites: [Favorite] = try JSONDecoder().decode([Favorite].self, from: responseData)
         return favorites
     }
-    
+
     public static func addFavorite(
         client: APIClientAsync,
         type: FavoriteType = .friend,
