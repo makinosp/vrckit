@@ -57,7 +57,7 @@ public struct FavoriteService {
         let response = try await client.VRChatRequest(
             url: url,
             httpMethod: .get,
-            cookies: [.auth, .apiKey]
+            cookieKeys: [.auth, .apiKey]
         )
         return Util.shared.decodeResponse(response.data) as Result<[Favorite], ErrorResponse>
     }

@@ -18,9 +18,21 @@ enum HttpMethod: String {
     case delete
 }
 
+enum VRCKitError: Error {
+    case encodingError
+}
+
 enum ContentType: String {
     case json = "application/json"
 }
+
+public enum VRCCookieKey: String {
+    case auth
+    case twoFactorAuth
+    case apiKey
+}
+
+typealias HTTPResponse = (data: Data, urlResponse: URLResponse)
 
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
@@ -32,7 +44,7 @@ public class APIClientAsync {
     private var auth: String?
     private var twoFactorAuth: String?
     private var apiKey: String?
-    
+
     public init(username: String? = nil, password: String? = nil) {
         self.username = username
         self.password = password
@@ -59,39 +71,46 @@ public class APIClientAsync {
 //        print("apiKey: \(apiKey)")
         // Debug End
     }
-    
+
+    public func getCookie(_ key: VRCCookieKey) -> String? {
+        switch key {
+        case .auth:
+            return auth
+        case .twoFactorAuth:
+            return twoFactorAuth
+        case .apiKey:
+            return apiKey
+        }
+    }
+
     func VRChatRequest(
         url: URL,
         httpMethod: HttpMethod,
-        authorization: Bool = false,
+        basic: Bool = false,
         auth: Bool = false,
         twoFactorAuth: Bool = false,
         apiKey: Bool = false,
+        cookieKeys: [VRCCookieKey] = [],
         contentType: ContentType? = nil,
         httpBody: Data? = nil
-    ) async throws -> (Data, URLResponse) {
+    ) async throws -> HTTPResponse {
         var request = URLRequest(url: url)
         request.httpMethod = httpMethod.rawValue.uppercased()
 
         /// Authorization
-        if authorization {
-            let authData = ((username ?? "") + ":" + (password ?? "")).data(using: .utf8)!.base64EncodedString()
-            request.addValue("Basic \(authData)", forHTTPHeaderField: "Authorization")
+        if basic, let username = username, let password = password {
+            request.addValue(
+                "Basic \(username):\(password)".data(using: .utf8)!.base64EncodedString(),
+                forHTTPHeaderField: "Authorization"
+            )
         }
         
         /// Cookie
-        var cookie = ""
-        if auth {
-            cookie.append("auth=\(self.auth ?? "auth"); ")
+        let cookies = cookieKeys.compactMap { key in
+            getCookie(key).map { "\(key.rawValue)=\($0)" }
         }
-        if twoFactorAuth {
-            cookie.append("twoFactorAuth=\(self.twoFactorAuth ?? "twoFactorAuth"); ")
-        }
-        if apiKey {
-            cookie.append("apiKey=\(self.apiKey ?? "apiKey"); ")
-        }
-        request.addValue(cookie, forHTTPHeaderField: "Cookie")
-        
+        request.addValue(cookies.joined(separator: "; "), forHTTPHeaderField: "Cookie")
+
         /// HTTP Body
         if let contentType = contentType, let httpBody = httpBody {
             request.addValue(contentType.rawValue, forHTTPHeaderField: "Content-Type")

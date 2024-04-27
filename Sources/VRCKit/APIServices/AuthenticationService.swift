@@ -49,7 +49,7 @@ public struct AuthenticationService {
             url: URL(string: "\(authUrl)/user")!,
             httpMethod: .get,
             basic: true,
-            cookies: [.auth, .twoFactorAuth]
+            cookieKeys: [.auth, .twoFactorAuth]
         )
         do {
             switch Util.shared.decodeResponse(response.data) as Result<User, ErrorResponse> {
