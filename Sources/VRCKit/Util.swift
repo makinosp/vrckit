@@ -13,7 +13,7 @@ final public class Util {
     private var encoder = JSONEncoder()
 
     public func decodeResponse<T: Decodable>(
-        data: Data,
+        _ data: Data,
         keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .convertFromSnakeCase,
         dateDecodingStrategy: JSONDecoder.DateDecodingStrategy = .formatted(.iso8601Full)
     ) -> Result<T, ErrorResponse> {
@@ -29,6 +29,20 @@ final public class Util {
             } catch {
                 return .failure(ErrorResponse(message: "Failed to decode JSON"))
             }
+        }
+    }
+
+    public func encodeRequest(
+        _ data: Encodable,
+        keyEncodingStrategy: JSONEncoder.KeyEncodingStrategy = .convertToSnakeCase,
+        dateEncodingStrategy: JSONEncoder.DateEncodingStrategy = .formatted(.iso8601Full)
+    ) -> Result<Data, Error> {
+        encoder.keyEncodingStrategy = keyEncodingStrategy
+        encoder.dateEncodingStrategy = dateEncodingStrategy
+        do {
+            return .success(try encoder.encode(data))
+        } catch {
+            return .failure(VRCKitError.encodingError)
         }
     }
 }
