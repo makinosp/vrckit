@@ -21,7 +21,7 @@ public struct FriendService {
         offset: Int,
         n: Int = 60,
         offline: Bool = false
-    ) async throws -> [Friend] {
+    ) async throws -> Result<[Friend], ErrorResponse> {
         var request = URLComponents(string: friendsUrl)!
         request.queryItems = [
             URLQueryItem(name: "offset", value: offset.description),
@@ -32,13 +32,12 @@ public struct FriendService {
             throw URLError(.badURL, userInfo: [NSLocalizedDescriptionKey: "Invalid URL: \(friendsUrl)"])
         }
 
-        let (responseData, _) = try await client.VRChatRequest(
+        let response = try await client.VRChatRequest(
             url: url,
             httpMethod: .get,
             auth: true,
             apiKey: true
         )
-        let friends: [Friend] = try Util.shared.decoder.decode([Friend].self, from: responseData)
-        return friends
+        return Util.shared.decodeResponse(response.data)
     }
 }

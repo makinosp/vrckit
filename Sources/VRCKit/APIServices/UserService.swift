@@ -15,45 +15,51 @@ import Foundation
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
 public struct UserService {
+    typealias UserWithIndex = (index: Int, user: UserDetail)
+    typealias FetchUserResponse = (index: Int, response: Result<UserDetail, ErrorResponse>)
+
     static let userUrl = "\(baseUrl)/users"
 
     /// Fetch a user
     public static func fetchUser(
         _ client: APIClientAsync,
         userId: String
-    ) async throws -> UserDetail {
+    ) async throws -> Result<UserDetail, ErrorResponse> {
         let url = URL(string: "\(userUrl)/\(userId)")!
-
-        let (responseData, _) = try await client.VRChatRequest(
+        let response = try await client.VRChatRequest(
             url: url,
             httpMethod: .get,
             auth: true,
             apiKey: true
         )
-        let userDetail: UserDetail = try Util.shared.decoder.decode(UserDetail.self, from: responseData)
-        return userDetail
+        return Util.shared.decodeResponse(response.data)
     }
 
     /// Fetch uesrs
     public static func fetchUsers(
         _ client: APIClientAsync,
         userIds: [String]
-    ) async throws -> [UserDetail] {
-        var users: [(index: Int, user: UserDetail)] = []
-        try await withThrowingTaskGroup(of: (index: Int, user: UserDetail).self) { group in
+    ) async throws -> Result<[UserDetail], ErrorResponse> {
+        var users: [UserWithIndex] = []
+        try await withThrowingTaskGroup(of: FetchUserResponse.self) { taskGroup in
             for (index, userId) in userIds.enumerated() {
-                group.addTask {
+                taskGroup.addTask {
                     try await (
                         index: index,
-                        user: UserService.fetchUser(client, userId: userId)
+                        response: UserService.fetchUser(client, userId: userId)
                     )
                 }
             }
-            for try await userDetail in group {
-                users.append(userDetail)
+            for try await result in taskGroup {
+                switch result.response {
+                    case .success(let user):
+                        users.append(UserWithIndex(index: result.index, user: user))
+                    case .failure(_):
+                        continue
+                }
             }
         }
-        return users.sorted(by: { $0.index < $1.index }).map(\.user)
+        return .success(users.sorted(by: { $0.index < $1.index }).map(\.user))
     }
 
 //    public static func updateUser(

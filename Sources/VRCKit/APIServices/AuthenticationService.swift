@@ -22,51 +22,52 @@ public struct AuthenticationService {
     public static func isExists(_ client: APIClientAsync, userId: String) async throws -> Bool {
         var request = URLComponents(string: "\(authUrl)/exists")!
         request.queryItems = [URLQueryItem(name: "username", value: userId.description)]
-        guard let url = request.url else {
-            throw URLError(
-                .badURL,
-                userInfo: [NSLocalizedDescriptionKey: "Invalid URL: \(authUrl)/exists"]
-            )
-        }
-
-        let (responseData, _) = try await client.VRChatRequest(
+        guard let url = request.url else { return false }
+        let response = try await client.VRChatRequest(
             url: url,
             httpMethod: .get
         )
-        let exists = try Util.shared.decoder.decode(ExistsResponse.self, from: responseData)
-        return exists.userExists
+        switch Util.shared.decodeResponse(response.data) as Result<ExistsResponse, ErrorResponse> {
+        case .success(let success):
+            return success.userExists
+        case .failure(_):
+            return false
+        }
+    }
+
+    public enum LoginUserInfoResult<T: Codable, U: Codable, V: Codable> {
+        case user(T)
+        case requiresTwoFactorAuth(U)
+        case failure(V)
     }
 
     /// Login and/or Get Current User Info
-    public static func loginUserInfo(_ client: APIClientAsync) async throws -> WrappedUserResponse {
-        let url = URL(string: "\(authUrl)/user")!
-        let (responseData, _) = try await client.VRChatRequest(
-            url: url,
+    public static func loginUserInfo(
+        _ client: APIClientAsync
+    ) async throws -> LoginUserInfoResult<User, [String], ErrorResponse> {
+        let response = try await client.VRChatRequest(
+            url: URL(string: "\(authUrl)/user")!,
             httpMethod: .get,
-            authorization: true,
-            auth: true,
-            twoFactorAuth: true
+            basic: true,
+            cookies: [.auth, .twoFactorAuth]
         )
-
-        // Try decoding with the structure for two-step authentication
-        // and if it fails, decode with the user structure.
-        var wrappedUserResponse: WrappedUserResponse
-
-        if let requiresTwoFactorAuth = try? Util.shared.decoder.decode(
-            RequiresTwoFactorAuthResponse.self,
-            from: responseData
-        ) {
-            wrappedUserResponse = WrappedUserResponse(
-                user: nil,
-                requiresTwoFactorAuth: requiresTwoFactorAuth.requiresTwoFactorAuth.map { $0.lowercased() }
-            )
-        } else {
-            let user = try Util.shared.decoder.decode(User.self, from: responseData)
-            wrappedUserResponse = WrappedUserResponse(user: user, requiresTwoFactorAuth: [])
+        do {
+            switch Util.shared.decodeResponse(response.data) as Result<User, ErrorResponse> {
+            case .success(let user):
+                client.updateCookies()
+                return .user(user)
+            case .failure(let error):
+                return .failure(error)
+            }
+        } catch {
+            switch Util.shared.decodeResponse(response.data) as Result<RequiresTwoFactorAuthResponse, ErrorResponse> {
+            case .success(let factors):
+                client.updateCookies()
+                return .requiresTwoFactorAuth(factors.requiresTwoFactorAuth.map { $0.lowercased() })
+            case .failure(let error):
+                return .failure(error)
+            }
         }
-        
-        client.updateCookies()
-        return wrappedUserResponse
     }
     
     /// Verify 2FA With TOTP or Email OTP
@@ -75,47 +76,47 @@ public struct AuthenticationService {
         verifyType: String,
         code: String
     ) async throws -> Bool {
-        let url = URL(string: "\(auth2FAUrl)/\(verifyType)/verify")!
-        let encoder = JSONEncoder()
-        let requestData = try encoder.encode(VerifyRequest(code: code))
-
-        let (responseData, _) = try await client.VRChatRequest(
-            url: url,
+        let requestData = try Util.shared.encodeRequest(VerifyRequest(code: code)).get()
+        let response = try await client.VRChatRequest(
+            url: URL(string: "\(auth2FAUrl)/\(verifyType)/verify")!,
             httpMethod: .post,
             auth: true,
             twoFactorAuth: true,
             contentType: .json,
             httpBody: requestData
         )
-        let verifyResponse = try Util.shared.decoder.decode(VerifyResponse.self, from: responseData)
-        client.updateCookies()
-        return verifyResponse.verified
+        switch Util.shared.decodeResponse(response.data) as Result<VerifyResponse, ErrorResponse> {
+        case .success(let response):
+            client.updateCookies()
+            return response.verified
+        case .failure(_):
+            return false
+        }
     }
 
     /// Verify Auth Token
     public static func verifyAuthToken(_ client: APIClientAsync) async throws -> Bool {
         client.updateCookies()
         let url = URL(string: authUrl)!
-        let (responseData, _) = try await client.VRChatRequest(
+        let response = try await client.VRChatRequest(
             url: url,
             httpMethod: .get,
             auth: true,
             twoFactorAuth: true
         )
-        if let veryfyAuthTokenResponse = try? Util.shared.decoder.decode(VerifyAuthTokenResponse.self, from: responseData) {
-            return veryfyAuthTokenResponse.ok
-        } else {
-            let errorResponse = try Util.shared.decoder.decode(ErrorResponse.self, from: responseData)
+        let veryfyAuthTokenResponse: Result<VerifyAuthTokenResponse, ErrorResponse> = Util.shared.decodeResponse(response.data)
+        switch veryfyAuthTokenResponse {
+        case .success(let success):
+            return success.ok
+        case .failure(_):
             return false
         }
     }
 
     /// Logout
     public static func logout(_ client: APIClientAsync) async throws {
-        let url = URL(string: "\(baseUrl)/logout")!
-        
-        let (_, _) = try await client.VRChatRequest(
-            url: url,
+        let _ = try await client.VRChatRequest(
+            url: URL(string: "\(baseUrl)/logout")!,
             httpMethod: .put,
             auth: true
         )
