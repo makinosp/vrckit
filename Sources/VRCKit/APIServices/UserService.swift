@@ -29,8 +29,7 @@ public struct UserService {
         let response = try await client.VRChatRequest(
             url: url,
             httpMethod: .get,
-            auth: true,
-            apiKey: true
+            cookieKeys: [.auth, .apiKey]
         )
         return Util.shared.decodeResponse(response.data)
     }

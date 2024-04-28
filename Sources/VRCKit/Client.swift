@@ -87,11 +87,7 @@ public class APIClientAsync {
         url: URL,
         httpMethod: HttpMethod,
         basic: Bool = false,
-        auth: Bool = false,
-        twoFactorAuth: Bool = false,
-        apiKey: Bool = false,
         cookieKeys: [VRCCookieKey] = [],
-        contentType: ContentType? = nil,
         httpBody: Data? = nil
     ) async throws -> HTTPResponse {
         var request = URLRequest(url: url)

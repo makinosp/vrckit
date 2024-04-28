@@ -24,9 +24,7 @@ public struct UserNoteService {
         let response = try await client.VRChatRequest(
             url: url,
             httpMethod: .post,
-            auth: true,
-            apiKey: true,
-            contentType: .json,
+            cookieKeys: [.auth, .apiKey],
             httpBody: requestData
         )
         return Util.shared.decodeResponse(response.data)
