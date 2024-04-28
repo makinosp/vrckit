@@ -11,7 +11,7 @@ import Foundation
 //
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
-public class APIClientAsync {
+public class APIClient {
     typealias HTTPResponse = (data: Data, urlResponse: URLResponse)
 
     enum HttpMethod: String {
@@ -49,7 +49,7 @@ public class APIClientAsync {
         }
     }
 
-    func VRChatRequest(
+    func request(
         url: URL,
         httpMethod: HttpMethod,
         basic: Bool = false,

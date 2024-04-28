@@ -22,11 +22,11 @@ public struct UserService {
 
     /// Fetch a user
     public static func fetchUser(
-        _ client: APIClientAsync,
+        _ client: APIClient,
         userId: String
     ) async throws -> Result<UserDetail, ErrorResponse> {
         let url = URL(string: "\(userUrl)/\(userId)")!
-        let response = try await client.VRChatRequest(
+        let response = try await client.request(
             url: url,
             httpMethod: .get,
             cookieKeys: [.auth, .apiKey]
@@ -36,7 +36,7 @@ public struct UserService {
 
     /// Fetch uesrs
     public static func fetchUsers(
-        _ client: APIClientAsync,
+        _ client: APIClient,
         userIds: [String]
     ) async throws -> Result<[UserDetail], ErrorResponse> {
         var users: [UserWithIndex] = []
@@ -62,7 +62,7 @@ public struct UserService {
     }
 
 //    public static func updateUser(
-//        client: APIClientAsync,
+//        client: APIClient,
 //        userID: String,
 //        statusDescription: String? = nil,
 //        tags: [String]? = nil,
@@ -97,7 +97,7 @@ public struct UserService {
 //            return nil
 //        }
 //        
-//        let (responseData, _) = try await client.VRChatRequest(
+//        let (responseData, _) = try await client.request(
 //            url: url,
 //            httpMethod: .put,
 //            auth: true,

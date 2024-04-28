@@ -19,11 +19,11 @@ public struct AuthenticationService {
     private static let auth2FAUrl = "\(authUrl)/twofactorauth"
 
     /// Check User Exists
-    public static func isExists(_ client: APIClientAsync, userId: String) async throws -> Bool {
+    public static func isExists(_ client: APIClient, userId: String) async throws -> Bool {
         var request = URLComponents(string: "\(authUrl)/exists")!
         request.queryItems = [URLQueryItem(name: "username", value: userId.description)]
         guard let url = request.url else { return false }
-        let response = try await client.VRChatRequest(
+        let response = try await client.request(
             url: url,
             httpMethod: .get
         )
@@ -43,9 +43,9 @@ public struct AuthenticationService {
 
     /// Login and/or Get Current User Info
     public static func loginUserInfo(
-        _ client: APIClientAsync
+        _ client: APIClient
     ) async throws -> LoginUserInfoResult<User, [String], ErrorResponse> {
-        let response = try await client.VRChatRequest(
+        let response = try await client.request(
             url: URL(string: "\(authUrl)/user")!,
             httpMethod: .get,
             basic: true,
@@ -71,12 +71,12 @@ public struct AuthenticationService {
     
     /// Verify 2FA With TOTP or Email OTP
     public static func verify2FA(
-        _ client: APIClientAsync,
+        _ client: APIClient,
         verifyType: String,
         code: String
     ) async throws -> Bool {
         let requestData = try Util.shared.encodeRequest(VerifyRequest(code: code)).get()
-        let response = try await client.VRChatRequest(
+        let response = try await client.request(
             url: URL(string: "\(auth2FAUrl)/\(verifyType)/verify")!,
             httpMethod: .post,
             cookieKeys: [.auth, .twoFactorAuth],
@@ -92,10 +92,10 @@ public struct AuthenticationService {
     }
 
     /// Verify Auth Token
-    public static func verifyAuthToken(_ client: APIClientAsync) async throws -> Bool {
+    public static func verifyAuthToken(_ client: APIClient) async throws -> Bool {
         client.updateCookies()
         let url = URL(string: authUrl)!
-        let response = try await client.VRChatRequest(
+        let response = try await client.request(
             url: url,
             httpMethod: .get,
             cookieKeys: [.auth, .twoFactorAuth]
@@ -110,8 +110,8 @@ public struct AuthenticationService {
     }
 
     /// Logout
-    public static func logout(_ client: APIClientAsync) async throws {
-        let _ = try await client.VRChatRequest(
+    public static func logout(_ client: APIClient) async throws {
+        let _ = try await client.request(
             url: URL(string: "\(baseUrl)/logout")!,
             httpMethod: .put,
             cookieKeys: [.auth]

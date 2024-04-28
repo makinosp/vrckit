@@ -17,7 +17,7 @@ public struct FriendService {
     private static let friendsUrl = "\(baseUrl)/auth/user/friends"
 
     public static func fetchFriends(
-        _ client: APIClientAsync,
+        _ client: APIClient,
         offset: Int,
         n: Int = 60,
         offline: Bool = false
@@ -32,7 +32,7 @@ public struct FriendService {
             throw URLError(.badURL, userInfo: [NSLocalizedDescriptionKey: "Invalid URL: \(friendsUrl)"])
         }
 
-        let response = try await client.VRChatRequest(
+        let response = try await client.request(
             url: url,
             httpMethod: .get,
             cookieKeys: [.auth, .apiKey]
