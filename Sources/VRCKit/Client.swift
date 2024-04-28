@@ -9,77 +9,43 @@ import Foundation
 //
 // MARK: API Client
 //
-
-enum HttpMethod: String {
-    case get
-    case post
-    case patch
-    case put
-    case delete
-}
-
-enum VRCKitError: Error {
-    case encodingError
-}
-
-enum ContentType: String {
-    case json = "application/json"
-}
-
-public enum VRCCookieKey: String {
-    case auth
-    case twoFactorAuth
-    case apiKey
-}
-
-typealias HTTPResponse = (data: Data, urlResponse: URLResponse)
-
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
 public class APIClientAsync {
+    typealias HTTPResponse = (data: Data, urlResponse: URLResponse)
+
+    enum HttpMethod: String {
+        case get
+        case post
+        case patch
+        case put
+        case delete
+    }
+
+    enum CookieKey: String {
+        case auth
+        case twoFactorAuth
+        case apiKey
+    }
+
+    private enum ContentType: String {
+        case json = "application/json"
+    }
+
     private var username: String?
     private var password: String?
-    
-    // Cookies
-    private var auth: String?
-    private var twoFactorAuth: String?
-    private var apiKey: String?
+    private var cookies: [CookieKey: String] = [:]
 
     public init(username: String? = nil, password: String? = nil) {
         self.username = username
         self.password = password
     }
     
-    public func updateCookies() {
-        self.auth = nil
-        self.twoFactorAuth = nil
-        self.apiKey = nil
+    func updateCookies() {
+        cookies = [:]
         for cookie in HTTPCookieStorage.shared.cookies(for: URL(string: domainUrl)!)! {
-            if cookie.name == "auth" {
-                self.auth = cookie.value
-            } else if cookie.name == "twoFactorAuth" {
-                self.twoFactorAuth = cookie.value
-            } else if cookie.name == "apiKey" {
-                self.apiKey = cookie.value
-            }
-        }
-        
-        // Debug
-//        print("*** updateCookies() ***")
-//        print("auth: \(auth)")
-//        print("twoFactorAuth: \(twoFactorAuth)")
-//        print("apiKey: \(apiKey)")
-        // Debug End
-    }
-
-    public func getCookie(_ key: VRCCookieKey) -> String? {
-        switch key {
-        case .auth:
-            return auth
-        case .twoFactorAuth:
-            return twoFactorAuth
-        case .apiKey:
-            return apiKey
+            guard let key = CookieKey(rawValue: cookie.name) else { continue }
+            cookies[key] = cookie.value
         }
     }
 
@@ -87,7 +53,7 @@ public class APIClientAsync {
         url: URL,
         httpMethod: HttpMethod,
         basic: Bool = false,
-        cookieKeys: [VRCCookieKey] = [],
+        cookieKeys: [CookieKey] = [],
         httpBody: Data? = nil
     ) async throws -> HTTPResponse {
         var request = URLRequest(url: url)
@@ -95,15 +61,19 @@ public class APIClientAsync {
 
         /// Authorization
         if basic {
-            let authData = ((username ?? "") + ":" + (password ?? "")).data(using: .utf8)!.base64EncodedString()
-            request.addValue("Basic \(authData)", forHTTPHeaderField: "Authorization")
+            request.addValue(
+                "Basic \(((username ?? "") + ":" + (password ?? "")).data(using: .utf8)!.base64EncodedString())",
+                forHTTPHeaderField: "Authorization"
+            )
         }
         
         /// Cookie
-        let cookies = cookieKeys.compactMap { key in
-            getCookie(key).map { "\(key.rawValue)=\($0)" }
-        }
-        request.addValue(cookies.joined(separator: "; "), forHTTPHeaderField: "Cookie")
+        request.addValue(
+            cookies
+                .map { "\($0.key.rawValue)=\($0.value)" }
+                .joined(separator: "; "),
+            forHTTPHeaderField: "Cookie"
+        )
 
         /// HTTP Body
         if let httpBody = httpBody {
