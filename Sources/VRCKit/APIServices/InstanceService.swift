@@ -23,7 +23,7 @@ import Foundation
 //    ) {
 //        let url = URL(string: "\(instanceUrl)/\(worldID):\(instanceID)")!
 //        
-//        client.VRChatRequest(
+//        client.request(
 //            url: url,
 //            httpMethod: .get,
 //            auth: true,

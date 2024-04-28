@@ -17,10 +17,10 @@ import Foundation
 //@available(iOS 15.0, *)
 //public struct WorldService {
 //
-//    public static func getWorld(client: APIClientAsync, worldID: String) async throws -> World? {
+//    public static func getWorld(client: APIClient, worldID: String) async throws -> World? {
 //        let url = URL(string: "\(worldUrl)/\(worldID)")!
 //        
-//        let (responseData, _) = try await client.VRChatRequest(
+//        let (responseData, _) = try await client.request(
 //            url: url,
 //            httpMethod: .get,
 //            apiKey: true

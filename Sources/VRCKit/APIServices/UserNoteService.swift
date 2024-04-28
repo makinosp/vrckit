@@ -14,14 +14,14 @@ public struct UserNoteService {
 
     /// Update user's note
     public static func updateUserNote(
-        _ client: APIClientAsync,
+        _ client: APIClient,
         targetUserId: String,
         note: String
     ) async throws -> Result<UserNoteResponse, ErrorResponse> {
         let url = URL(string: url)!
         let userNoteRequest = UserNoteRequest(targetUserId: targetUserId, note: note)
         let requestData = try JSONEncoder().encode(userNoteRequest)
-        let response = try await client.VRChatRequest(
+        let response = try await client.request(
             url: url,
             httpMethod: .post,
             cookieKeys: [.auth, .apiKey],

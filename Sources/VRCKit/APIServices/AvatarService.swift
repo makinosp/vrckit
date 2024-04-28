@@ -23,7 +23,7 @@ import Foundation
 //        
 //        let url = URL(string: "\(avatarUrl)?featured=\(featured)&n=\(n)")!
 //        
-//        client.VRChatRequest(
+//        client.request(
 //            url: url,
 //            httpMethod: .get,
 //            auth: true,
@@ -46,7 +46,7 @@ import Foundation
 //        
 //        let url = URL(string: "\(avatarUrl)/favorites")!
 //        
-//        client.VRChatRequest(
+//        client.request(
 //            url: url,
 //            httpMethod: .get,
 //            auth: true,

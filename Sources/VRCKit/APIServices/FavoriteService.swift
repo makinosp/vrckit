@@ -18,7 +18,7 @@ public struct FavoriteService {
     private static let favoriteGroupUrl = "\(baseUrl)/favorite/groups"
 
     public static func listFavoriteGroups(
-        _ client: APIClientAsync
+        _ client: APIClient
     ) async throws -> Result<[FavoriteGroup], ErrorResponse> {
         let request = URLComponents(string: favoriteGroupUrl)!
         guard let url = request.url else {
@@ -27,7 +27,7 @@ public struct FavoriteService {
                 userInfo: [NSLocalizedDescriptionKey: "Invalid URL: \(favoriteGroupUrl)"]
             )
         }
-        let response = try await client.VRChatRequest(
+        let response = try await client.request(
             url: url,
             httpMethod: .get,
             cookieKeys: [.auth, .apiKey]
@@ -36,7 +36,7 @@ public struct FavoriteService {
     }
 
     public static func listFavorites(
-        _ client: APIClientAsync,
+        _ client: APIClient,
         n: Int = 60,
         type: FavoriteType,
         tag: String? = nil
@@ -53,7 +53,7 @@ public struct FavoriteService {
             throw URLError(.badURL, userInfo: [NSLocalizedDescriptionKey: "Invalid URL: \(favoriteUrl)"])
         }
         
-        let response = try await client.VRChatRequest(
+        let response = try await client.request(
             url: url,
             httpMethod: .get,
             cookieKeys: [.auth, .apiKey]
@@ -62,7 +62,7 @@ public struct FavoriteService {
     }
 
 //    public static func addFavorite(
-//        client: APIClientAsync,
+//        client: APIClient,
 //        type: FavoriteType = .friend,
 //        favoriteId: String,
 //        tags: [String]? = nil
@@ -96,7 +96,7 @@ public struct FavoriteService {
 //            return nil
 //        }
 //        
-//        let (responseData, _) = try await client.VRChatRequest(
+//        let (responseData, _) = try await client.request(
 //            url: url,
 //            httpMethod: .post,
 //            auth: true,
@@ -109,11 +109,11 @@ public struct FavoriteService {
 //    }
 //    
 //    public static func removeFavorite(
-//        client: APIClientAsync,
+//        client: APIClient,
 //        favoriteId: String
 //    ) async throws -> Favorite? {
 //        let url = URL(string: "\(favoriteUrl)/\(favoriteId)")!
-//        let (responseData, _) = try await client.VRChatRequest(
+//        let (responseData, _) = try await client.request(
 //            url: url,
 //            httpMethod: .delete,
 //            auth: true,
