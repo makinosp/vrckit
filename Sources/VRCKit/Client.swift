@@ -98,11 +98,9 @@ public class APIClientAsync {
         request.httpMethod = httpMethod.rawValue.uppercased()
 
         /// Authorization
-        if basic, let username = username, let password = password {
-            request.addValue(
-                "Basic \(username):\(password)".data(using: .utf8)!.base64EncodedString(),
-                forHTTPHeaderField: "Authorization"
-            )
+        if basic {
+            let authData = ((username ?? "") + ":" + (password ?? "")).data(using: .utf8)!.base64EncodedString()
+            request.addValue("Basic \(authData)", forHTTPHeaderField: "Authorization")
         }
         
         /// Cookie
@@ -112,8 +110,8 @@ public class APIClientAsync {
         request.addValue(cookies.joined(separator: "; "), forHTTPHeaderField: "Cookie")
 
         /// HTTP Body
-        if let contentType = contentType, let httpBody = httpBody {
-            request.addValue(contentType.rawValue, forHTTPHeaderField: "Content-Type")
+        if let httpBody = httpBody {
+            request.addValue(ContentType.json.rawValue, forHTTPHeaderField: "Content-Type")
             request.httpBody = httpBody
         }
 

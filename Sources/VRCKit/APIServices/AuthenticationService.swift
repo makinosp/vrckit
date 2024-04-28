@@ -51,15 +51,14 @@ public struct AuthenticationService {
             basic: true,
             cookieKeys: [.auth, .twoFactorAuth]
         )
-        do {
-            switch Util.shared.decodeResponse(response.data) as Result<User, ErrorResponse> {
-            case .success(let user):
-                client.updateCookies()
-                return .user(user)
-            case .failure(let error):
+        switch Util.shared.decodeResponse(response.data) as Result<User, ErrorResponse> {
+        case .success(let user):
+            client.updateCookies()
+            return .user(user)
+        case .failure(let error):
+            if error.error.statusCode > -1 {
                 return .failure(error)
             }
-        } catch {
             switch Util.shared.decodeResponse(response.data) as Result<RequiresTwoFactorAuthResponse, ErrorResponse> {
             case .success(let factors):
                 client.updateCookies()
@@ -80,9 +79,7 @@ public struct AuthenticationService {
         let response = try await client.VRChatRequest(
             url: URL(string: "\(auth2FAUrl)/\(verifyType)/verify")!,
             httpMethod: .post,
-            auth: true,
-            twoFactorAuth: true,
-            contentType: .json,
+            cookieKeys: [.auth, .twoFactorAuth],
             httpBody: requestData
         )
         switch Util.shared.decodeResponse(response.data) as Result<VerifyResponse, ErrorResponse> {
@@ -101,8 +98,7 @@ public struct AuthenticationService {
         let response = try await client.VRChatRequest(
             url: url,
             httpMethod: .get,
-            auth: true,
-            twoFactorAuth: true
+            cookieKeys: [.auth, .twoFactorAuth]
         )
         let veryfyAuthTokenResponse: Result<VerifyAuthTokenResponse, ErrorResponse> = Util.shared.decodeResponse(response.data)
         switch veryfyAuthTokenResponse {
@@ -118,7 +114,7 @@ public struct AuthenticationService {
         let _ = try await client.VRChatRequest(
             url: URL(string: "\(baseUrl)/logout")!,
             httpMethod: .put,
-            auth: true
+            cookieKeys: [.auth]
         )
         client.updateCookies()
     }
