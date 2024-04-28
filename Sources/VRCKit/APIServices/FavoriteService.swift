@@ -19,19 +19,20 @@ public struct FavoriteService {
 
     public static func listFavoriteGroups(
         _ client: APIClientAsync
-    ) async throws -> [FavoriteGroup] {
-        var request = URLComponents(string: favoriteGroupUrl)!
+    ) async throws -> Result<[FavoriteGroup], ErrorResponse> {
+        let request = URLComponents(string: favoriteGroupUrl)!
         guard let url = request.url else {
-            throw URLError(.badURL, userInfo: [NSLocalizedDescriptionKey: "Invalid URL: \(favoriteGroupUrl)"])
+            throw URLError(
+                .badURL,
+                userInfo: [NSLocalizedDescriptionKey: "Invalid URL: \(favoriteGroupUrl)"]
+            )
         }
-
-        let (responseData, _) = try await client.VRChatRequest(
+        let response = try await client.VRChatRequest(
             url: url,
             httpMethod: .get,
-            auth: true,
-            apiKey: true
+            cookieKeys: [.auth, .apiKey]
         )
-        return try Util.shared.decoder.decode([FavoriteGroup].self, from: responseData)
+        return Util.shared.decodeResponse(response.data)
     }
 
     public static func listFavorites(
@@ -39,7 +40,7 @@ public struct FavoriteService {
         n: Int = 60,
         type: FavoriteType,
         tag: String? = nil
-    ) async throws -> [Favorite] {
+    ) async throws -> Result<[Favorite], ErrorResponse> {
         var request = URLComponents(string: favoriteUrl)!
         request.queryItems = [
             URLQueryItem(name: "n", value: n.description),
@@ -52,76 +53,74 @@ public struct FavoriteService {
             throw URLError(.badURL, userInfo: [NSLocalizedDescriptionKey: "Invalid URL: \(favoriteUrl)"])
         }
         
-        let (responseData, _) = try await client.VRChatRequest(
+        let response = try await client.VRChatRequest(
             url: url,
             httpMethod: .get,
-            auth: true,
-            apiKey: true
+            cookieKeys: [.auth, .apiKey]
         )
-        let favorites: [Favorite] = try JSONDecoder().decode([Favorite].self, from: responseData)
-        return favorites
+        return Util.shared.decodeResponse(response.data) as Result<[Favorite], ErrorResponse>
     }
 
-    public static func addFavorite(
-        client: APIClientAsync,
-        type: FavoriteType = .friend,
-        favoriteId: String,
-        tags: [String]? = nil
-    ) async throws -> Favorite? {
-        let url = URL(string: "\(favoriteUrl)")!
-        
-        var favoriteInfo: [String: Any] = [:]
-        
-        favoriteInfo["type"] = type.rawValue
-        favoriteInfo["favoriteId"] = favoriteId
-        
-        if tags == nil {
-            switch type {
-            case .world:
-                favoriteInfo["tags"] = ["worlds1"]
-            case .avatar:
-                favoriteInfo["tags"] = ["avatars1"]
-            case .friend:
-                favoriteInfo["tags"] = ["group_0"]
-            }
-        } else {
-            favoriteInfo["tags"] = tags
-        }
-        
-        var httpBody: Data
-        
-        do {
-            httpBody = try JSONSerialization.data(withJSONObject: favoriteInfo)
-        } catch {
-            print(error.localizedDescription)
-            return nil
-        }
-        
-        let (responseData, _) = try await client.VRChatRequest(
-            url: url,
-            httpMethod: .post,
-            auth: true,
-            apiKey: true,
-            contentType: .json,
-            httpBody: httpBody
-        )
-        let favorite: Favorite? = try JSONDecoder().decode(Favorite?.self, from: responseData)
-        return favorite
-    }
-    
-    public static func removeFavorite(
-        client: APIClientAsync,
-        favoriteId: String
-    ) async throws -> Favorite? {
-        let url = URL(string: "\(favoriteUrl)/\(favoriteId)")!
-        let (responseData, _) = try await client.VRChatRequest(
-            url: url,
-            httpMethod: .delete,
-            auth: true,
-            apiKey: true
-        )
-        
-        let favorite: Favorite? = try JSONDecoder().decode(Favorite?.self, from: responseData)
-        return favorite
-    }
+//    public static func addFavorite(
+//        client: APIClientAsync,
+//        type: FavoriteType = .friend,
+//        favoriteId: String,
+//        tags: [String]? = nil
+//    ) async throws -> Favorite? {
+//        let url = URL(string: "\(favoriteUrl)")!
+//        
+//        var favoriteInfo: [String: Any] = [:]
+//        
+//        favoriteInfo["type"] = type.rawValue
+//        favoriteInfo["favoriteId"] = favoriteId
+//        
+//        if tags == nil {
+//            switch type {
+//            case .world:
+//                favoriteInfo["tags"] = ["worlds1"]
+//            case .avatar:
+//                favoriteInfo["tags"] = ["avatars1"]
+//            case .friend:
+//                favoriteInfo["tags"] = ["group_0"]
+//            }
+//        } else {
+//            favoriteInfo["tags"] = tags
+//        }
+//        
+//        var httpBody: Data
+//        
+//        do {
+//            httpBody = try JSONSerialization.data(withJSONObject: favoriteInfo)
+//        } catch {
+//            print(error.localizedDescription)
+//            return nil
+//        }
+//        
+//        let (responseData, _) = try await client.VRChatRequest(
+//            url: url,
+//            httpMethod: .post,
+//            auth: true,
+//            apiKey: true,
+//            contentType: .json,
+//            httpBody: httpBody
+//        )
+//        let favorite: Favorite? = try JSONDecoder().decode(Favorite?.self, from: responseData)
+//        return favorite
+//    }
+//    
+//    public static func removeFavorite(
+//        client: APIClientAsync,
+//        favoriteId: String
+//    ) async throws -> Favorite? {
+//        let url = URL(string: "\(favoriteUrl)/\(favoriteId)")!
+//        let (responseData, _) = try await client.VRChatRequest(
+//            url: url,
+//            httpMethod: .delete,
+//            auth: true,
+//            apiKey: true
+//        )
+//        
+//        let favorite: Favorite? = try JSONDecoder().decode(Favorite?.self, from: responseData)
+//        return favorite
+//    }
 }
