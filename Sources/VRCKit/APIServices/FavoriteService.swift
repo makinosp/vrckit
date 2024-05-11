@@ -11,24 +11,21 @@ import Foundation
 // MARK: Favorite API
 //
 
+public typealias FavoriteDetail = (favoriteGroupId: String, favorites: [Favorite])
+public typealias FavoriteFriendDetail = (favoriteGroupId: String, friends: [UserDetail])
+
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
 public struct FavoriteService {
+
     private static let favoriteUrl = "\(baseUrl)/favorites"
     private static let favoriteGroupUrl = "\(baseUrl)/favorite/groups"
 
     public static func listFavoriteGroups(
         _ client: APIClient
     ) async throws -> Result<[FavoriteGroup], ErrorResponse> {
-        let request = URLComponents(string: favoriteGroupUrl)!
-        guard let url = request.url else {
-            throw URLError(
-                .badURL,
-                userInfo: [NSLocalizedDescriptionKey: "Invalid URL: \(favoriteGroupUrl)"]
-            )
-        }
         let response = try await client.request(
-            url: url,
+            url: URL(string: favoriteGroupUrl)!,
             httpMethod: .get,
             cookieKeys: [.auth, .apiKey]
         )
@@ -59,6 +56,63 @@ public struct FavoriteService {
             cookieKeys: [.auth, .apiKey]
         )
         return Util.shared.decodeResponse(response.data) as Result<[Favorite], ErrorResponse>
+    }
+
+    /// Fetch a list of favorite IDs for each favorite group
+    public static func fetchFavoriteGroupDetails(
+        _ client: APIClient,
+        favoriteGroups: [FavoriteGroup]
+    ) async throws -> [FavoriteDetail] {
+        var results: [FavoriteDetail] = []
+        try await withThrowingTaskGroup(of: FavoriteDetail.self) { taskGroup in
+            for favoriteGroup in favoriteGroups.filter({ $0.type == .friend }) {
+                taskGroup.addTask {
+                    try await FavoriteDetail(
+                        favoriteGroupId: favoriteGroup.id,
+                        favorites: FavoriteService.listFavorites(
+                            client,
+                            type: .friend,
+                            tag: favoriteGroup.name
+                        ).get()
+                    )
+                }
+            }
+            for try await favoriteGroupDetail in taskGroup {
+                results.append(favoriteGroupDetail)
+            }
+        }
+        return results
+    }
+
+    /// Fetch friend details from favorite IDs
+    public static func fetchFriendsInGroups(
+        _ client: APIClient,
+        favorites: [FavoriteDetail]
+    ) async throws -> [FavoriteFriendDetail] {
+        typealias FriendsResultSet = (favoriteGroupId: String, result: Result<[UserDetail], ErrorResponse>)
+        var results: [FavoriteFriendDetail] = []
+        try await withThrowingTaskGroup(of: FriendsResultSet.self) { taskGroup in
+            for favoriteGroup in favorites {
+                taskGroup.addTask {
+                    try await FriendsResultSet(
+                        favoriteGroupId: favoriteGroup.favoriteGroupId,
+                        result: UserService.fetchUsers(
+                            client,
+                            userIds: favoriteGroup.favorites.map(\.favoriteId)
+                        )
+                    )
+                }
+            }
+            for try await result in taskGroup {
+                switch result.result {
+                case .success(let friends):
+                    results.append(FavoriteFriendDetail(favoriteGroupId: result.favoriteGroupId, friends: friends))
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
+        return results
     }
 
 //    public static func addFavorite(

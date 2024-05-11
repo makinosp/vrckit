@@ -49,6 +49,13 @@ public class APIClient {
         }
     }
 
+    public func deleteCookies() {
+        cookies = [:]
+        for cookie in HTTPCookieStorage.shared.cookies(for: URL(string: domainUrl)!)! {
+            HTTPCookieStorage.shared.deleteCookie(cookie)
+        }
+    }
+
     func request(
         url: URL,
         httpMethod: HttpMethod,
