@@ -26,3 +26,9 @@ public struct FavoriteGroup: Codable, Identifiable {
     public let type: FavoriteType
     public let visibility: String
 }
+
+public struct RequestToAddFavorite: Codable {
+    public let type: FavoriteType
+    public let favoriteId: String
+    public let tags: [String]
+}
