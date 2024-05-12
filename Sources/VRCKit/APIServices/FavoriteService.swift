@@ -135,14 +135,14 @@ public struct FavoriteService {
     }
     
     public static func removeFavorite(
-        client: APIClient,
+        _ client: APIClient,
         favoriteId: String
-    ) async throws -> Result<ResponseMessage, ErrorResponse> {
+    ) async throws -> Result<SuccessResponse, ErrorResponse> {
         let response = try await client.request(
             url: URL(string: "\(favoriteUrl)/\(favoriteId)")!,
             httpMethod: .delete,
             cookieKeys: [.auth, .apiKey]
         )
-        return try Util.shared.decodeResponse(response.data) as Result<ResponseMessage, ErrorResponse>
+        return try Util.shared.decodeResponse(response.data) as Result<SuccessResponse, ErrorResponse>
     }
 }
