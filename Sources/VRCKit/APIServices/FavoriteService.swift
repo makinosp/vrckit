@@ -122,7 +122,8 @@ public struct FavoriteService {
         tag: String
     ) async throws -> Result<Favorite, ErrorResponse> {
         let requestData = try Util.shared.encodeRequest(
-            RequestToAddFavorite(type: type, favoriteId: favoriteId, tags: [tag])
+            RequestToAddFavorite(type: type, favoriteId: favoriteId, tags: [tag]),
+            keyEncodingStrategy: .useDefaultKeys
         ).get()
 
         let response = try await client.request(
