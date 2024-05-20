@@ -11,6 +11,10 @@ import Foundation
 // MARK: Authentication API
 //
 
+public protocol UserOrRequires {}
+extension User: UserOrRequires {}
+extension [String]: UserOrRequires {}
+
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
 public struct AuthenticationService {
@@ -44,7 +48,7 @@ public struct AuthenticationService {
     /// Login and/or Get Current User Info
     public static func loginUserInfo(
         _ client: APIClient
-    ) async throws -> LoginUserInfoResult<User, [String], ErrorResponse> {
+    ) async throws -> UserOrRequires {
         let response = try await client.request(
             url: URL(string: "\(authUrl)/user")!,
             httpMethod: .get,
@@ -54,17 +58,17 @@ public struct AuthenticationService {
         switch Util.shared.decodeResponse(response.data) as Result<User, ErrorResponse> {
         case .success(let user):
             client.updateCookies()
-            return .user(user)
-        case .failure(let error):
-            if error.error.statusCode > -1 {
-                return .failure(error)
+            return user
+        case .failure(let errorResponse):
+            if errorResponse.error.statusCode > -1 {
+                throw VRCKitError.apiError(message: errorResponse.error.message)
             }
             switch Util.shared.decodeResponse(response.data) as Result<RequiresTwoFactorAuthResponse, ErrorResponse> {
             case .success(let factors):
                 client.updateCookies()
-                return .requiresTwoFactorAuth(factors.requiresTwoFactorAuth.map { $0.lowercased() })
-            case .failure(let error):
-                return .failure(error)
+                return factors.requiresTwoFactorAuth.map { $0.lowercased() }
+            case .failure(let errorResponse):
+                throw VRCKitError.apiError(message: errorResponse.error.message)
             }
         }
     }
@@ -86,8 +90,8 @@ public struct AuthenticationService {
         case .success(let response):
             client.updateCookies()
             return response.verified
-        case .failure(_):
-            return false
+        case .failure(let errorResponse):
+            throw VRCKitError.apiError(message: errorResponse.error.message)
         }
     }
 
