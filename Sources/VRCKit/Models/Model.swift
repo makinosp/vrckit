@@ -21,14 +21,10 @@ public struct SuccessResponse: Codable {
     let success: ResponseMessage
 }
 
-public struct ErrorResponse: Codable {
+public struct ErrorResponse: Codable, Error {
     let error: ResponseMessage
 
     init(message: String) {
         self.error = ResponseMessage(message: message, statusCode: -1)
     }
-}
-
-extension ErrorResponse: Error {
-    var localizedDescription: String { error.message }
 }
