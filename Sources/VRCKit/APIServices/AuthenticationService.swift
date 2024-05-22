@@ -34,15 +34,9 @@ public struct AuthenticationService {
         switch Util.shared.decodeResponse(response.data) as Result<ExistsResponse, ErrorResponse> {
         case .success(let success):
             return success.userExists
-        case .failure(_):
-            return false
+        case .failure(let errorResponse):
+            throw VRCKitError.apiError(message: errorResponse.error.message)
         }
-    }
-
-    public enum LoginUserInfoResult<T: Codable, U: Codable, V: Codable> {
-        case user(T)
-        case requiresTwoFactorAuth(U)
-        case failure(V)
     }
 
     /// Login and/or Get Current User Info
@@ -108,8 +102,8 @@ public struct AuthenticationService {
         switch veryfyAuthTokenResponse {
         case .success(let success):
             return success.ok
-        case .failure(_):
-            return false
+        case .failure(let errorResponse):
+            throw VRCKitError.apiError(message: errorResponse.error.message)
         }
     }
 
