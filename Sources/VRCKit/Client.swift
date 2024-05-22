@@ -40,7 +40,11 @@ public class APIClient {
         self.username = username
         self.password = password
     }
-    
+
+    public var isEmptyCookies: Bool {
+        cookies.isEmpty
+    }
+
     func updateCookies() {
         cookies = [:]
         for cookie in HTTPCookieStorage.shared.cookies(for: URL(string: domainUrl)!)! {
