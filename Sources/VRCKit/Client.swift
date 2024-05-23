@@ -45,7 +45,7 @@ public class APIClient {
         cookies.isEmpty
     }
 
-    func updateCookies() {
+    public func updateCookies() {
         cookies = [:]
         for cookie in HTTPCookieStorage.shared.cookies(for: URL(string: domainUrl)!)! {
             guard let key = CookieKey(rawValue: cookie.name) else { continue }
