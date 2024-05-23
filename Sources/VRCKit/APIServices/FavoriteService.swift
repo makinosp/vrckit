@@ -23,13 +23,13 @@ public struct FavoriteService {
 
     public static func listFavoriteGroups(
         _ client: APIClient
-    ) async throws -> Result<[FavoriteGroup], ErrorResponse> {
+    ) async throws -> [FavoriteGroup] {
         let response = try await client.request(
             url: URL(string: favoriteGroupUrl)!,
             httpMethod: .get,
             cookieKeys: [.auth, .apiKey]
         )
-        return Util.shared.decodeResponse(response.data)
+        return try Util.shared.decodeResponse(response.data).get()
     }
 
     public static func listFavorites(
