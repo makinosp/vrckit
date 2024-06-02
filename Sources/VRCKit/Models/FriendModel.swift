@@ -14,6 +14,21 @@ public enum Status: String, Codable, CaseIterable, Identifiable {
     case busy
     case offline
 
+    public var description: String {
+        switch self {
+        case .joinMe:
+            "Join Me"
+        case .active:
+            "Online"
+        case .askMe:
+            "Ask Me"
+        case .busy:
+            "Do Not Disturb"
+        case .offline:
+            "Offline"
+        }
+    }
+
     public var id: Int {
         self.hashValue
     }
