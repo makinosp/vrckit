@@ -29,6 +29,12 @@ public struct UserDetail: Codable, UserDetailRepresentable {
     public var note: String
     public let lastActivity: Date
 
+    public var thumbnailUrl: String {
+        currentAvatarThumbnailImageUrl.hasSuffix("256")
+        ? String(currentAvatarThumbnailImageUrl.dropLast(3)) + "512"
+        : currentAvatarImageUrl
+    }
+
     // Initializer to convert from Friend struct to UserDetail struct
     public init(friend: Friend) {
         bio = friend.bio
