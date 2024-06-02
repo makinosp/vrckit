@@ -11,22 +11,26 @@ import Foundation
 // MARK: World API
 //
 
-//let worldUrl = "\(baseUrl)/worlds"
-//
-//@available(macOS 12.0, *)
-//@available(iOS 15.0, *)
-//public struct WorldService {
-//
-//    public static func getWorld(client: APIClient, worldID: String) async throws -> World? {
-//        let url = URL(string: "\(worldUrl)/\(worldID)")!
-//        
-//        let (responseData, _) = try await client.request(
-//            url: url,
-//            httpMethod: .get,
-//            apiKey: true
-//        )
-//
-//        let world: World? =  try JSONDecoder().decode(World?.self, from: responseData)
-//        return world
-//    }
-//}
+@available(macOS 12.0, *)
+@available(iOS 15.0, *)
+public struct WorldService {
+    static let worldUrl = "\(baseUrl)/worlds"
+
+    public static func fetchWorld(_ client: APIClient, worldID: String) async throws -> World {
+        let url = URL(string: "\(worldUrl)/\(worldID)")!
+        
+        let response = try await client.request(
+            url: url,
+            httpMethod: .get,
+            cookieKeys: [.auth, .apiKey]
+        )
+        switch Util.shared.decodeResponse(
+            response.data, keyDecodingStrategy: .useDefaultKeys
+        ) as Result<World, ErrorResponse> {
+        case .success(let success):
+            return success
+        case .failure(let errorResponse):
+            throw VRCKitError.apiError(message: errorResponse.error.message)
+        }
+    }
+}
