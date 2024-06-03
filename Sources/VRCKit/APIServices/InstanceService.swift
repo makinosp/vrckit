@@ -11,29 +11,52 @@ import Foundation
 // MARK: Instance API
 //
 
-//public struct InstanceAPI {
-//    
-//    static let instanceUrl = "\(baseUrl)/instances"
-//
-//    public static func getInstance(
-//        client: APIClient,
-//        worldID: String,
-//        instanceID: String,
-//        completionHandler: @escaping @Sendable (Instance?) -> Void
-//    ) {
-//        let url = URL(string: "\(instanceUrl)/\(worldID):\(instanceID)")!
-//        
-//        client.request(
-//            url: url,
-//            httpMethod: .get,
-//            auth: true,
-//            apiKey: true
-//        ) { data, _, error in
-//            guard let data = data, error == nil else { return }
-//
-//            let instance: Instance? = decode(data: data)
-//            
-//            completionHandler(instance)
-//        }
-//    }
-//}
+@available(macOS 12.0, *)
+@available(iOS 15.0, *)
+public struct InstanceService {
+    static let instanceUrl = "\(baseUrl)/instances"
+
+    public static func fetchInstance(
+        _ client: APIClient,
+        worldID: String,
+        instanceID: String
+    ) async throws -> Instance {
+        let url = URL(string: "\(instanceUrl)/\(worldID):\(instanceID)")!
+        
+        let response = try await client.request(
+            url: url,
+            httpMethod: .get,
+            cookieKeys: [.auth, .apiKey]
+        )
+        switch Util.shared.decodeResponse(
+            response.data
+        ) as Result<Instance, ErrorResponse> {
+        case .success(let success):
+            return success
+        case .failure(let errorResponse):
+            throw VRCKitError.apiError(message: errorResponse.error.message)
+        }
+    }
+
+    public static func fetchInstance(
+        _ client: APIClient,
+        location: String
+    ) async throws -> Instance {
+        let url = URL(string: "\(instanceUrl)/\(location)")!
+
+        let response = try await client.request(
+            url: url,
+            httpMethod: .get,
+            cookieKeys: [.auth, .apiKey]
+        )
+        switch Util.shared.decodeResponse(
+            response.data,
+            keyDecodingStrategy: .useDefaultKeys
+        ) as Result<Instance, ErrorResponse> {
+        case .success(let success):
+            return success
+        case .failure(let errorResponse):
+            throw VRCKitError.apiError(message: errorResponse.error.message)
+        }
+    }
+}
