@@ -44,6 +44,37 @@ public struct User: Codable, ProfileDetailRepresentable {
         public let displayName: String
         public let updatedAt: Date
     }
+
+    public enum Status: String, Codable, CaseIterable {
+        case joinMe = "join me"
+        case active
+        case askMe = "ask me"
+        case busy
+        case offline
+    }
+}
+
+extension User.Status: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .joinMe:
+            "Join Me"
+        case .active:
+            "Online"
+        case .askMe:
+            "Ask Me"
+        case .busy:
+            "Do Not Disturb"
+        case .offline:
+            "Offline"
+        }
+    }
+}
+
+extension User.Status: Identifiable {
+    public var id: Int {
+        self.hashValue
+    }
 }
 
 public struct WrappedUserResponse: Codable {
