@@ -12,7 +12,7 @@ import Foundation
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
 public class APIClient {
-    typealias HTTPResponse = (data: Data, urlResponse: URLResponse)
+    typealias HTTPResponse = (data: Data, response: HTTPURLResponse)
 
     enum HttpMethod: String {
         case get
@@ -68,7 +68,7 @@ public class APIClient {
         httpBody: Data? = nil
     ) async throws -> HTTPResponse {
         var request = URLRequest(url: url)
-        request.httpMethod = httpMethod.rawValue.uppercased()
+        request.httpMethod = httpMethod.description
 
         /// Authorization
         if basic {
@@ -92,6 +92,18 @@ public class APIClient {
             request.httpBody = httpBody
         }
 
-        return try await URLSession.shared.data(for: request)
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let response = response as? HTTPURLResponse else {
+            throw VRCKitError.invalidResponseError
+        }
+        return (data, response)
+    }
+}
+
+@available(macOS 12.0, *)
+@available(iOS 15.0, *)
+extension APIClient.HttpMethod: CustomStringConvertible {
+    var description: String {
+        self.rawValue.uppercased()
     }
 }
