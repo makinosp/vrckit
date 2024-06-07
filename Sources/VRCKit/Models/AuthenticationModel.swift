@@ -18,7 +18,7 @@ public struct VerifyResponse: Codable {
 }
 
 public struct RequiresTwoFactorAuthResponse: Codable {
-    let requiresTwoFactorAuth: [String]
+    let requiresTwoFactorAuth: [TwoFactorAuthType]
 }
 
 public struct VerifyAuthTokenResponse: Codable {
@@ -26,7 +26,8 @@ public struct VerifyAuthTokenResponse: Codable {
     let token: String
 }
 
-public enum TwoFactorAuthType: String {
+public enum TwoFactorAuthType: String, Codable {
     case emailotp
     case totp
+    case otp
 }

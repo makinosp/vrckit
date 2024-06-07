@@ -13,7 +13,7 @@ import Foundation
 
 public protocol UserOrRequires {}
 extension User: UserOrRequires {}
-extension [String]: UserOrRequires {}
+extension [TwoFactorAuthType]: UserOrRequires {}
 
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
@@ -60,22 +60,32 @@ public struct AuthenticationService {
             switch Util.shared.decodeResponse(response.data) as Result<RequiresTwoFactorAuthResponse, ErrorResponse> {
             case .success(let factors):
                 client.updateCookies()
-                return factors.requiresTwoFactorAuth.map { $0.lowercased() }
+                return factors.requiresTwoFactorAuth
             case .failure(let errorResponse):
                 throw VRCKitError.apiError(message: errorResponse.error.message)
             }
         }
     }
-    
+
+    public static func getVerifyType(_ requiresTwoFactorAuth: [TwoFactorAuthType]) -> TwoFactorAuthType? {
+        var verifyType: TwoFactorAuthType?
+        if requiresTwoFactorAuth.contains(.totp) {
+            verifyType = .totp
+        } else if requiresTwoFactorAuth.contains(.emailotp) {
+            verifyType = .emailotp
+        }
+        return verifyType
+    }
+
     /// Verify 2FA With TOTP or Email OTP
     public static func verify2FA(
         _ client: APIClient,
-        verifyType: String,
+        verifyType: TwoFactorAuthType,
         code: String
     ) async throws -> Bool {
         let requestData = try Util.shared.encodeRequest(VerifyRequest(code: code)).get()
         let response = try await client.request(
-            url: URL(string: "\(auth2FAUrl)/\(verifyType)/verify")!,
+            url: URL(string: "\(auth2FAUrl)/\(verifyType.rawValue)/verify")!,
             httpMethod: .post,
             cookieKeys: [.auth, .twoFactorAuth],
             httpBody: requestData
