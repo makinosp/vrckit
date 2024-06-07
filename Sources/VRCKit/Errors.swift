@@ -12,6 +12,7 @@ public enum VRCKitError: Error, LocalizedError {
 
     case encodingError
     case apiError(message: String)
+    case invalidResponseError
     case unexpectedError
 
     public var errorDescription: String? {
@@ -20,6 +21,8 @@ public enum VRCKitError: Error, LocalizedError {
             return "Encoding Error"
         case .apiError(let _):
             return "API Error"
+        case .invalidResponseError:
+            return "Invalid Response Error"
         case .unexpectedError:
             return "Unexpected Error"
         }
@@ -31,6 +34,8 @@ public enum VRCKitError: Error, LocalizedError {
             return "Encoding has failed."
         case .apiError(let message):
             return message
+        case .invalidResponseError:
+            return "Invalid response"
         case .unexpectedError:
             return "Unexpected error"
         }
