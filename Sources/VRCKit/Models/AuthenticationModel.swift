@@ -5,6 +5,10 @@
 //  Created by makinosp on 2024/02/12.
 //
 
+public enum TwoFactorAuthType: String, Codable {
+    case emailotp, totp, otp
+}
+
 public struct ExistsResponse: Codable {
     let userExists: Bool
 }
@@ -24,10 +28,4 @@ public struct RequiresTwoFactorAuthResponse: Codable {
 public struct VerifyAuthTokenResponse: Codable {
     let ok: Bool
     let token: String
-}
-
-public enum TwoFactorAuthType: String, Codable {
-    case emailotp
-    case totp
-    case otp
 }
