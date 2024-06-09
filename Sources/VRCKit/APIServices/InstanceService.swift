@@ -34,7 +34,7 @@ public struct InstanceService {
         case .success(let success):
             return success
         case .failure(let errorResponse):
-            throw VRCKitError.apiError(message: errorResponse.error.message)
+            throw VRCKitError.apiError(errorResponse.error.message)
         }
     }
 
@@ -56,7 +56,7 @@ public struct InstanceService {
         case .success(let success):
             return success
         case .failure(let errorResponse):
-            throw VRCKitError.apiError(message: errorResponse.error.message)
+            throw VRCKitError.apiError(errorResponse.error.message)
         }
     }
 }

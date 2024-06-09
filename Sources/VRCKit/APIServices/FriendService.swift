@@ -21,23 +21,22 @@ public struct FriendService {
         offset: Int,
         n: Int = 60,
         offline: Bool = false
-    ) async throws -> Result<[Friend], ErrorResponse> {
-        var request = URLComponents(string: friendsUrl)!
+    ) async throws -> [Friend] {
+        var request = try Util.shared.urlComponents(friendsUrl)
         request.queryItems = [
             URLQueryItem(name: "offset", value: offset.description),
             URLQueryItem(name: "n", value: n.description),
             URLQueryItem(name: "offline", value: offline.description)
         ]
         guard let url = request.url else {
-            throw URLError(.badURL, userInfo: [NSLocalizedDescriptionKey: "Invalid URL: \(friendsUrl)"])
+            throw VRCKitError.invalidRequest("Invalid Request: \(request)")
         }
-
         let response = try await client.request(
             url: url,
             httpMethod: .get,
             cookieKeys: [.auth, .apiKey]
         )
-        return Util.shared.decodeResponse(response.data)
+        return try Util.shared.decode(response.data)
     }
 
     public static func fetchFriends(
@@ -54,7 +53,7 @@ public struct FriendService {
                 offset: 0,
                 n: count,
                 offline: offline
-            ).get()
+            )
         }
         try await withThrowingTaskGroup(of: ResultSet.self) { taskGroup in
             for offset in stride(from: 0, to: count, by: n) {
@@ -66,7 +65,7 @@ public struct FriendService {
                             offset: offset,
                             n: n,
                             offline: offline
-                        ).get()
+                        )
                     )
                 }
             }

@@ -35,7 +35,7 @@ public struct AuthenticationService {
         case .success(let success):
             return success.userExists
         case .failure(let errorResponse):
-            throw VRCKitError.apiError(message: errorResponse.error.message)
+            throw VRCKitError.apiError(errorResponse.error.message)
         }
     }
 
@@ -55,14 +55,14 @@ public struct AuthenticationService {
             return user
         case .failure(let errorResponse):
             if errorResponse.error.statusCode > -1 {
-                throw VRCKitError.apiError(message: errorResponse.error.message)
+                throw VRCKitError.apiError(errorResponse.error.message)
             }
             switch Util.shared.decodeResponse(response.data) as Result<RequiresTwoFactorAuthResponse, ErrorResponse> {
             case .success(let factors):
                 client.updateCookies()
                 return factors.requiresTwoFactorAuth
             case .failure(let errorResponse):
-                throw VRCKitError.apiError(message: errorResponse.error.message)
+                throw VRCKitError.apiError(errorResponse.error.message)
             }
         }
     }
@@ -95,7 +95,7 @@ public struct AuthenticationService {
             client.updateCookies()
             return response.verified
         case .failure(let errorResponse):
-            throw VRCKitError.apiError(message: errorResponse.error.message)
+            throw VRCKitError.apiError(errorResponse.error.message)
         }
     }
 
@@ -113,7 +113,7 @@ public struct AuthenticationService {
         case .success(let success):
             return success.ok
         case .failure(let errorResponse):
-            throw VRCKitError.apiError(message: errorResponse.error.message)
+            throw VRCKitError.apiError(errorResponse.error.message)
         }
     }
 
