@@ -58,15 +58,13 @@ public struct FriendService {
         try await withThrowingTaskGroup(of: ResultSet.self) { taskGroup in
             for offset in stride(from: 0, to: count, by: n) {
                 taskGroup.addTask {
-                    try await ResultSet(
+                    let friends = try await fetchFriends(
+                        client,
                         offset: offset,
-                        friends: try await fetchFriends(
-                            client,
-                            offset: offset,
-                            n: n,
-                            offline: offline
-                        )
+                        n: n,
+                        offline: offline
                     )
+                    return ResultSet(offset: offset, friends: friends)
                 }
             }
             for try await result in taskGroup {

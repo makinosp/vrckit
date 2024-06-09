@@ -15,8 +15,6 @@ import Foundation
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
 public struct UserService {
-    typealias UserWithIndex = (index: Int, user: UserDetail)
-    typealias FetchUserResponse = (index: Int, response: Result<UserDetail, ErrorResponse>)
 
     static let userUrl = "\(baseUrl)/users"
 
@@ -24,40 +22,43 @@ public struct UserService {
     public static func fetchUser(
         _ client: APIClient,
         userId: String
-    ) async throws -> Result<UserDetail, ErrorResponse> {
+    ) async throws -> UserDetail {
         let url = URL(string: "\(userUrl)/\(userId)")!
         let response = try await client.request(
             url: url,
             httpMethod: .get,
             cookieKeys: [.auth, .apiKey]
         )
-        return Util.shared.decodeResponse(response.data)
+        return try Util.shared.decode(response.data)
     }
 
     /// Fetch uesrs
     public static func fetchUsers(
         _ client: APIClient,
         userIds: [String]
-    ) async throws -> Result<[UserDetail], ErrorResponse> {
-        var users: [UserWithIndex] = []
-        try await withThrowingTaskGroup(of: FetchUserResponse.self) { taskGroup in
+    ) async throws -> [UserDetail] {
+        typealias ResultSet = (index: Int, user: UserDetail)
+        var users: [ResultSet?] = []
+        try await withThrowingTaskGroup(of: ResultSet?.self) { taskGroup in
             for (index, userId) in userIds.enumerated() {
                 taskGroup.addTask {
-                    try await (
-                        index: index,
-                        response: UserService.fetchUser(client, userId: userId)
-                    )
+                    do {
+                        return try await (
+                            index: index,
+                            user: UserService.fetchUser(client, userId: userId)
+                        )
+                    } catch let error as VRCKitError {
+                        return nil
+                    }
                 }
             }
             for try await result in taskGroup {
-                switch result.response {
-                    case .success(let user):
-                        users.append(UserWithIndex(index: result.index, user: user))
-                    case .failure(_):
-                        continue
-                }
+                users.append(result)
             }
         }
-        return .success(users.sorted(by: { $0.index < $1.index }).map(\.user))
+        return users
+            .compactMap { $0 }
+            .sorted(by: { $0.index < $1.index })
+            .map(\.user)
     }
 }

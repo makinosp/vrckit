@@ -14,10 +14,9 @@ public struct User: Codable, ProfileDetailRepresentable {
     public let bioLinks: [String]?
     public let currentAvatar: String
     public let currentAvatarAssetUrl: String
-    public let currentAvatarImageUrl: String
-    public let currentAvatarThumbnailImageUrl: String
+    public let currentAvatarImageUrl: String?
+    public let currentAvatarThumbnailImageUrl: String?
     public let dateJoined: String
-    public let developerType: String
     public let displayName: String
     public let friendKey: String
     public let friends: [String]

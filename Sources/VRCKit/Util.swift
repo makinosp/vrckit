@@ -30,12 +30,12 @@ final public class Util {
             let successResponse = try decoder.decode(T.self, from: data)
             return .success(successResponse)
         } catch {
-            print("Failed to decode \(String(describing: T.self)):", error)
             do {
                 let errorResponse = try decoder.decode(ErrorResponse.self, from: data)
+                print(errorResponse)
                 return .failure(errorResponse)
             } catch {
-                print("Failed to decode error response:", error)
+                print("Failed to decode \(String(describing: T.self)):", error)
                 return .failure(ErrorResponse(message: "Failed to decode JSON"))
             }
         }
@@ -46,7 +46,6 @@ final public class Util {
         do {
             return try decoder.decode(T.self, from: data)
         } catch {
-            print("Failed to decode \(String(describing: T.self)):", error)
             let errorResponse = try decoder.decode(ErrorResponse.self, from: data)
             throw VRCKitError.apiError(errorResponse.error.message)
         }
