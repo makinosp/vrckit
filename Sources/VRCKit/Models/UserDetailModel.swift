@@ -10,9 +10,8 @@ import Foundation
 public struct UserDetail: Codable, UserDetailRepresentable {
     public let bio: String?
     public let bioLinks: [String]?
-    public let currentAvatarImageUrl: String
-    public let currentAvatarThumbnailImageUrl: String
-    public let developerType: String
+    public let currentAvatarImageUrl: String?
+    public let currentAvatarThumbnailImageUrl: String?
     public let displayName: String
     public let id: String
     public let isFriend: Bool
@@ -29,9 +28,10 @@ public struct UserDetail: Codable, UserDetailRepresentable {
     public var note: String
     public let lastActivity: Date
 
-    public var thumbnailUrl: String {
-        currentAvatarThumbnailImageUrl.hasSuffix("256")
-        ? String(currentAvatarThumbnailImageUrl.dropLast(3)) + "512"
+    public var thumbnailUrl: String? {
+        guard let url = currentAvatarThumbnailImageUrl else { return nil }
+        return url.hasSuffix("256")
+        ? String(url.dropLast(3)) + "512"
         : currentAvatarImageUrl
     }
 
@@ -41,7 +41,6 @@ public struct UserDetail: Codable, UserDetailRepresentable {
         bioLinks = friend.bioLinks
         currentAvatarImageUrl = friend.currentAvatarImageUrl
         currentAvatarThumbnailImageUrl = friend.currentAvatarThumbnailImageUrl
-        developerType = friend.developerType
         displayName = friend.displayName
         id = friend.id
         isFriend = friend.isFriend
@@ -67,7 +66,6 @@ public struct UserDetail: Codable, UserDetailRepresentable {
             bioLinks: bioLinks,
             currentAvatarImageUrl: currentAvatarImageUrl,
             currentAvatarThumbnailImageUrl: currentAvatarThumbnailImageUrl,
-            developerType: developerType,
             displayName: displayName,
             id: id,
             isFriend: isFriend,

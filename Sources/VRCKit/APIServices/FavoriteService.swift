@@ -89,14 +89,13 @@ public struct FavoriteService {
         _ client: APIClient,
         favorites: [FavoriteDetail]
     ) async throws -> [FavoriteFriendDetail] {
-        typealias FriendsResultSet = (favoriteGroupId: String, result: Result<[UserDetail], ErrorResponse>)
         var results: [FavoriteFriendDetail] = []
-        try await withThrowingTaskGroup(of: FriendsResultSet.self) { taskGroup in
+        try await withThrowingTaskGroup(of: FavoriteFriendDetail.self) { taskGroup in
             for favoriteGroup in favorites {
                 taskGroup.addTask {
-                    try await FriendsResultSet(
+                    try await FavoriteFriendDetail(
                         favoriteGroupId: favoriteGroup.favoriteGroupId,
-                        result: UserService.fetchUsers(
+                        friends: UserService.fetchUsers(
                             client,
                             userIds: favoriteGroup.favorites.map(\.favoriteId)
                         )
@@ -104,12 +103,7 @@ public struct FavoriteService {
                 }
             }
             for try await result in taskGroup {
-                switch result.result {
-                case .success(let friends):
-                    results.append(FavoriteFriendDetail(favoriteGroupId: result.favoriteGroupId, friends: friends))
-                case .failure(let error):
-                    print(error)
-                }
+                results.append(result)
             }
         }
         return results

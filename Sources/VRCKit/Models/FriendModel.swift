@@ -10,9 +10,8 @@ import Foundation
 public struct Friend: Codable, ProfileElementRepresentable {
     public let bio: String?
     public let bioLinks: [String]?
-    public let currentAvatarImageUrl: String
-    public let currentAvatarThumbnailImageUrl: String
-    public let developerType: String
+    public let currentAvatarImageUrl: String?
+    public let currentAvatarThumbnailImageUrl: String?
     public let displayName: String
     public let id: String
     public let isFriend: Bool

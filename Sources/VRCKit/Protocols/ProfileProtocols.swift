@@ -12,9 +12,8 @@ import Foundation
 public protocol ProfileElementRepresentable: Hashable, Identifiable {
     var bio: String? { get }
     var bioLinks: [String]? { get }
-    var currentAvatarImageUrl: String { get }
-    var currentAvatarThumbnailImageUrl: String { get }
-    var developerType: String { get }
+    var currentAvatarImageUrl: String? { get }
+    var currentAvatarThumbnailImageUrl: String? { get }
     var displayName: String { get }
     var id: String { get }
     var isFriend: Bool { get }
