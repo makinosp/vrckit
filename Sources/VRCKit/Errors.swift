@@ -11,33 +11,32 @@ public enum VRCKitError: Error, LocalizedError {
     public typealias RawValue = String
 
     case encodingError
-    case apiError(message: String)
+    case apiError(_ details: String)
     case invalidResponseError
+    case invalidRequest(_ details: String)
     case unexpectedError
 
     public var errorDescription: String? {
-        switch self {
+        return switch self {
         case .encodingError:
-            return "Encoding Error"
+            "Encoding Error"
         case .apiError(let _):
-            return "API Error"
+            "API Error"
         case .invalidResponseError:
-            return "Invalid Response Error"
+            "Invalid Response Error"
+        case .invalidRequest:
+            "Invalid Request"
         case .unexpectedError:
-            return "Unexpected Error"
+            "Unexpected Error"
         }
     }
 
     public var failureReason: String? {
-        switch self {
-        case .encodingError:
-            return "Encoding has failed."
-        case .apiError(let message):
-            return message
-        case .invalidResponseError:
-            return "Invalid response"
-        case .unexpectedError:
-            return "Unexpected error"
+        return switch self {
+        case .apiError(let details), .invalidRequest(let details):
+            details
+        default:
+            errorDescription
         }
     }
 }

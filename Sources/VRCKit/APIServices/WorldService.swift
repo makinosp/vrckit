@@ -30,7 +30,7 @@ public struct WorldService {
         case .success(let success):
             return success
         case .failure(let errorResponse):
-            throw VRCKitError.apiError(message: errorResponse.error.message)
+            throw VRCKitError.apiError(errorResponse.error.message)
         }
     }
 }
