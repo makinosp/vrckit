@@ -25,3 +25,9 @@ public struct Friend: Codable, ProfileElementRepresentable {
     public let location: String
     public let friendKey: String
 }
+
+public struct FriendsLocation: Identifiable, Hashable {
+    public let location: String
+    public let friends: [Friend]
+    public var id: String { location }
+}
