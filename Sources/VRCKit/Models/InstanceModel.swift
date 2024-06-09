@@ -30,10 +30,7 @@ public struct Instance: Identifiable, Hashable, Codable {
     }
 
     public enum Region: String, Codable {
-        case us
-        case use
-        case eu
-        case jp
+        case us, use, eu, jp, unknown
     }
 
     public enum WorldType: String, Codable {
@@ -63,9 +60,9 @@ public struct Instance: Identifiable, Hashable, Codable {
 
         public let organization: String
         public let previewYoutubeId: String?
-        public let favorites: Int
-        public let createdAt: String
-        public let updatedAt: String
+        public let favorites: Int?
+        public let createdAt: String?
+        public let updatedAt: String?
         public let publicationDate: String
         public let labsPublicationDate: String
         public let visits: Int
