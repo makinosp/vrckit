@@ -1,4 +1,4 @@
-// swift-tools-version: 5.7
+// swift-tools-version: 5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -30,3 +30,9 @@ let package = Package(
         )
     ]
 )
+
+package.targets.forEach {
+    $0.swiftSettings = [
+        .enableUpcomingFeature("ForwardTrailingClosures"), // SE-0286
+    ]
+}
