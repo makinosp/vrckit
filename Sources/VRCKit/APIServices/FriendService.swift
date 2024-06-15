@@ -76,7 +76,15 @@ public struct FriendService {
             .flatMap { $0.friends }
     }
 
-    // include private, offline, and travaling
+    public static func unfriend(_ client: APIClient, id: String) async throws {
+        let url = URL(string: "\(friendsUrl)/\(id)")!
+        try await client.request(
+            url: url,
+            httpMethod: .delete,
+            cookieKeys: [.auth, .apiKey]
+        )
+    }
+
     public static func friendsGroupedByLocation(_ friends: [Friend]) -> [FriendsLocation] {
         Dictionary(grouping: friends, by: \.location)
             .sorted(by: { $0.value.count > $1.value.count })

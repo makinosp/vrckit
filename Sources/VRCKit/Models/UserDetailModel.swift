@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct UserDetail: Codable, UserDetailRepresentable {
+public struct UserDetail: Codable, ProfileDetailRepresentable {
     public let bio: String?
     public let bioLinks: [String]?
     public let currentAvatarImageUrl: String?
@@ -28,11 +28,19 @@ public struct UserDetail: Codable, UserDetailRepresentable {
     public var note: String
     public let lastActivity: Date
 
-    public var thumbnailUrl: String? {
-        guard let url = currentAvatarThumbnailImageUrl else { return nil }
-        return url.hasSuffix("256")
-        ? String(url.dropLast(3)) + "512"
-        : currentAvatarImageUrl
+    public var thumbnailUrl: URL? {
+        guard let url = currentAvatarThumbnailImageUrl,
+              let urlString = url.hasSuffix("256")
+                ? String(url.dropLast(3)) + "512"
+                : currentAvatarImageUrl else { return nil }
+        return URL(string: urlString)
+    }
+
+    public var userIconUrl: URL? {
+        guard let urlString = userIcon.isEmpty
+                ? currentAvatarThumbnailImageUrl
+                : userIcon else { return nil }
+        return URL(string: urlString)
     }
 
     // Initializer to convert from Friend struct to UserDetail struct
@@ -79,5 +87,9 @@ public struct UserDetail: Codable, UserDetailRepresentable {
             location: location,
             friendKey: friendKey
         )
+    }
+
+    public var isVisible: Bool {
+        !["private", "offline", "traveling"].contains(location)
     }
 }
