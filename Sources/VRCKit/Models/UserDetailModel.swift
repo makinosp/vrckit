@@ -28,11 +28,12 @@ public struct UserDetail: Codable, ProfileDetailRepresentable {
     public var note: String
     public let lastActivity: Date
 
-    public var thumbnailUrl: String? {
-        guard let url = currentAvatarThumbnailImageUrl else { return nil }
-        return url.hasSuffix("256")
-        ? String(url.dropLast(3)) + "512"
-        : currentAvatarImageUrl
+    public var thumbnailUrl: URL? {
+        guard let url = currentAvatarThumbnailImageUrl,
+              let urlString = url.hasSuffix("256")
+                ? String(url.dropLast(3)) + "512"
+                : currentAvatarImageUrl else { return nil }
+        return URL(string: urlString)
     }
 
     public var userIconUrl: URL? {

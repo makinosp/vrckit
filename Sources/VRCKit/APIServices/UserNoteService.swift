@@ -17,16 +17,16 @@ public struct UserNoteService {
         _ client: APIClient,
         targetUserId: String,
         note: String
-    ) async throws -> Result<UserNoteResponse, ErrorResponse> {
+    ) async throws -> UserNoteResponse {
         let url = URL(string: url)!
         let userNoteRequest = UserNoteRequest(targetUserId: targetUserId, note: note)
-        let requestData = try JSONEncoder().encode(userNoteRequest)
+        let requestData = try Util.shared.encode(userNoteRequest)
         let response = try await client.request(
             url: url,
             httpMethod: .post,
             cookieKeys: [.auth, .apiKey],
             httpBody: requestData
         )
-        return Util.shared.decodeResponse(response.data)
+        return try Util.shared.decode(response.data)
     }
 }
