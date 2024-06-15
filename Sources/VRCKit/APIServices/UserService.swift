@@ -16,14 +16,14 @@ import Foundation
 @available(iOS 15.0, *)
 public struct UserService {
 
-    static let userUrl = "\(baseUrl)/users"
+    static let url = "\(baseUrl)/users"
 
     /// Fetch a user
     public static func fetchUser(
         _ client: APIClient,
         userId: String
     ) async throws -> UserDetail {
-        let url = URL(string: "\(userUrl)/\(userId)")!
+        let url = URL(string: "\(url)/\(userId)")!
         let response = try await client.request(
             url: url,
             httpMethod: .get,
@@ -60,5 +60,19 @@ public struct UserService {
             .compactMap { $0 }
             .sorted(by: { $0.index < $1.index })
             .map(\.user)
+    }
+
+    /// Update user
+    public static func updateUser(
+        _ client: APIClient,
+        id: String
+    ) async throws -> User {
+        let url = URL(string: "\(url)/\(id)")!
+        let response = try await client.request(
+            url: url,
+            httpMethod: .put,
+            cookieKeys: [.auth, .apiKey]
+        )
+        return try Util.shared.decode(response.data)
     }
 }
