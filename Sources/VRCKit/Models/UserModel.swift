@@ -87,7 +87,7 @@ extension User.Status: Identifiable {
     }
 }
 
-public struct WrappedUserResponse: Codable {
-    public let user: User?
-    public let requiresTwoFactorAuth: [String]
+public struct UpdatedUser: Codable {
+    public let bio: String?
+    public let statusDescription: String?
 }
