@@ -51,6 +51,13 @@ public struct User: Codable, ProfileDetailRepresentable {
         case busy
         case offline
     }
+
+    public var userIconUrl: URL? {
+        guard let urlString = userIcon.isEmpty
+                ? currentAvatarThumbnailImageUrl
+                : userIcon else { return nil }
+        return URL(string: urlString)
+    }
 }
 
 extension User.Status: CustomStringConvertible {

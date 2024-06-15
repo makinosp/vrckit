@@ -24,10 +24,20 @@ public struct Friend: Codable, ProfileElementRepresentable {
     public let userIcon: String
     public let location: String
     public let friendKey: String
+
+    public var userIconUrl: URL? {
+        guard let urlString = userIcon.isEmpty
+                ? currentAvatarThumbnailImageUrl
+                : userIcon else { return nil }
+        return URL(string: urlString)
+    }
 }
 
 public struct FriendsLocation: Identifiable, Hashable {
     public let location: String
     public let friends: [Friend]
+    public var isVisible: Bool {
+        !["private", "offline", "traveling"].contains(location)
+    }
     public var id: String { location }
 }

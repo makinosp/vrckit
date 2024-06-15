@@ -25,6 +25,7 @@ public protocol ProfileElementRepresentable: Hashable, Identifiable {
     var tags: [String] { get }
     var userIcon: String { get }
     var friendKey: String { get }
+    var userIconUrl: URL? { get }
 }
 
 @available(macOS 12.0, *)
@@ -32,10 +33,4 @@ public protocol ProfileElementRepresentable: Hashable, Identifiable {
 public protocol ProfileDetailRepresentable: ProfileElementRepresentable {
     var dateJoined: String { get }
     var lastActivity: Date { get }
-}
-
-@available(macOS 12.0, *)
-@available(iOS 15.0, *)
-public protocol UserDetailRepresentable: ProfileDetailRepresentable {
-    var note: String { get set }
 }

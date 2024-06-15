@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct UserDetail: Codable, UserDetailRepresentable {
+public struct UserDetail: Codable, ProfileDetailRepresentable {
     public let bio: String?
     public let bioLinks: [String]?
     public let currentAvatarImageUrl: String?
@@ -33,6 +33,13 @@ public struct UserDetail: Codable, UserDetailRepresentable {
         return url.hasSuffix("256")
         ? String(url.dropLast(3)) + "512"
         : currentAvatarImageUrl
+    }
+
+    public var userIconUrl: URL? {
+        guard let urlString = userIcon.isEmpty
+                ? currentAvatarThumbnailImageUrl
+                : userIcon else { return nil }
+        return URL(string: urlString)
     }
 
     // Initializer to convert from Friend struct to UserDetail struct
