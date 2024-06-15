@@ -33,4 +33,5 @@ public protocol ProfileElementRepresentable: Hashable, Identifiable {
 public protocol ProfileDetailRepresentable: ProfileElementRepresentable {
     var dateJoined: String { get }
     var lastActivity: Date { get }
+    var isVisible: Bool { get }
 }

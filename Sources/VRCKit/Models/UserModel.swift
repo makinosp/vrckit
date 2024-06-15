@@ -58,6 +58,10 @@ public struct User: Codable, ProfileDetailRepresentable {
                 : userIcon else { return nil }
         return URL(string: urlString)
     }
+
+    public var isVisible: Bool {
+        !["private", "offline", "traveling"].contains(location)
+    }
 }
 
 extension User.Status: CustomStringConvertible {

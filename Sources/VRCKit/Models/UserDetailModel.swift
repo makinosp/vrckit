@@ -87,4 +87,8 @@ public struct UserDetail: Codable, ProfileDetailRepresentable {
             friendKey: friendKey
         )
     }
+
+    public var isVisible: Bool {
+        !["private", "offline", "traveling"].contains(location)
+    }
 }
