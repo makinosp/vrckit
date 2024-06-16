@@ -12,6 +12,8 @@ import Foundation
 //
 
 public typealias FavoriteDetail = (favoriteGroupId: String, favorites: [Favorite])
+@available(macOS 12.0, *)
+@available(iOS 15.0, *)
 public typealias FavoriteFriendDetail = (favoriteGroupId: String, friends: [UserDetail])
 
 @available(macOS 12.0, *)

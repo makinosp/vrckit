@@ -7,7 +7,13 @@
 
 import Foundation
 
-public struct UserDetail: Codable, ProfileDetailRepresentable {
+@available(macOS 12.0, *)
+@available(iOS 15.0, *)
+extension UserDetail: ProfileDetailRepresentable, LocationRepresentable {}
+
+@available(macOS 12.0, *)
+@available(iOS 15.0, *)
+public struct UserDetail: Codable {
     public let bio: String?
     public let bioLinks: [String]?
     public let currentAvatarImageUrl: String?
@@ -28,45 +34,30 @@ public struct UserDetail: Codable, ProfileDetailRepresentable {
     public var note: String
     public let lastActivity: Date
 
-    public var thumbnailUrl: URL? {
-        guard let url = currentAvatarThumbnailImageUrl,
-              let urlString = url.hasSuffix("256")
-                ? String(url.dropLast(3)) + "512"
-                : currentAvatarImageUrl else { return nil }
-        return URL(string: urlString)
-    }
-
-    public var userIconUrl: URL? {
-        guard let urlString = userIcon.isEmpty
-                ? currentAvatarThumbnailImageUrl
-                : userIcon else { return nil }
-        return URL(string: urlString)
-    }
-
     // Initializer to convert from Friend struct to UserDetail struct
-    public init(friend: Friend) {
-        bio = friend.bio
-        bioLinks = friend.bioLinks
-        currentAvatarImageUrl = friend.currentAvatarImageUrl
-        currentAvatarThumbnailImageUrl = friend.currentAvatarThumbnailImageUrl
-        displayName = friend.displayName
-        id = friend.id
-        isFriend = friend.isFriend
-        lastLogin = friend.lastLogin
-        lastPlatform = friend.lastPlatform
-        profilePicOverride = friend.profilePicOverride
-        status = friend.status
-        statusDescription = friend.statusDescription
-        tags = friend.tags
-        userIcon = friend.userIcon
-        location = friend.location
-        friendKey = friend.friendKey
-
-        // Set initial values for properties specific to UserDetail struct
-        dateJoined = ""
-        note = ""
-        lastActivity = Date()
-    }
+//    public init(friend: Friend) {
+//        bio = friend.bio
+//        bioLinks = friend.bioLinks
+//        currentAvatarImageUrl = friend.currentAvatarImageUrl
+//        currentAvatarThumbnailImageUrl = friend.currentAvatarThumbnailImageUrl
+//        displayName = friend.displayName
+//        id = friend.id
+//        isFriend = friend.isFriend
+//        lastLogin = friend.lastLogin
+//        lastPlatform = friend.lastPlatform
+//        profilePicOverride = friend.profilePicOverride
+//        status = friend.status
+//        statusDescription = friend.statusDescription
+//        tags = friend.tags
+//        userIcon = friend.userIcon
+//        location = friend.location
+//        friendKey = friend.friendKey
+//
+//        // Set initial values for properties specific to UserDetail struct
+//        dateJoined = ""
+//        note = ""
+//        lastActivity = Date()
+//    }
 
     public var friend: Friend {
         Friend(
@@ -87,9 +78,5 @@ public struct UserDetail: Codable, ProfileDetailRepresentable {
             location: location,
             friendKey: friendKey
         )
-    }
-
-    public var isVisible: Bool {
-        !["private", "offline", "traveling"].contains(location)
     }
 }
