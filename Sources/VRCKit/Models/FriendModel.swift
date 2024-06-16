@@ -7,7 +7,9 @@
 
 import Foundation
 
-public struct Friend: Codable, ProfileElementRepresentable {
+extension Friend: ProfileElementRepresentable, LocationRepresentable {}
+
+public struct Friend: Codable {
     public let bio: String?
     public let bioLinks: [String]?
     public let currentAvatarImageUrl: String?
@@ -24,20 +26,12 @@ public struct Friend: Codable, ProfileElementRepresentable {
     public let userIcon: String
     public let location: String
     public let friendKey: String
-
-    public var userIconUrl: URL? {
-        guard let urlString = userIcon.isEmpty
-                ? currentAvatarThumbnailImageUrl
-                : userIcon else { return nil }
-        return URL(string: urlString)
-    }
 }
+
+extension FriendsLocation: LocationRepresentable {}
 
 public struct FriendsLocation: Identifiable, Hashable {
     public let location: String
     public let friends: [Friend]
-    public var isVisible: Bool {
-        !["private", "offline", "traveling"].contains(location)
-    }
     public var id: String { location }
 }

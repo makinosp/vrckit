@@ -20,12 +20,12 @@ public struct User: Codable, ProfileDetailRepresentable {
     public let displayName: String
     public let friendKey: String
     public let friends: [String]
+    public let homeLocation: String
     public let id: String
     public let isFriend: Bool
     public let lastActivity: Date
     public let lastLogin: Date
     public let lastPlatform: String
-    public let location: String?
     public let offlineFriends: [String]
     public let onlineFriends: [String]
     public let pastDisplayNames: [DisplayName]
@@ -50,17 +50,6 @@ public struct User: Codable, ProfileDetailRepresentable {
         case askMe = "ask me"
         case busy
         case offline
-    }
-
-    public var userIconUrl: URL? {
-        guard let urlString = userIcon.isEmpty
-                ? currentAvatarThumbnailImageUrl
-                : userIcon else { return nil }
-        return URL(string: urlString)
-    }
-
-    public var isVisible: Bool {
-        !["private", "offline", "traveling"].contains(location)
     }
 }
 
