@@ -116,30 +116,28 @@ public struct FavoriteService {
         type: FavoriteType,
         favoriteId: String,
         tag: String
-    ) async throws -> Result<Favorite, ErrorResponse> {
-        let requestData = try Util.shared.encodeRequest(
-            RequestToAddFavorite(type: type, favoriteId: favoriteId, tags: [tag]),
-            keyEncodingStrategy: .useDefaultKeys
-        ).get()
-
+    ) async throws -> Favorite {
+        let requestData = try Util.shared.encode(
+            RequestToAddFavorite(type: type, favoriteId: favoriteId, tags: [tag])
+        )
         let response = try await client.request(
             url: URL(string: "\(favoriteUrl)")!,
             httpMethod: .post,
             cookieKeys: [.auth, .apiKey],
             httpBody: requestData
         )
-        return try Util.shared.decodeResponse(response.data) as Result<Favorite, ErrorResponse>
+        return try Util.shared.decode(response.data)
     }
     
     public static func removeFavorite(
         _ client: APIClient,
         favoriteId: String
-    ) async throws -> Result<SuccessResponse, ErrorResponse> {
+    ) async throws -> SuccessResponse {
         let response = try await client.request(
             url: URL(string: "\(favoriteUrl)/\(favoriteId)")!,
             httpMethod: .delete,
             cookieKeys: [.auth, .apiKey]
         )
-        return try Util.shared.decodeResponse(response.data) as Result<SuccessResponse, ErrorResponse>
+        return try Util.shared.decode(response.data)
     }
 }
