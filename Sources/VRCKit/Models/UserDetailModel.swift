@@ -34,31 +34,6 @@ public struct UserDetail: Codable {
     public var note: String
     public let lastActivity: Date
 
-    // Initializer to convert from Friend struct to UserDetail struct
-//    public init(friend: Friend) {
-//        bio = friend.bio
-//        bioLinks = friend.bioLinks
-//        currentAvatarImageUrl = friend.currentAvatarImageUrl
-//        currentAvatarThumbnailImageUrl = friend.currentAvatarThumbnailImageUrl
-//        displayName = friend.displayName
-//        id = friend.id
-//        isFriend = friend.isFriend
-//        lastLogin = friend.lastLogin
-//        lastPlatform = friend.lastPlatform
-//        profilePicOverride = friend.profilePicOverride
-//        status = friend.status
-//        statusDescription = friend.statusDescription
-//        tags = friend.tags
-//        userIcon = friend.userIcon
-//        location = friend.location
-//        friendKey = friend.friendKey
-//
-//        // Set initial values for properties specific to UserDetail struct
-//        dateJoined = ""
-//        note = ""
-//        lastActivity = Date()
-//    }
-
     public var friend: Friend {
         Friend(
             bio: bio,
