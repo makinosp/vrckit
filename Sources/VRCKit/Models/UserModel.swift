@@ -29,13 +29,13 @@ public struct User: Codable, ProfileDetailRepresentable {
     public let offlineFriends: [String]
     public let onlineFriends: [String]
     public let pastDisplayNames: [DisplayName]
-    public let profilePicOverride: String
+    public let profilePicOverride: String?
     public let state: String
     public let status: Status
     public let statusDescription: String
     public let tags: [String]
     public let twoFactorAuthEnabled: Bool
-    public let userIcon: String
+    public let userIcon: String?
     public let userLanguage: String
     public let userLanguageCode: String
 

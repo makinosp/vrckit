@@ -20,11 +20,11 @@ public protocol ProfileElementRepresentable: Hashable, Identifiable {
     var isFriend: Bool { get }
     var lastLogin: Date { get }
     var lastPlatform: String { get }
-    var profilePicOverride: String { get }
+    var profilePicOverride: String? { get }
     var status: User.Status { get }
     var statusDescription: String { get }
     var tags: [String] { get }
-    var userIcon: String { get }
+    var userIcon: String? { get }
     var friendKey: String { get }
 }
 
@@ -40,7 +40,7 @@ public protocol ProfileDetailRepresentable: ProfileElementRepresentable {
 @available(iOS 15.0, *)
 extension ProfileElementRepresentable {
     public var thumbnailUrl: URL? {
-        if !userIcon.isEmpty {
+        if let userIcon = userIcon, !userIcon.isEmpty {
             return URL(string: userIcon)
         }
         guard let url = currentAvatarThumbnailImageUrl,
@@ -51,7 +51,7 @@ extension ProfileElementRepresentable {
     }
 
     public var userIconUrl: URL? {
-        guard let urlString = userIcon.isEmpty
+        guard let urlString = userIcon?.isEmpty ?? false
                 ? currentAvatarThumbnailImageUrl
                 : userIcon else { return nil }
         return URL(string: urlString)
