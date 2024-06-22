@@ -28,14 +28,7 @@ public struct InstanceService {
             httpMethod: .get,
             cookieKeys: [.auth, .apiKey]
         )
-        switch Util.shared.decodeResponse(
-            response.data
-        ) as Result<Instance, ErrorResponse> {
-        case .success(let success):
-            return success
-        case .failure(let errorResponse):
-            throw VRCKitError.apiError(errorResponse.error.message)
-        }
+        return try Util.shared.decode(response.data)
     }
 
     public static func fetchInstance(

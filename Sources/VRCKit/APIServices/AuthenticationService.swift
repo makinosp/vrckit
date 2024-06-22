@@ -31,12 +31,8 @@ public struct AuthenticationService {
             url: url,
             httpMethod: .get
         )
-        switch Util.shared.decodeResponse(response.data) as Result<ExistsResponse, ErrorResponse> {
-        case .success(let success):
-            return success.userExists
-        case .failure(let errorResponse):
-            throw VRCKitError.apiError(errorResponse.error.message)
-        }
+        let result: ExistsResponse = try Util.shared.decode(response.data)
+        return result.userExists
     }
 
     /// Login and/or Get Current User Info
@@ -49,21 +45,13 @@ public struct AuthenticationService {
             basic: true,
             cookieKeys: [.auth, .twoFactorAuth]
         )
-        switch Util.shared.decodeResponse(response.data) as Result<User, ErrorResponse> {
-        case .success(let user):
-            client.updateCookies()
+        do {
+            let user = try Util.shared.decode(response.data) as User
             return user
-        case .failure(let errorResponse):
-            if errorResponse.error.statusCode > -1 {
-                throw VRCKitError.apiError(errorResponse.error.message)
-            }
-            switch Util.shared.decodeResponse(response.data) as Result<RequiresTwoFactorAuthResponse, ErrorResponse> {
-            case .success(let factors):
-                client.updateCookies()
-                return factors.requiresTwoFactorAuth
-            case .failure(let errorResponse):
-                throw VRCKitError.apiError(errorResponse.error.message)
-            }
+        } catch let error as DecodingError {
+            let result = try Util.shared.decode(response.data) as RequiresTwoFactorAuthResponse
+            client.updateCookies()
+            return result.requiresTwoFactorAuth
         }
     }
 
@@ -83,20 +71,15 @@ public struct AuthenticationService {
         verifyType: TwoFactorAuthType,
         code: String
     ) async throws -> Bool {
-        let requestData = try Util.shared.encodeRequest(VerifyRequest(code: code)).get()
+        let requestData = try Util.shared.encode(VerifyRequest(code: code))
         let response = try await client.request(
             url: URL(string: "\(auth2FAUrl)/\(verifyType.rawValue)/verify")!,
             httpMethod: .post,
             cookieKeys: [.auth, .twoFactorAuth],
             httpBody: requestData
         )
-        switch Util.shared.decodeResponse(response.data) as Result<VerifyResponse, ErrorResponse> {
-        case .success(let response):
-            client.updateCookies()
-            return response.verified
-        case .failure(let errorResponse):
-            throw VRCKitError.apiError(errorResponse.error.message)
-        }
+        let result: VerifyResponse = try Util.shared.decode(response.data)
+        return result.verified
     }
 
     /// Verify Auth Token
@@ -108,13 +91,8 @@ public struct AuthenticationService {
             httpMethod: .get,
             cookieKeys: [.auth, .twoFactorAuth]
         )
-        let veryfyAuthTokenResponse: Result<VerifyAuthTokenResponse, ErrorResponse> = Util.shared.decodeResponse(response.data)
-        switch veryfyAuthTokenResponse {
-        case .success(let success):
-            return success.ok
-        case .failure(let errorResponse):
-            throw VRCKitError.apiError(errorResponse.error.message)
-        }
+        let result: VerifyAuthTokenResponse = try Util.shared.decode(response.data)
+        return result.ok
     }
 
     /// Logout

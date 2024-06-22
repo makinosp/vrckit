@@ -31,7 +31,7 @@ public struct FavoriteService {
             httpMethod: .get,
             cookieKeys: [.auth, .apiKey]
         )
-        return try Util.shared.decodeResponse(response.data).get()
+        return try Util.shared.decode(response.data)
     }
 
     public static func listFavorites(
@@ -39,7 +39,7 @@ public struct FavoriteService {
         n: Int = 60,
         type: FavoriteType,
         tag: String? = nil
-    ) async throws -> Result<[Favorite], ErrorResponse> {
+    ) async throws -> [Favorite] {
         var request = URLComponents(string: favoriteUrl)!
         request.queryItems = [
             URLQueryItem(name: "n", value: n.description),
@@ -57,7 +57,7 @@ public struct FavoriteService {
             httpMethod: .get,
             cookieKeys: [.auth, .apiKey]
         )
-        return Util.shared.decodeResponse(response.data) as Result<[Favorite], ErrorResponse>
+        return try Util.shared.decode(response.data)
     }
 
     /// Fetch a list of favorite IDs for each favorite group
@@ -75,7 +75,7 @@ public struct FavoriteService {
                             client,
                             type: .friend,
                             tag: favoriteGroup.name
-                        ).get()
+                        )
                     )
                 }
             }

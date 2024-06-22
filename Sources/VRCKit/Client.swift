@@ -20,10 +20,6 @@ public struct SuccessResponse: Codable {
 
 public struct ErrorResponse: Codable, Error {
     let error: ResponseMessage
-
-    init(message: String) {
-        self.error = ResponseMessage(message: message, statusCode: -1)
-    }
 }
 
 //
