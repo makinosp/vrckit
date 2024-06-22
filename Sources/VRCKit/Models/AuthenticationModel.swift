@@ -6,7 +6,7 @@
 //
 
 public enum TwoFactorAuthType: String, Codable {
-    case emailotp, totp, otp
+    case emailOtp, totp, otp
 }
 
 public struct ExistsResponse: Codable {
