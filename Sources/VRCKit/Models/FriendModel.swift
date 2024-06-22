@@ -19,11 +19,11 @@ public struct Friend: Codable {
     public let isFriend: Bool
     public let lastLogin: Date
     public let lastPlatform: String
-    public let profilePicOverride: String
+    public let profilePicOverride: String?
     public let status: User.Status
     public let statusDescription: String
     public let tags: [String]
-    public let userIcon: String
+    public let userIcon: String?
     public let location: String
     public let friendKey: String
 }

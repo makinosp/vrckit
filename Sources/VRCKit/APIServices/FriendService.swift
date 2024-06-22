@@ -14,15 +14,16 @@ import Foundation
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
 public struct FriendService {
-    private static let friendsUrl = "\(baseUrl)/auth/user/friends"
+    private static let url = "\(baseUrl)/auth/user/friends"
 
+    /// List information about friends.
     public static func fetchFriends(
         _ client: APIClient,
         offset: Int,
         n: Int = 60,
         offline: Bool = false
     ) async throws -> [Friend] {
-        var request = try Util.shared.urlComponents(friendsUrl)
+        var request = try Util.shared.urlComponents(url)
         request.queryItems = [
             URLQueryItem(name: "offset", value: offset.description),
             URLQueryItem(name: "n", value: n.description),
@@ -39,6 +40,8 @@ public struct FriendService {
         return try Util.shared.decode(response.data)
     }
 
+    /// A helper function that splits a large API request tasks to fetch friend data concurrently,
+    /// and then combines the results.
     public static func fetchFriends(
         _ client: APIClient,
         count: Int,
@@ -57,7 +60,10 @@ public struct FriendService {
         }
         try await withThrowingTaskGroup(of: ResultSet.self) { taskGroup in
             for offset in stride(from: 0, to: count, by: n) {
-                taskGroup.addTask {
+                taskGroup.addTask { [weak client] in
+                    guard let client = client else {
+                        throw VRCKitError.clientDeallocated
+                    }
                     let friends = try await fetchFriends(
                         client,
                         offset: offset,
@@ -77,7 +83,7 @@ public struct FriendService {
     }
 
     public static func unfriend(_ client: APIClient, id: String) async throws {
-        let url = URL(string: "\(friendsUrl)/\(id)")!
+        let url = URL(string: "\(url)/\(id)")!
         try await client.request(
             url: url,
             httpMethod: .delete,
