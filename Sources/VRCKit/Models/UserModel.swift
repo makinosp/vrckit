@@ -36,8 +36,8 @@ public struct User: Codable, ProfileDetailRepresentable {
     public let tags: [String]
     public let twoFactorAuthEnabled: Bool
     public let userIcon: String?
-    public let userLanguage: String
-    public let userLanguageCode: String
+    public let userLanguage: String?
+    public let userLanguageCode: String?
 
     public struct DisplayName: Codable, Hashable {
         public let displayName: String

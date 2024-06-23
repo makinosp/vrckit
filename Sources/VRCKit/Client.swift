@@ -20,10 +20,6 @@ public struct SuccessResponse: Codable {
 
 public struct ErrorResponse: Codable, Error {
     let error: ResponseMessage
-
-    init(message: String) {
-        self.error = ResponseMessage(message: message, statusCode: -1)
-    }
 }
 
 //
@@ -57,6 +53,7 @@ public class APIClient {
     public init(username: String? = nil, password: String? = nil) {
         self.username = username
         self.password = password
+        self.updateCookies()
     }
 
     public var isEmptyCookies: Bool {

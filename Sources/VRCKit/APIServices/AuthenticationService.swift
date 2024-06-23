@@ -13,7 +13,7 @@ import Foundation
 
 public protocol UserOrRequires {}
 extension User: UserOrRequires {}
-extension [TwoFactorAuthType]: UserOrRequires {}
+extension VerifyType: UserOrRequires {}
 
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
@@ -31,12 +31,8 @@ public struct AuthenticationService {
             url: url,
             httpMethod: .get
         )
-        switch Util.shared.decodeResponse(response.data) as Result<ExistsResponse, ErrorResponse> {
-        case .success(let success):
-            return success.userExists
-        case .failure(let errorResponse):
-            throw VRCKitError.apiError(errorResponse.error.message)
-        }
+        let result: ExistsResponse = try Util.shared.decode(response.data)
+        return result.userExists
     }
 
     /// Login and/or Get Current User Info
@@ -49,72 +45,47 @@ public struct AuthenticationService {
             basic: true,
             cookieKeys: [.auth, .twoFactorAuth]
         )
-        switch Util.shared.decodeResponse(response.data) as Result<User, ErrorResponse> {
-        case .success(let user):
-            client.updateCookies()
+        do {
+            defer { client.updateCookies() }
+            let user: User = try Util.shared.decode(response.data)
             return user
-        case .failure(let errorResponse):
-            if errorResponse.error.statusCode > -1 {
-                throw VRCKitError.apiError(errorResponse.error.message)
+        } catch let error as DecodingError {
+            let result: RequiresTwoFactorAuthResponse = try Util.shared.decode(response.data)
+            guard let requires = result.requires else {
+                throw VRCKitError.unexpectedError
             }
-            switch Util.shared.decodeResponse(response.data) as Result<RequiresTwoFactorAuthResponse, ErrorResponse> {
-            case .success(let factors):
-                client.updateCookies()
-                return factors.requiresTwoFactorAuth
-            case .failure(let errorResponse):
-                throw VRCKitError.apiError(errorResponse.error.message)
-            }
+            return requires
         }
-    }
-
-    public static func getVerifyType(_ requiresTwoFactorAuth: [TwoFactorAuthType]) -> TwoFactorAuthType? {
-        var verifyType: TwoFactorAuthType?
-        if requiresTwoFactorAuth.contains(.totp) {
-            verifyType = .totp
-        } else if requiresTwoFactorAuth.contains(.emailotp) {
-            verifyType = .emailotp
-        }
-        return verifyType
     }
 
     /// Verify 2FA With TOTP or Email OTP
     public static func verify2FA(
         _ client: APIClient,
-        verifyType: TwoFactorAuthType,
+        verifyType: VerifyType,
         code: String
     ) async throws -> Bool {
-        let requestData = try Util.shared.encodeRequest(VerifyRequest(code: code)).get()
+        let requestData = try Util.shared.encode(VerifyRequest(code: code))
         let response = try await client.request(
-            url: URL(string: "\(auth2FAUrl)/\(verifyType.rawValue)/verify")!,
+            url: URL(string: "\(auth2FAUrl)/\(verifyType.rawValue.lowercased())/verify")!,
             httpMethod: .post,
             cookieKeys: [.auth, .twoFactorAuth],
             httpBody: requestData
         )
-        switch Util.shared.decodeResponse(response.data) as Result<VerifyResponse, ErrorResponse> {
-        case .success(let response):
-            client.updateCookies()
-            return response.verified
-        case .failure(let errorResponse):
-            throw VRCKitError.apiError(errorResponse.error.message)
-        }
+        let result: VerifyResponse = try Util.shared.decode(response.data)
+        client.updateCookies()
+        return result.verified
     }
 
     /// Verify Auth Token
     public static func verifyAuthToken(_ client: APIClient) async throws -> Bool {
-        client.updateCookies()
-        let url = URL(string: authUrl)!
         let response = try await client.request(
-            url: url,
+            url: URL(string: authUrl)!,
             httpMethod: .get,
-            cookieKeys: [.auth, .twoFactorAuth]
+            cookieKeys: [.auth]
         )
-        let veryfyAuthTokenResponse: Result<VerifyAuthTokenResponse, ErrorResponse> = Util.shared.decodeResponse(response.data)
-        switch veryfyAuthTokenResponse {
-        case .success(let success):
-            return success.ok
-        case .failure(let errorResponse):
-            throw VRCKitError.apiError(errorResponse.error.message)
-        }
+        let result: VerifyAuthTokenResponse = try Util.shared.decode(response.data)
+        client.updateCookies()
+        return result.ok
     }
 
     /// Logout
@@ -124,6 +95,6 @@ public struct AuthenticationService {
             httpMethod: .put,
             cookieKeys: [.auth]
         )
-        client.updateCookies()
+        client.deleteCookies()
     }
 }
