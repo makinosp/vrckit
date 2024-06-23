@@ -13,7 +13,7 @@ import Foundation
 
 public protocol UserOrRequires {}
 extension User: UserOrRequires {}
-extension [TwoFactorAuthType]: UserOrRequires {}
+extension VerifyType: UserOrRequires {}
 
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
@@ -46,52 +46,45 @@ public struct AuthenticationService {
             cookieKeys: [.auth, .twoFactorAuth]
         )
         do {
-            let user = try Util.shared.decode(response.data) as User
+            defer { client.updateCookies() }
+            let user: User = try Util.shared.decode(response.data)
             return user
         } catch let error as DecodingError {
-            let result = try Util.shared.decode(response.data) as RequiresTwoFactorAuthResponse
-            client.updateCookies()
-            return result.requiresTwoFactorAuth
+            let result: RequiresTwoFactorAuthResponse = try Util.shared.decode(response.data)
+            guard let requires = result.requires else {
+                throw VRCKitError.unexpectedError
+            }
+            return requires
         }
-    }
-
-    public static func getVerifyType(_ requiresTwoFactorAuth: [TwoFactorAuthType]) -> TwoFactorAuthType? {
-        var verifyType: TwoFactorAuthType?
-        if requiresTwoFactorAuth.contains(.totp) {
-            verifyType = .totp
-        } else if requiresTwoFactorAuth.contains(.emailotp) {
-            verifyType = .emailotp
-        }
-        return verifyType
     }
 
     /// Verify 2FA With TOTP or Email OTP
     public static func verify2FA(
         _ client: APIClient,
-        verifyType: TwoFactorAuthType,
+        verifyType: VerifyType,
         code: String
     ) async throws -> Bool {
         let requestData = try Util.shared.encode(VerifyRequest(code: code))
         let response = try await client.request(
-            url: URL(string: "\(auth2FAUrl)/\(verifyType.rawValue)/verify")!,
+            url: URL(string: "\(auth2FAUrl)/\(verifyType.rawValue.lowercased())/verify")!,
             httpMethod: .post,
             cookieKeys: [.auth, .twoFactorAuth],
             httpBody: requestData
         )
         let result: VerifyResponse = try Util.shared.decode(response.data)
+        client.updateCookies()
         return result.verified
     }
 
     /// Verify Auth Token
     public static func verifyAuthToken(_ client: APIClient) async throws -> Bool {
-        client.updateCookies()
-        let url = URL(string: authUrl)!
         let response = try await client.request(
-            url: url,
+            url: URL(string: authUrl)!,
             httpMethod: .get,
-            cookieKeys: [.auth, .twoFactorAuth]
+            cookieKeys: [.auth]
         )
         let result: VerifyAuthTokenResponse = try Util.shared.decode(response.data)
+        client.updateCookies()
         return result.ok
     }
 
@@ -102,6 +95,6 @@ public struct AuthenticationService {
             httpMethod: .put,
             cookieKeys: [.auth]
         )
-        client.updateCookies()
+        client.deleteCookies()
     }
 }

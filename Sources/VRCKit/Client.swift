@@ -53,6 +53,7 @@ public class APIClient {
     public init(username: String? = nil, password: String? = nil) {
         self.username = username
         self.password = password
+        self.updateCookies()
     }
 
     public var isEmptyCookies: Bool {

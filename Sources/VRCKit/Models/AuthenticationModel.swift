@@ -5,7 +5,7 @@
 //  Created by makinosp on 2024/02/12.
 //
 
-public enum TwoFactorAuthType: String, Codable {
+public enum VerifyType: String, Codable {
     case emailOtp, totp, otp
 }
 
@@ -22,7 +22,11 @@ public struct VerifyResponse: Codable {
 }
 
 public struct RequiresTwoFactorAuthResponse: Codable {
-    let requiresTwoFactorAuth: [TwoFactorAuthType]
+    let requiresTwoFactorAuth: [VerifyType]
+
+    var requires: VerifyType? {
+        requiresTwoFactorAuth.first { [.totp, .emailOtp].contains($0) }
+    }
 }
 
 public struct VerifyAuthTokenResponse: Codable {
