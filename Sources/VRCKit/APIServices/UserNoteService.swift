@@ -24,7 +24,6 @@ public struct UserNoteService {
         let response = try await client.request(
             url: url,
             httpMethod: .post,
-            cookieKeys: [.auth, .apiKey],
             httpBody: requestData
         )
         return try Util.shared.decode(response.data)

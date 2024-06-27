@@ -6,7 +6,6 @@ import Foundation
 //  Created by makinosp on 2024/02/12.
 //
 
-let domainUrl = "https://api.vrchat.cloud"
 let baseUrl = "https://api.vrchat.cloud/api/1"
 
 public struct ResponseMessage: Codable {
@@ -30,79 +29,51 @@ public struct ErrorResponse: Codable, Error {
 public class APIClient {
     typealias HTTPResponse = (data: Data, response: HTTPURLResponse)
 
-    enum HttpMethod: String {
-        case get
-        case post
-        case patch
-        case put
-        case delete
-    }
+    private var username: String?
+    private var password: String?
+    private let domainUrl = URL(string: "https://api.vrchat.cloud")!
 
-    enum CookieKey: String {
-        case auth, twoFactorAuth, apiKey
+    enum HttpMethod: String {
+        case get, post, patch, put, delete
     }
 
     private enum ContentType: String {
         case json = "application/json"
     }
 
-    private var username: String?
-    private var password: String?
-    private var cookies: [CookieKey: String] = [:]
-
     public init(username: String? = nil, password: String? = nil) {
         self.username = username
         self.password = password
-        self.updateCookies()
     }
 
-    public var isEmptyCookies: Bool {
-        cookies.isEmpty
-    }
-
-    public func loadCookies() -> [HTTPCookie] {
-        let cookieStorage = HTTPCookieStorage.shared
-        let cookies = cookieStorage.cookies(for: URL(string: domainUrl)!) ?? []
-        return cookies
-    }
-
-    public func updateCookies() {
-        for cookie in HTTPCookieStorage.shared.cookies(for: URL(string: domainUrl)!)! {
-            guard let key = CookieKey(rawValue: cookie.name) else { continue }
-            cookies[key] = cookie.value
-        }
+    public var cookies: [HTTPCookie] {
+        HTTPCookieStorage.shared.cookies(for: domainUrl) ?? []
     }
 
     public func deleteCookies() {
-        cookies = [:]
-        for cookie in HTTPCookieStorage.shared.cookies(for: URL(string: domainUrl)!)! {
+        for cookie in cookies {
             HTTPCookieStorage.shared.deleteCookie(cookie)
         }
     }
 
-    func request(
-        url: URL,
-        httpMethod: HttpMethod,
-        basic: Bool = false,
-        cookieKeys: [CookieKey] = [],
-        httpBody: Data? = nil
-    ) async throws -> HTTPResponse {
+    var encodedAuthorization: String {
+        "Basic \(((username ?? "") + ":" + (password ?? "")).data(using: .utf8)!.base64EncodedString())"
+    }
+
+    /// Request to API
+    func request(url: URL, httpMethod: HttpMethod, basic: Bool = false, httpBody: Data? = nil) async throws -> HTTPResponse {
         var request = URLRequest(url: url)
         request.httpMethod = httpMethod.description
 
-        /// Authorization
+        // Authorization
         if basic {
-            request.addValue(
-                "Basic \(((username ?? "") + ":" + (password ?? "")).data(using: .utf8)!.base64EncodedString())",
-                forHTTPHeaderField: "Authorization"
-            )
+            request.addValue(encodedAuthorization, forHTTPHeaderField: "Authorization")
         }
         
         // Cookie
-        let cookieHeader = HTTPCookie.requestHeaderFields(with: loadCookies())
-        request.allHTTPHeaderFields = cookieHeader
+        request.allHTTPHeaderFields = HTTPCookie.requestHeaderFields(with: cookies)
 
-        /// HTTP Body
+        // HTTP Body
         if let httpBody = httpBody {
             request.addValue(ContentType.json.rawValue, forHTTPHeaderField: "Content-Type")
             request.httpBody = httpBody

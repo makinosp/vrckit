@@ -28,8 +28,7 @@ public struct FavoriteService {
     ) async throws -> [FavoriteGroup] {
         let response = try await client.request(
             url: URL(string: favoriteGroupUrl)!,
-            httpMethod: .get,
-            cookieKeys: [.auth, .apiKey]
+            httpMethod: .get
         )
         return try Util.shared.decode(response.data)
     }
@@ -54,8 +53,7 @@ public struct FavoriteService {
         
         let response = try await client.request(
             url: url,
-            httpMethod: .get,
-            cookieKeys: [.auth, .apiKey]
+            httpMethod: .get
         )
         return try Util.shared.decode(response.data)
     }
@@ -123,7 +121,6 @@ public struct FavoriteService {
         let response = try await client.request(
             url: URL(string: "\(favoriteUrl)")!,
             httpMethod: .post,
-            cookieKeys: [.auth, .apiKey],
             httpBody: requestData
         )
         return try Util.shared.decode(response.data)
@@ -135,8 +132,7 @@ public struct FavoriteService {
     ) async throws -> SuccessResponse {
         let response = try await client.request(
             url: URL(string: "\(favoriteUrl)/\(favoriteId)")!,
-            httpMethod: .delete,
-            cookieKeys: [.auth, .apiKey]
+            httpMethod: .delete
         )
         return try Util.shared.decode(response.data)
     }

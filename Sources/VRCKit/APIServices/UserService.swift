@@ -26,8 +26,7 @@ public struct UserService {
         let url = URL(string: "\(url)/\(userId)")!
         let response = try await client.request(
             url: url,
-            httpMethod: .get,
-            cookieKeys: [.auth, .apiKey]
+            httpMethod: .get
         )
         return try Util.shared.decode(response.data)
     }
@@ -70,8 +69,7 @@ public struct UserService {
         let url = URL(string: "\(url)/\(id)")!
         let response = try await client.request(
             url: url,
-            httpMethod: .put,
-            cookieKeys: [.auth, .apiKey]
+            httpMethod: .put
         )
         return try Util.shared.decode(response.data)
     }
