@@ -60,8 +60,13 @@ public class APIClient {
         cookies.isEmpty
     }
 
+    public func loadCookies() -> [HTTPCookie] {
+        let cookieStorage = HTTPCookieStorage.shared
+        let cookies = cookieStorage.cookies(for: URL(string: domainUrl)!) ?? []
+        return cookies
+    }
+
     public func updateCookies() {
-        cookies = [:]
         for cookie in HTTPCookieStorage.shared.cookies(for: URL(string: domainUrl)!)! {
             guard let key = CookieKey(rawValue: cookie.name) else { continue }
             cookies[key] = cookie.value
@@ -93,13 +98,9 @@ public class APIClient {
             )
         }
         
-        /// Cookie
-        request.addValue(
-            cookies
-                .map { "\($0.key.rawValue)=\($0.value)" }
-                .joined(separator: "; "),
-            forHTTPHeaderField: "Cookie"
-        )
+        // Cookie
+        let cookieHeader = HTTPCookie.requestHeaderFields(with: loadCookies())
+        request.allHTTPHeaderFields = cookieHeader
 
         /// HTTP Body
         if let httpBody = httpBody {
