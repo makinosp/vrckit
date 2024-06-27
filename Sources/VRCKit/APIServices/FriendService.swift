@@ -34,8 +34,7 @@ public struct FriendService {
         }
         let response = try await client.request(
             url: url,
-            httpMethod: .get,
-            cookieKeys: [.auth, .apiKey]
+            httpMethod: .get
         )
         return try Util.shared.decode(response.data)
     }
@@ -86,8 +85,7 @@ public struct FriendService {
         let url = URL(string: "\(url)/\(id)")!
         try await client.request(
             url: url,
-            httpMethod: .delete,
-            cookieKeys: [.auth, .apiKey]
+            httpMethod: .delete
         )
     }
 

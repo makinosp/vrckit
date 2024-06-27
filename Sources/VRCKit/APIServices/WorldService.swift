@@ -21,8 +21,7 @@ public struct WorldService {
         
         let response = try await client.request(
             url: url,
-            httpMethod: .get,
-            cookieKeys: [.auth, .apiKey]
+            httpMethod: .get
         )
         return try Util.shared.decode(response.data)
     }

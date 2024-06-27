@@ -42,11 +42,9 @@ public struct AuthenticationService {
         let response = try await client.request(
             url: URL(string: "\(authUrl)/user")!,
             httpMethod: .get,
-            basic: true,
-            cookieKeys: [.auth, .twoFactorAuth]
+            basic: true
         )
         do {
-            defer { client.updateCookies() }
             let user: User = try Util.shared.decode(response.data)
             return user
         } catch let error as DecodingError {
@@ -68,11 +66,9 @@ public struct AuthenticationService {
         let response = try await client.request(
             url: URL(string: "\(auth2FAUrl)/\(verifyType.rawValue.lowercased())/verify")!,
             httpMethod: .post,
-            cookieKeys: [.auth, .twoFactorAuth],
             httpBody: requestData
         )
         let result: VerifyResponse = try Util.shared.decode(response.data)
-        client.updateCookies()
         return result.verified
     }
 
@@ -80,11 +76,9 @@ public struct AuthenticationService {
     public static func verifyAuthToken(_ client: APIClient) async throws -> Bool {
         let response = try await client.request(
             url: URL(string: authUrl)!,
-            httpMethod: .get,
-            cookieKeys: [.auth]
+            httpMethod: .get
         )
         let result: VerifyAuthTokenResponse = try Util.shared.decode(response.data)
-        client.updateCookies()
         return result.ok
     }
 
@@ -92,8 +86,7 @@ public struct AuthenticationService {
     public static func logout(_ client: APIClient) async throws {
         let _ = try await client.request(
             url: URL(string: "\(baseUrl)/logout")!,
-            httpMethod: .put,
-            cookieKeys: [.auth]
+            httpMethod: .put
         )
         client.deleteCookies()
     }
