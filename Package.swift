@@ -15,6 +15,7 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
+        .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins", from: "0.55.1")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -32,7 +33,10 @@ let package = Package(
 )
 
 package.targets.forEach {
+    $0.plugins = [
+        .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")
+    ]
     $0.swiftSettings = [
-        .enableUpcomingFeature("ForwardTrailingClosures"), // SE-0286
+        .enableUpcomingFeature("ForwardTrailingClosures") // SE-0286
     ]
 }
