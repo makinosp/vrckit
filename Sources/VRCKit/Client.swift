@@ -61,7 +61,12 @@ public class APIClient {
     }
 
     /// Request to API
-    func request(url: URL, httpMethod: HttpMethod, basic: Bool = false, httpBody: Data? = nil) async throws -> HTTPResponse {
+    func request(
+        url: URL,
+        httpMethod: HttpMethod,
+        basic: Bool = false,
+        httpBody: Data? = nil
+    ) async throws -> HTTPResponse {
         var request = URLRequest(url: url)
         request.httpMethod = httpMethod.description
 
@@ -69,7 +74,7 @@ public class APIClient {
         if basic {
             request.addValue(encodedAuthorization, forHTTPHeaderField: "Authorization")
         }
-        
+
         // Cookie
         request.allHTTPHeaderFields = HTTPCookie.requestHeaderFields(with: cookies)
 

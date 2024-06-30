@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 //
 // MARK: User API
 //
@@ -15,7 +14,6 @@ import Foundation
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
 public struct UserService {
-
     static let url = "\(baseUrl)/users"
 
     /// Fetch a user
@@ -57,7 +55,7 @@ public struct UserService {
         }
         return users
             .compactMap { $0 }
-            .sorted(by: { $0.index < $1.index })
+            .sorted { $0.index < $1.index }
             .map(\.user)
     }
 

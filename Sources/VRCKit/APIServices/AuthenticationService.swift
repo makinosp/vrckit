@@ -18,7 +18,6 @@ extension VerifyType: UserOrRequires {}
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
 public struct AuthenticationService {
-
     private static let authUrl = "\(baseUrl)/auth"
     private static let auth2FAUrl = "\(authUrl)/twofactorauth"
 
@@ -84,7 +83,7 @@ public struct AuthenticationService {
 
     /// Logout
     public static func logout(_ client: APIClient) async throws {
-        let _ = try await client.request(
+        _ = try await client.request(
             url: URL(string: "\(baseUrl)/logout")!,
             httpMethod: .put
         )

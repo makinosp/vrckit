@@ -77,7 +77,7 @@ public struct FriendService {
             }
         }
         return results
-            .sorted(by: { $0.offset > $1.offset })
+            .sorted { $0.offset > $1.offset }
             .flatMap { $0.friends }
     }
 
@@ -91,10 +91,9 @@ public struct FriendService {
 
     public static func friendsGroupedByLocation(_ friends: [Friend]) -> [FriendsLocation] {
         Dictionary(grouping: friends, by: \.location)
-            .sorted(by: { $0.value.count > $1.value.count })
+            .sorted { $0.value.count > $1.value.count }
             .map { dictionary in
                 FriendsLocation(location: dictionary.key, friends: dictionary.value)
             }
     }
-
 }

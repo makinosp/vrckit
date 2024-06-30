@@ -13,8 +13,8 @@ public protocol LocationRepresentable {
 
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
-extension LocationRepresentable {
-    public var isVisible: Bool {
+public extension LocationRepresentable {
+    var isVisible: Bool {
         !["private", "offline", "traveling"].contains(location)
     }
 }

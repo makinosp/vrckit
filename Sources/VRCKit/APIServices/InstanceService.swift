@@ -22,7 +22,7 @@ public struct InstanceService {
         instanceID: String
     ) async throws -> Instance {
         let url = URL(string: "\(instanceUrl)/\(worldID):\(instanceID)")!
-        
+
         let response = try await client.request(
             url: url,
             httpMethod: .get

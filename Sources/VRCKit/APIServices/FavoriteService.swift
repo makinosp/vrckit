@@ -19,7 +19,6 @@ public typealias FavoriteFriendDetail = (favoriteGroupId: String, friends: [User
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
 public struct FavoriteService {
-
     private static let favoriteUrl = "\(baseUrl)/favorites"
     private static let favoriteGroupUrl = "\(baseUrl)/favorite/groups"
 
@@ -50,7 +49,7 @@ public struct FavoriteService {
         guard let url = request.url else {
             throw URLError(.badURL, userInfo: [NSLocalizedDescriptionKey: "Invalid URL: \(favoriteUrl)"])
         }
-        
+
         let response = try await client.request(
             url: url,
             httpMethod: .get
@@ -125,7 +124,7 @@ public struct FavoriteService {
         )
         return try Util.shared.decode(response.data)
     }
-    
+
     public static func removeFavorite(
         _ client: APIClient,
         favoriteId: String

@@ -7,7 +7,7 @@
 
 import Foundation
 
-final public class Util {
+public final class Util {
     public static let shared = Util()
     private var decoder = JSONDecoder()
     private var encoder = JSONEncoder()
@@ -37,7 +37,7 @@ final public class Util {
                 // for debug
                 print(type(of: T.self))
                 print(error)
-                print(String(data: data, encoding: .utf8))
+                print(String(decoding: data, as: UTF8.self))
                 throw error
             } catch {
                 throw error
