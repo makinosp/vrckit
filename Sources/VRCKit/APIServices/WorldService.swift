@@ -18,7 +18,7 @@ public struct WorldService {
 
     public static func fetchWorld(_ client: APIClient, worldID: String) async throws -> World {
         let url = URL(string: "\(worldUrl)/\(worldID)")!
-        
+
         let response = try await client.request(
             url: url,
             httpMethod: .get

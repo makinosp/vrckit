@@ -38,8 +38,8 @@ public protocol ProfileDetailRepresentable: ProfileElementRepresentable {
 
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
-extension ProfileElementRepresentable {
-    public var thumbnailUrl: URL? {
+public extension ProfileElementRepresentable {
+    var thumbnailUrl: URL? {
         if let userIcon = userIcon, !userIcon.isEmpty {
             return URL(string: userIcon)
         }
@@ -50,7 +50,7 @@ extension ProfileElementRepresentable {
         return URL(string: urlString)
     }
 
-    public var userIconUrl: URL? {
+    var userIconUrl: URL? {
         guard let urlString = userIcon?.isEmpty ?? false
                 ? currentAvatarThumbnailImageUrl
                 : userIcon else { return nil }

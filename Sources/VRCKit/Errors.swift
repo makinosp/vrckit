@@ -18,7 +18,7 @@ public enum VRCKitError: Error, LocalizedError {
     case unexpectedError
 
     public var errorDescription: String? {
-        return switch self {
+        switch self {
         case .apiError(let _):
             "API Error"
         case .encodingError:
@@ -35,7 +35,7 @@ public enum VRCKitError: Error, LocalizedError {
     }
 
     public var failureReason: String? {
-        return switch self {
+        switch self {
         case .apiError(let details), .invalidRequest(let details):
             details
         default:
