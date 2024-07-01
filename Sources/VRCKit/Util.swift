@@ -16,7 +16,6 @@ public final class Util {
         decoder.dateDecodingStrategy = .formatted(.iso8601Full)
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         encoder.dateEncodingStrategy = .formatted(.iso8601Full)
-        encoder.keyEncodingStrategy = .convertToSnakeCase
     }
 
     public func urlComponents(_ string: String) throws -> URLComponents {
@@ -46,7 +45,6 @@ public final class Util {
     }
 
     public func encode(_ data: Encodable) throws -> Data {
-        encoder.dateEncodingStrategy = .formatted(.iso8601Full)
-        return try encoder.encode(data)
+        try encoder.encode(data)
     }
 }
