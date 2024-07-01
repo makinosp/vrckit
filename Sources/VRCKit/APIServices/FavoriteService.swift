@@ -22,6 +22,10 @@ public struct FavoriteService {
     private static let favoriteUrl = "\(baseUrl)/favorites"
     private static let favoriteGroupUrl = "\(baseUrl)/favorite/groups"
 
+    /// Asynchronously retrieves a list of favorite groups from the server.
+    /// - Parameter client: The API client used to make the network request.
+    /// - Returns: An array of `FavoriteGroup` objects.
+    /// - Throws: An error if the network request or decoding of the response fails.
     public static func listFavoriteGroups(
         _ client: APIClient
     ) async throws -> [FavoriteGroup] {
