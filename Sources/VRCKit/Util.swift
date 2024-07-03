@@ -1,6 +1,6 @@
 //
 //  Util.swift
-//  
+//
 //
 //  Created by makinosp on 2024/03/10.
 //
@@ -12,20 +12,30 @@ public final class Util {
     private var decoder = JSONDecoder()
     private var encoder = JSONEncoder()
 
-    public init() {
+    /// Initializes the `Util` class, setting up custom encoding and decoding strategies.
+    init() {
         decoder.dateDecodingStrategy = .formatted(.iso8601Full)
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         encoder.dateEncodingStrategy = .formatted(.iso8601Full)
     }
 
-    public func urlComponents(_ string: String) throws -> URLComponents {
+    /// Creates URL components from a given string.
+    /// - Parameter string: The URL string to be converted into `URLComponents`.
+    /// - Throws: `VRCKitError.invalidRequest` if the URL string is invalid.
+    /// - Returns: A `URLComponents` object created from the input string.
+    func urlComponents(_ string: String) throws -> URLComponents {
         guard let urlComponents = URLComponents(string: string) else {
             throw VRCKitError.invalidRequest("Bad URL: \(string)")
         }
         return urlComponents
     }
 
-    public func decode<T: Decodable>(_ data: Data) throws -> T {
+    /// Decodes JSON data into a specified `Decodable` type.
+    /// - Parameter data: The JSON data to decode.
+    /// - Throws: `VRCKitError.apiError` if the decoded data contains an API error.
+    /// - Throws: `DecodingError` if the decoding process fails.
+    /// - Returns: The decoded object of type `T`.
+    func decode<T: Decodable>(_ data: Data) throws -> T {
         do {
             return try decoder.decode(T.self, from: data)
         } catch {
@@ -44,7 +54,11 @@ public final class Util {
         }
     }
 
-    public func encode(_ data: Encodable) throws -> Data {
+    /// Encodes an `Encodable` object into JSON data.
+    /// - Parameter data: The object to encode.
+    /// - Throws: An error if the encoding process fails.
+    /// - Returns: The encoded JSON data.
+    func encode(_ data: Encodable) throws -> Data {
         try encoder.encode(data)
     }
 }
