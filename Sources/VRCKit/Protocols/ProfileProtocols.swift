@@ -7,9 +7,9 @@
 
 import Foundation
 
-/// Common properties the 3 structures User, Friend, and UserDetail
-@available(macOS 12.0, *)
-@available(iOS 15.0, *)
+/// A protocol representing common properties for user profile elements.
+/// This protocol can be adopted by structures such as User, Friend, and UserDetail.
+@available(iOS 13.0, *)
 public protocol ProfileElementRepresentable: Hashable, Identifiable {
     var bio: String? { get }
     var bioLinks: [String]? { get }
@@ -28,16 +28,15 @@ public protocol ProfileElementRepresentable: Hashable, Identifiable {
     var friendKey: String { get }
 }
 
-/// Common properties the 2 structures User and UserDetail
-@available(macOS 12.0, *)
-@available(iOS 15.0, *)
+/// A protocol representing detailed profile properties for users.
+/// This protocol extends ProfileElementRepresentable and can be adopted by structures like User and UserDetail.
+@available(iOS 13.0, *)
 public protocol ProfileDetailRepresentable: ProfileElementRepresentable {
     var dateJoined: String { get }
     var lastActivity: Date { get }
 }
 
-@available(macOS 12.0, *)
-@available(iOS 15.0, *)
+@available(iOS 13.0, *)
 public extension ProfileElementRepresentable {
     var thumbnailUrl: URL? {
         if let userIcon = userIcon, !userIcon.isEmpty {
