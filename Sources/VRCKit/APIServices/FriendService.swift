@@ -28,7 +28,7 @@ public struct FriendService {
             URLQueryItem(name: "n", value: n.description),
             URLQueryItem(name: "offline", value: offline.description)
         ]
-        let response = try await client.request(path: path, httpMethod: .get)
+        let response = try await client.request(path: path, method: .get)
         return try Util.shared.decode(response.data)
     }
 
@@ -75,7 +75,7 @@ public struct FriendService {
     }
 
     public static func unfriend(_ client: APIClient, id: String) async throws {
-        try await client.request(path: "\(path)/\(id)", httpMethod: .delete)
+        try await client.request(path: "\(path)/\(id)", method: .delete)
     }
 
     public static func friendsGroupedByLocation(_ friends: [Friend]) -> [FriendsLocation] {

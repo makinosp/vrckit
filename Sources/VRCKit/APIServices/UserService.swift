@@ -21,7 +21,7 @@ public struct UserService {
         _ client: APIClient,
         userId: String
     ) async throws -> UserDetail {
-        let response = try await client.request(path: "\(path)/\(userId)", httpMethod: .get)
+        let response = try await client.request(path: "\(path)/\(userId)", method: .get)
         return try Util.shared.decode(response.data)
     }
 
@@ -60,7 +60,7 @@ public struct UserService {
         _ client: APIClient,
         id: String
     ) async throws -> User {
-        let response = try await client.request(path: "\(path)/\(id)", httpMethod: .put)
+        let response = try await client.request(path: "\(path)/\(id)", method: .put)
         return try Util.shared.decode(response.data)
     }
 }

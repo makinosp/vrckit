@@ -31,7 +31,7 @@ public final class APIClient {
     private let domainUrl: String
     private let baseUrl: String
 
-    enum HttpMethod: String {
+    enum Method: String {
         case get, post, patch, put, delete
     }
 
@@ -80,17 +80,17 @@ public final class APIClient {
     /// Sends a request to the API.
     /// - Parameters:
     ///   - path: The path for the request.
-    ///   - httpMethod: The HTTP method to use for the request.
+    ///   - method: The HTTP method to use for the request.
     ///   - basic: Whether to include basic authorization.
-    ///   - httpBody: The HTTP body to include in the request.
+    ///   - body: The HTTP body to include in the request.
     /// - Returns: A tuple containing the data and the HTTP response.
     /// - Throws: `VRCKitError` if an error occurs during the request.
     func request(
         path: String,
-        httpMethod: HttpMethod,
+        method: Method,
         basic: Bool = false,
         queryItems: [URLQueryItem] = [],
-        httpBody: Data? = nil
+        body: Data? = nil
     ) async throws -> HTTPResponse {
         guard var urlComponents = URLComponents(string: "\(baseUrl)/\(path)") else {
             throw VRCKitError.urlError
@@ -102,7 +102,7 @@ public final class APIClient {
             throw VRCKitError.urlError
         }
         var request = URLRequest(url: url)
-        request.httpMethod = httpMethod.description
+        request.httpMethod = method.description
 
         // Add authorization header if required.
         if basic, let username = username, let password = password {
@@ -114,9 +114,9 @@ public final class APIClient {
         request.allHTTPHeaderFields = HTTPCookie.requestHeaderFields(with: cookies)
 
         // Add HTTP body and content type if body is provided.
-        if let httpBody = httpBody {
+        if let body = body {
             request.addValue(ContentType.json.rawValue, forHTTPHeaderField: "Content-Type")
-            request.httpBody = httpBody
+            request.httpBody = body
         }
 
         let (data, response) = try await URLSession.shared.data(for: request)
@@ -128,7 +128,7 @@ public final class APIClient {
 }
 
 @available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
-extension APIClient.HttpMethod: CustomStringConvertible {
+extension APIClient.Method: CustomStringConvertible {
     var description: String {
         self.rawValue.uppercased()
     }
