@@ -25,7 +25,7 @@ public struct InstanceService {
             path: "\(path)/\(worldId):\(instanceId)",
             method: .get
         )
-        return try Util.shared.decode(response.data)
+        return try Serializer.shared.decode(response.data)
     }
 
     public static func fetchInstance(
@@ -33,6 +33,6 @@ public struct InstanceService {
         location: String
     ) async throws -> Instance {
         let response = try await client.request(path: "\(path)/\(location)", method: .get)
-        return try Util.shared.decode(response.data)
+        return try Serializer.shared.decode(response.data)
     }
 }

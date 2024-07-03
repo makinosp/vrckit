@@ -28,8 +28,8 @@ public final class APIClient {
 
     private let username: String?
     private let password: String?
-    private let domainUrl: String
     private let baseUrl: String
+    public let cookieManager: CookieManager
 
     enum Method: String {
         case get, post, patch, put, delete
@@ -46,21 +46,9 @@ public final class APIClient {
     public init(username: String? = nil, password: String? = nil) {
         self.username = username
         self.password = password
-        domainUrl = "https://api.vrchat.cloud"
+        let domainUrl = "https://api.vrchat.cloud"
         baseUrl = "\(domainUrl)/api/1"
-    }
-
-    /// Retrieves the cookies stored for the VRChat API domain.
-    /// - Returns: An array of `HTTPCookie` objects.
-    public var cookies: [HTTPCookie] {
-        guard let url = URL(string: domainUrl),
-              let cookies = HTTPCookieStorage.shared.cookies(for: url) else { return [] }
-        return cookies
-    }
-
-    /// Deletes all cookies stored for the VRChat API domain.
-    public func deleteCookies() {
-        cookies.forEach { HTTPCookieStorage.shared.deleteCookie($0) }
+        cookieManager = CookieManager(domainURL: domainUrl)
     }
 
     /// Encodes the given username and password into a Basic Authentication token.
@@ -111,7 +99,7 @@ public final class APIClient {
         }
 
         // Add cookies to the request headers.
-        request.allHTTPHeaderFields = HTTPCookie.requestHeaderFields(with: cookies)
+        request.allHTTPHeaderFields = cookieManager.httpField
 
         // Add HTTP body and content type if body is provided.
         if let body = body {

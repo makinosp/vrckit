@@ -1,5 +1,5 @@
 //
-//  Util.swift
+//  Serializer.swift
 //
 //
 //  Created by makinosp on 2024/03/10.
@@ -7,8 +7,8 @@
 
 import Foundation
 
-public final class Util {
-    public static let shared = Util()
+public final class Serializer {
+    public static let shared = Serializer()
     private var decoder = JSONDecoder()
     private var encoder = JSONEncoder()
 
@@ -17,17 +17,6 @@ public final class Util {
         decoder.dateDecodingStrategy = .formatted(.iso8601Full)
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         encoder.dateEncodingStrategy = .formatted(.iso8601Full)
-    }
-
-    /// Creates URL components from a given string.
-    /// - Parameter string: The URL string to be converted into `URLComponents`.
-    /// - Throws: `VRCKitError.invalidRequest` if the URL string is invalid.
-    /// - Returns: A `URLComponents` object created from the input string.
-    func urlComponents(_ string: String) throws -> URLComponents {
-        guard let urlComponents = URLComponents(string: string) else {
-            throw VRCKitError.invalidRequest("Bad URL: \(string)")
-        }
-        return urlComponents
     }
 
     /// Decodes JSON data into a specified `Decodable` type.
