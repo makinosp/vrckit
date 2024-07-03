@@ -74,6 +74,6 @@ public struct AuthenticationService {
     /// Logout
     public static func logout(_ client: APIClient) async throws {
         _ = try await client.request(path: "logout", method: .put)
-        client.deleteCookies()
+        client.cookieManager.deleteCookies()
     }
 }
