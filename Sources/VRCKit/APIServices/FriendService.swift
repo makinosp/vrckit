@@ -14,7 +14,7 @@ import Foundation
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
 public struct FriendService {
-    private static let url = "\(baseUrl)/auth/user/friends"
+    private static let path = "auth/user/friends"
 
     /// List information about friends.
     public static func fetchFriends(
@@ -23,19 +23,12 @@ public struct FriendService {
         n: Int = 60,
         offline: Bool = false
     ) async throws -> [Friend] {
-        var request = try Util.shared.urlComponents(url)
-        request.queryItems = [
+        let queryItems = [
             URLQueryItem(name: "offset", value: offset.description),
             URLQueryItem(name: "n", value: n.description),
             URLQueryItem(name: "offline", value: offline.description)
         ]
-        guard let url = request.url else {
-            throw VRCKitError.invalidRequest("Invalid Request: \(request)")
-        }
-        let response = try await client.request(
-            url: url,
-            httpMethod: .get
-        )
+        let response = try await client.request(path: path, httpMethod: .get)
         return try Util.shared.decode(response.data)
     }
 
@@ -82,11 +75,7 @@ public struct FriendService {
     }
 
     public static func unfriend(_ client: APIClient, id: String) async throws {
-        let url = URL(string: "\(url)/\(id)")!
-        try await client.request(
-            url: url,
-            httpMethod: .delete
-        )
+        try await client.request(path: "\(path)/\(id)", httpMethod: .delete)
     }
 
     public static func friendsGroupedByLocation(_ friends: [Friend]) -> [FriendsLocation] {

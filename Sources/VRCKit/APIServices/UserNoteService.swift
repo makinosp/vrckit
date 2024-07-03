@@ -10,7 +10,7 @@ import Foundation
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
 public struct UserNoteService {
-    static let url = "\(baseUrl)/userNotes"
+    static let path = "userNotes"
 
     /// Update user's note
     public static func updateUserNote(
@@ -18,14 +18,9 @@ public struct UserNoteService {
         targetUserId: String,
         note: String
     ) async throws -> UserNoteResponse {
-        let url = URL(string: url)!
         let userNoteRequest = UserNoteRequest(targetUserId: targetUserId, note: note)
         let requestData = try Util.shared.encode(userNoteRequest)
-        let response = try await client.request(
-            url: url,
-            httpMethod: .post,
-            httpBody: requestData
-        )
+        let response = try await client.request(path: path, httpMethod: .post, httpBody: requestData)
         return try Util.shared.decode(response.data)
     }
 }

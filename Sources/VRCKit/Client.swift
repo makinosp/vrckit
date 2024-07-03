@@ -6,8 +6,6 @@ import Foundation
 //  Created by makinosp on 2024/02/12.
 //
 
-let baseUrl = "https://api.vrchat.cloud/api/1"
-
 public struct ResponseMessage: Codable {
     let message: String
     let statusCode: Int
@@ -28,9 +26,10 @@ public struct ErrorResponse: Codable, Error {
 public final class APIClient {
     typealias HTTPResponse = (data: Data, response: HTTPURLResponse)
 
-    private var username: String?
-    private var password: String?
-    private let domainUrl = URL(string: "https://api.vrchat.cloud")!
+    private let username: String?
+    private let password: String?
+    private let domainUrl: String
+    private let baseUrl: String
 
     enum HttpMethod: String {
         case get, post, patch, put, delete
@@ -47,12 +46,15 @@ public final class APIClient {
     public init(username: String? = nil, password: String? = nil) {
         self.username = username
         self.password = password
+        domainUrl = "https://api.vrchat.cloud"
+        baseUrl = "\(domainUrl)/api/1"
     }
 
     /// Retrieves the cookies stored for the VRChat API domain.
     /// - Returns: An array of `HTTPCookie` objects.
     public var cookies: [HTTPCookie] {
-        guard let cookies = HTTPCookieStorage.shared.cookies(for: domainUrl) else { return [] }
+        guard let url = URL(string: domainUrl),
+              let cookies = HTTPCookieStorage.shared.cookies(for: url) else { return [] }
         return cookies
     }
 
@@ -77,18 +79,28 @@ public final class APIClient {
 
     /// Sends a request to the API.
     /// - Parameters:
-    ///   - url: The URL for the request.
+    ///   - path: The path for the request.
     ///   - httpMethod: The HTTP method to use for the request.
     ///   - basic: Whether to include basic authorization.
     ///   - httpBody: The HTTP body to include in the request.
     /// - Returns: A tuple containing the data and the HTTP response.
     /// - Throws: `VRCKitError` if an error occurs during the request.
     func request(
-        url: URL,
+        path: String,
         httpMethod: HttpMethod,
         basic: Bool = false,
+        queryItems: [URLQueryItem] = [],
         httpBody: Data? = nil
     ) async throws -> HTTPResponse {
+        guard var urlComponents = URLComponents(string: "\(baseUrl)/\(path)") else {
+            throw VRCKitError.urlError
+        }
+        if !queryItems.isEmpty {
+            urlComponents.queryItems = queryItems
+        }
+        guard let url = urlComponents.url else {
+            throw VRCKitError.urlError
+        }
         var request = URLRequest(url: url)
         request.httpMethod = httpMethod.description
 

@@ -18,18 +18,13 @@ extension VerifyType: UserOrRequires {}
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
 public struct AuthenticationService {
-    private static let authUrl = "\(baseUrl)/auth"
-    private static let auth2FAUrl = "\(authUrl)/twofactorauth"
+    private static let authPath = "auth"
 
     /// Check User Exists
     public static func isExists(_ client: APIClient, userId: String) async throws -> Bool {
-        var request = URLComponents(string: "\(authUrl)/exists")!
-        request.queryItems = [URLQueryItem(name: "username", value: userId.description)]
-        guard let url = request.url else { return false }
-        let response = try await client.request(
-            url: url,
-            httpMethod: .get
-        )
+        let path = "\(authPath)/exists"
+        let queryItems = [URLQueryItem(name: "username", value: userId.description)]
+        let response = try await client.request(path: path, httpMethod: .get, queryItems: queryItems)
         let result: ExistsResponse = try Util.shared.decode(response.data)
         return result.userExists
     }
@@ -38,11 +33,8 @@ public struct AuthenticationService {
     public static func loginUserInfo(
         _ client: APIClient
     ) async throws -> UserOrRequires {
-        let response = try await client.request(
-            url: URL(string: "\(authUrl)/user")!,
-            httpMethod: .get,
-            basic: true
-        )
+        let path = "\(authPath)/user"
+        let response = try await client.request(path: path, httpMethod: .get, basic: true)
         do {
             let user: User = try Util.shared.decode(response.data)
             return user
@@ -61,9 +53,10 @@ public struct AuthenticationService {
         verifyType: VerifyType,
         code: String
     ) async throws -> Bool {
+        let path = "\(authPath)/twofactorauth/\(verifyType.rawValue.lowercased())/verify"
         let requestData = try Util.shared.encode(VerifyRequest(code: code))
         let response = try await client.request(
-            url: URL(string: "\(auth2FAUrl)/\(verifyType.rawValue.lowercased())/verify")!,
+            path: path,
             httpMethod: .post,
             httpBody: requestData
         )
@@ -73,20 +66,14 @@ public struct AuthenticationService {
 
     /// Verify Auth Token
     public static func verifyAuthToken(_ client: APIClient) async throws -> Bool {
-        let response = try await client.request(
-            url: URL(string: authUrl)!,
-            httpMethod: .get
-        )
+        let response = try await client.request(path: authPath, httpMethod: .get)
         let result: VerifyAuthTokenResponse = try Util.shared.decode(response.data)
         return result.ok
     }
 
     /// Logout
     public static func logout(_ client: APIClient) async throws {
-        _ = try await client.request(
-            url: URL(string: "\(baseUrl)/logout")!,
-            httpMethod: .put
-        )
+        _ = try await client.request(path: "logout", httpMethod: .put)
         client.deleteCookies()
     }
 }
