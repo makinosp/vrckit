@@ -19,8 +19,7 @@ public typealias FavoriteFriendDetail = (favoriteGroupId: String, friends: [User
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
 public struct FavoriteService {
-    private static let favoriteUrl = "\(baseUrl)/favorites"
-    private static let favoriteGroupUrl = "\(baseUrl)/favorite/groups"
+    private static let path = "favorites"
 
     /// Asynchronously retrieves a list of favorite groups from the server.
     /// - Parameter client: The API client used to make the network request.
@@ -29,10 +28,8 @@ public struct FavoriteService {
     public static func listFavoriteGroups(
         _ client: APIClient
     ) async throws -> [FavoriteGroup] {
-        let response = try await client.request(
-            url: URL(string: favoriteGroupUrl)!,
-            httpMethod: .get
-        )
+        let path = "favorite/groups"
+        let response = try await client.request(path: path, httpMethod: .get)
         return try Util.shared.decode(response.data)
     }
 
@@ -42,22 +39,14 @@ public struct FavoriteService {
         type: FavoriteType,
         tag: String? = nil
     ) async throws -> [Favorite] {
-        var request = URLComponents(string: favoriteUrl)!
-        request.queryItems = [
+        var queryItems = [
             URLQueryItem(name: "n", value: n.description),
             URLQueryItem(name: "type", value: type.rawValue)
         ]
         if let tag = tag {
-            request.queryItems?.append(URLQueryItem(name: "tag", value: tag.description))
+            queryItems.append(URLQueryItem(name: "tag", value: tag.description))
         }
-        guard let url = request.url else {
-            throw URLError(.badURL, userInfo: [NSLocalizedDescriptionKey: "Invalid URL: \(favoriteUrl)"])
-        }
-
-        let response = try await client.request(
-            url: url,
-            httpMethod: .get
-        )
+        let response = try await client.request(path: path, httpMethod: .get, queryItems: queryItems)
         return try Util.shared.decode(response.data)
     }
 
@@ -121,11 +110,7 @@ public struct FavoriteService {
         let requestData = try Util.shared.encode(
             RequestToAddFavorite(type: type, favoriteId: favoriteId, tags: [tag])
         )
-        let response = try await client.request(
-            url: URL(string: "\(favoriteUrl)")!,
-            httpMethod: .post,
-            httpBody: requestData
-        )
+        let response = try await client.request(path: path, httpMethod: .post, httpBody: requestData)
         return try Util.shared.decode(response.data)
     }
 
@@ -133,10 +118,7 @@ public struct FavoriteService {
         _ client: APIClient,
         favoriteId: String
     ) async throws -> SuccessResponse {
-        let response = try await client.request(
-            url: URL(string: "\(favoriteUrl)/\(favoriteId)")!,
-            httpMethod: .delete
-        )
+        let response = try await client.request(path: path, httpMethod: .delete)
         return try Util.shared.decode(response.data)
     }
 }

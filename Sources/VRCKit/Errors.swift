@@ -27,6 +27,9 @@ public enum VRCKitError: Error, LocalizedError {
     /// Represents an unexpected error.
     case unexpectedError
 
+    /// Represents an url error.
+    case urlError
+
     /// Provides a localized description of the error.
     public var errorDescription: String? {
         switch self {
@@ -40,6 +43,8 @@ public enum VRCKitError: Error, LocalizedError {
             "Invalid Request"
         case .unexpectedError:
             "Unexpected Error"
+        case .urlError:
+            "URL Error"
         }
     }
 

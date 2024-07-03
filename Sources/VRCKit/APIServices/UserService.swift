@@ -14,18 +14,14 @@ import Foundation
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
 public struct UserService {
-    static let url = "\(baseUrl)/users"
+    static let path = "users"
 
     /// Fetch a user
     public static func fetchUser(
         _ client: APIClient,
         userId: String
     ) async throws -> UserDetail {
-        let url = URL(string: "\(url)/\(userId)")!
-        let response = try await client.request(
-            url: url,
-            httpMethod: .get
-        )
+        let response = try await client.request(path: "\(path)/\(userId)", httpMethod: .get)
         return try Util.shared.decode(response.data)
     }
 
@@ -64,11 +60,7 @@ public struct UserService {
         _ client: APIClient,
         id: String
     ) async throws -> User {
-        let url = URL(string: "\(url)/\(id)")!
-        let response = try await client.request(
-            url: url,
-            httpMethod: .put
-        )
+        let response = try await client.request(path: "\(path)/\(id)", httpMethod: .put)
         return try Util.shared.decode(response.data)
     }
 }

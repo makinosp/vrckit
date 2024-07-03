@@ -14,17 +14,15 @@ import Foundation
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
 public struct InstanceService {
-    static let instanceUrl = "\(baseUrl)/instances"
+    static let path = "instances"
 
     public static func fetchInstance(
         _ client: APIClient,
-        worldID: String,
-        instanceID: String
+        worldId: String,
+        instanceId: String
     ) async throws -> Instance {
-        let url = URL(string: "\(instanceUrl)/\(worldID):\(instanceID)")!
-
         let response = try await client.request(
-            url: url,
+            path: "\(path)/\(worldId):\(instanceId)",
             httpMethod: .get
         )
         return try Util.shared.decode(response.data)
@@ -34,12 +32,7 @@ public struct InstanceService {
         _ client: APIClient,
         location: String
     ) async throws -> Instance {
-        let url = URL(string: "\(instanceUrl)/\(location)")!
-
-        let response = try await client.request(
-            url: url,
-            httpMethod: .get
-        )
+        let response = try await client.request(path: "\(path)/\(location)", httpMethod: .get)
         return try Util.shared.decode(response.data)
     }
 }
