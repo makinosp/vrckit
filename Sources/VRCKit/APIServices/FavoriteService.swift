@@ -30,7 +30,7 @@ public struct FavoriteService {
     ) async throws -> [FavoriteGroup] {
         let path = "favorite/groups"
         let response = try await client.request(path: path, method: .get)
-        return try Util.shared.decode(response.data)
+        return try Serializer.shared.decode(response.data)
     }
 
     public static func listFavorites(
@@ -47,7 +47,7 @@ public struct FavoriteService {
             queryItems.append(URLQueryItem(name: "tag", value: tag.description))
         }
         let response = try await client.request(path: path, method: .get, queryItems: queryItems)
-        return try Util.shared.decode(response.data)
+        return try Serializer.shared.decode(response.data)
     }
 
     /// Fetch a list of favorite IDs for each favorite group
@@ -107,11 +107,11 @@ public struct FavoriteService {
         favoriteId: String,
         tag: String
     ) async throws -> Favorite {
-        let requestData = try Util.shared.encode(
+        let requestData = try Serializer.shared.encode(
             RequestToAddFavorite(type: type, favoriteId: favoriteId, tags: [tag])
         )
         let response = try await client.request(path: path, method: .post, body: requestData)
-        return try Util.shared.decode(response.data)
+        return try Serializer.shared.decode(response.data)
     }
 
     public static func removeFavorite(
@@ -119,6 +119,6 @@ public struct FavoriteService {
         favoriteId: String
     ) async throws -> SuccessResponse {
         let response = try await client.request(path: path, method: .delete)
-        return try Util.shared.decode(response.data)
+        return try Serializer.shared.decode(response.data)
     }
 }

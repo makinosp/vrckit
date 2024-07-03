@@ -19,8 +19,8 @@ public struct UserNoteService {
         note: String
     ) async throws -> UserNoteResponse {
         let userNoteRequest = UserNoteRequest(targetUserId: targetUserId, note: note)
-        let requestData = try Util.shared.encode(userNoteRequest)
+        let requestData = try Serializer.shared.encode(userNoteRequest)
         let response = try await client.request(path: path, method: .post, body: requestData)
-        return try Util.shared.decode(response.data)
+        return try Serializer.shared.decode(response.data)
     }
 }

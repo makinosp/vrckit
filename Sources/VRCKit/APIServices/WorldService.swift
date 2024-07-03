@@ -18,6 +18,6 @@ public struct WorldService {
 
     public static func fetchWorld(_ client: APIClient, worldId: String) async throws -> World {
         let response = try await client.request(path: "\(path)/\(worldId)", method: .get)
-        return try Util.shared.decode(response.data)
+        return try Serializer.shared.decode(response.data)
     }
 }

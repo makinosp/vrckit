@@ -22,7 +22,7 @@ public struct UserService {
         userId: String
     ) async throws -> UserDetail {
         let response = try await client.request(path: "\(path)/\(userId)", method: .get)
-        return try Util.shared.decode(response.data)
+        return try Serializer.shared.decode(response.data)
     }
 
     /// Fetch uesrs
@@ -61,6 +61,6 @@ public struct UserService {
         id: String
     ) async throws -> User {
         let response = try await client.request(path: "\(path)/\(id)", method: .put)
-        return try Util.shared.decode(response.data)
+        return try Serializer.shared.decode(response.data)
     }
 }

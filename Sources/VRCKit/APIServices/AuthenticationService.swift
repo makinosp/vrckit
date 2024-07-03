@@ -25,7 +25,7 @@ public struct AuthenticationService {
         let path = "\(authPath)/exists"
         let queryItems = [URLQueryItem(name: "username", value: userId.description)]
         let response = try await client.request(path: path, method: .get, queryItems: queryItems)
-        let result: ExistsResponse = try Util.shared.decode(response.data)
+        let result: ExistsResponse = try Serializer.shared.decode(response.data)
         return result.userExists
     }
 
@@ -36,10 +36,10 @@ public struct AuthenticationService {
         let path = "\(authPath)/user"
         let response = try await client.request(path: path, method: .get, basic: true)
         do {
-            let user: User = try Util.shared.decode(response.data)
+            let user: User = try Serializer.shared.decode(response.data)
             return user
         } catch let error as DecodingError {
-            let result: RequiresTwoFactorAuthResponse = try Util.shared.decode(response.data)
+            let result: RequiresTwoFactorAuthResponse = try Serializer.shared.decode(response.data)
             guard let requires = result.requires else {
                 throw VRCKitError.unexpectedError
             }
@@ -54,20 +54,20 @@ public struct AuthenticationService {
         code: String
     ) async throws -> Bool {
         let path = "\(authPath)/twofactorauth/\(verifyType.rawValue.lowercased())/verify"
-        let requestData = try Util.shared.encode(VerifyRequest(code: code))
+        let requestData = try Serializer.shared.encode(VerifyRequest(code: code))
         let response = try await client.request(
             path: path,
             method: .post,
             body: requestData
         )
-        let result: VerifyResponse = try Util.shared.decode(response.data)
+        let result: VerifyResponse = try Serializer.shared.decode(response.data)
         return result.verified
     }
 
     /// Verify Auth Token
     public static func verifyAuthToken(_ client: APIClient) async throws -> Bool {
         let response = try await client.request(path: authPath, method: .get)
-        let result: VerifyAuthTokenResponse = try Util.shared.decode(response.data)
+        let result: VerifyAuthTokenResponse = try Serializer.shared.decode(response.data)
         return result.ok
     }
 
