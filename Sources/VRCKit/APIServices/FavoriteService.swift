@@ -29,7 +29,7 @@ public struct FavoriteService {
         _ client: APIClient
     ) async throws -> [FavoriteGroup] {
         let path = "favorite/groups"
-        let response = try await client.request(path: path, httpMethod: .get)
+        let response = try await client.request(path: path, method: .get)
         return try Util.shared.decode(response.data)
     }
 
@@ -46,7 +46,7 @@ public struct FavoriteService {
         if let tag = tag {
             queryItems.append(URLQueryItem(name: "tag", value: tag.description))
         }
-        let response = try await client.request(path: path, httpMethod: .get, queryItems: queryItems)
+        let response = try await client.request(path: path, method: .get, queryItems: queryItems)
         return try Util.shared.decode(response.data)
     }
 
@@ -110,7 +110,7 @@ public struct FavoriteService {
         let requestData = try Util.shared.encode(
             RequestToAddFavorite(type: type, favoriteId: favoriteId, tags: [tag])
         )
-        let response = try await client.request(path: path, httpMethod: .post, httpBody: requestData)
+        let response = try await client.request(path: path, method: .post, body: requestData)
         return try Util.shared.decode(response.data)
     }
 
@@ -118,7 +118,7 @@ public struct FavoriteService {
         _ client: APIClient,
         favoriteId: String
     ) async throws -> SuccessResponse {
-        let response = try await client.request(path: path, httpMethod: .delete)
+        let response = try await client.request(path: path, method: .delete)
         return try Util.shared.decode(response.data)
     }
 }

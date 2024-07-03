@@ -17,7 +17,7 @@ public struct WorldService {
     static let path = "worlds"
 
     public static func fetchWorld(_ client: APIClient, worldId: String) async throws -> World {
-        let response = try await client.request(path: "\(path)/\(worldId)", httpMethod: .get)
+        let response = try await client.request(path: "\(path)/\(worldId)", method: .get)
         return try Util.shared.decode(response.data)
     }
 }

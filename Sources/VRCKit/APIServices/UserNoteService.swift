@@ -20,7 +20,7 @@ public struct UserNoteService {
     ) async throws -> UserNoteResponse {
         let userNoteRequest = UserNoteRequest(targetUserId: targetUserId, note: note)
         let requestData = try Util.shared.encode(userNoteRequest)
-        let response = try await client.request(path: path, httpMethod: .post, httpBody: requestData)
+        let response = try await client.request(path: path, method: .post, body: requestData)
         return try Util.shared.decode(response.data)
     }
 }

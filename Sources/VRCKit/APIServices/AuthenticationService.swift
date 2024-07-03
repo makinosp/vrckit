@@ -24,7 +24,7 @@ public struct AuthenticationService {
     public static func isExists(_ client: APIClient, userId: String) async throws -> Bool {
         let path = "\(authPath)/exists"
         let queryItems = [URLQueryItem(name: "username", value: userId.description)]
-        let response = try await client.request(path: path, httpMethod: .get, queryItems: queryItems)
+        let response = try await client.request(path: path, method: .get, queryItems: queryItems)
         let result: ExistsResponse = try Util.shared.decode(response.data)
         return result.userExists
     }
@@ -34,7 +34,7 @@ public struct AuthenticationService {
         _ client: APIClient
     ) async throws -> UserOrRequires {
         let path = "\(authPath)/user"
-        let response = try await client.request(path: path, httpMethod: .get, basic: true)
+        let response = try await client.request(path: path, method: .get, basic: true)
         do {
             let user: User = try Util.shared.decode(response.data)
             return user
@@ -57,8 +57,8 @@ public struct AuthenticationService {
         let requestData = try Util.shared.encode(VerifyRequest(code: code))
         let response = try await client.request(
             path: path,
-            httpMethod: .post,
-            httpBody: requestData
+            method: .post,
+            body: requestData
         )
         let result: VerifyResponse = try Util.shared.decode(response.data)
         return result.verified
@@ -66,14 +66,14 @@ public struct AuthenticationService {
 
     /// Verify Auth Token
     public static func verifyAuthToken(_ client: APIClient) async throws -> Bool {
-        let response = try await client.request(path: authPath, httpMethod: .get)
+        let response = try await client.request(path: authPath, method: .get)
         let result: VerifyAuthTokenResponse = try Util.shared.decode(response.data)
         return result.ok
     }
 
     /// Logout
     public static func logout(_ client: APIClient) async throws {
-        _ = try await client.request(path: "logout", httpMethod: .put)
+        _ = try await client.request(path: "logout", method: .put)
         client.deleteCookies()
     }
 }

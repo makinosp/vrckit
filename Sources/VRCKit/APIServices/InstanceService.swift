@@ -23,7 +23,7 @@ public struct InstanceService {
     ) async throws -> Instance {
         let response = try await client.request(
             path: "\(path)/\(worldId):\(instanceId)",
-            httpMethod: .get
+            method: .get
         )
         return try Util.shared.decode(response.data)
     }
@@ -32,7 +32,7 @@ public struct InstanceService {
         _ client: APIClient,
         location: String
     ) async throws -> Instance {
-        let response = try await client.request(path: "\(path)/\(location)", httpMethod: .get)
+        let response = try await client.request(path: "\(path)/\(location)", method: .get)
         return try Util.shared.decode(response.data)
     }
 }
