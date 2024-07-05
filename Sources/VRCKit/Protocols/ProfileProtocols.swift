@@ -34,6 +34,7 @@ public protocol ProfileElementRepresentable: Hashable, Identifiable {
 public protocol ProfileDetailRepresentable: ProfileElementRepresentable {
     var dateJoined: String { get }
     var lastActivity: Date { get }
+    var state: User.State { get }
 }
 
 @available(iOS 13.0, *)

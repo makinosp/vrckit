@@ -30,7 +30,7 @@ public struct User: Codable, ProfileDetailRepresentable {
     public let onlineFriends: [String]
     public let pastDisplayNames: [DisplayName]
     public let profilePicOverride: String?
-    public let state: String
+    public let state: State
     public let status: Status
     public let statusDescription: String
     public let tags: [String]
@@ -44,11 +44,22 @@ public struct User: Codable, ProfileDetailRepresentable {
         public let updatedAt: Date
     }
 
+    /// Defines the User's current status, for example "ask me", "join me" or "offline.
+    /// This status is a combined indicator of their online activity and privacy preference.
     public enum Status: String, Codable, CaseIterable {
         case joinMe = "join me"
         case active
         case askMe = "ask me"
         case busy
+        case offline
+    }
+
+    public enum State: String, Codable {
+        /// User is online in VRChat
+        case online
+        /// User is online, but not in VRChat
+        case active
+        /// User is offline
         case offline
     }
 }
