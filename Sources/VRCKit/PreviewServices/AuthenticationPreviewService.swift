@@ -42,4 +42,7 @@ public class AuthenticationPreviewService: AuthenticationService {
             userLanguageCode: nil
         )
     }
+
+    /// Logout
+    override public func logout() async throws {}
 }
