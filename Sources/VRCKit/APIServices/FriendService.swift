@@ -11,18 +11,25 @@ import Foundation
 // MARK: Friends API
 //
 
+public protocol FriendServiceProtocol {
+    func fetchFriends(offset: Int, n: Int, offline: Bool) async throws -> [Friend]
+    func fetchFriends(count: Int, offline: Bool) async throws -> [Friend]
+    func unfriend(_ client: APIClient, id: String) async throws
+    func friendsGroupedByLocation(_ friends: [Friend]) -> [FriendsLocation]
+}
+
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
-public struct FriendService {
-    private static let path = "auth/user/friends"
+public class FriendService: FriendServiceProtocol {
+    private let path = "auth/user/friends"
+    private let client: APIClient
+
+    public init(client: APIClient) {
+        self.client = client
+    }
 
     /// List information about friends.
-    public static func fetchFriends(
-        _ client: APIClient,
-        offset: Int,
-        n: Int = 60,
-        offline: Bool = false
-    ) async throws -> [Friend] {
+    public func fetchFriends(offset: Int, n: Int = 60, offline: Bool) async throws -> [Friend] {
         let queryItems = [
             URLQueryItem(name: "offset", value: offset.description),
             URLQueryItem(name: "n", value: n.description),
@@ -34,21 +41,12 @@ public struct FriendService {
 
     /// A helper function that splits a large API request tasks to fetch friend data concurrently,
     /// and then combines the results.
-    public static func fetchFriends(
-        _ client: APIClient,
-        count: Int,
-        offline: Bool = false
-    ) async throws -> [Friend] {
+    public func fetchFriends(count: Int, offline: Bool) async throws -> [Friend] {
         typealias ResultSet = (offset: Int, friends: [Friend])
         var results: [ResultSet] = []
         let n = 100
         if count <= n {
-            return try await fetchFriends(
-                client,
-                offset: 0,
-                n: count,
-                offline: offline
-            )
+            return try await fetchFriends(offset: 0, n: count, offline: offline)
         }
         try await withThrowingTaskGroup(of: ResultSet.self) { taskGroup in
             for offset in stride(from: 0, to: count, by: n) {
@@ -56,12 +54,7 @@ public struct FriendService {
                     guard let client = client else {
                         throw VRCKitError.clientDeallocated
                     }
-                    let friends = try await fetchFriends(
-                        client,
-                        offset: offset,
-                        n: n,
-                        offline: offline
-                    )
+                    let friends = try await self.fetchFriends(offset: offset, n: n, offline: offline)
                     return ResultSet(offset: offset, friends: friends)
                 }
             }
@@ -74,11 +67,11 @@ public struct FriendService {
             .flatMap { $0.friends }
     }
 
-    public static func unfriend(_ client: APIClient, id: String) async throws {
-        try await client.request(path: "\(path)/\(id)", method: .delete)
+    public func unfriend(_ client: APIClient, id: String) async throws {
+        _ = try await client.request(path: "\(path)/\(id)", method: .delete)
     }
 
-    public static func friendsGroupedByLocation(_ friends: [Friend]) -> [FriendsLocation] {
+    public func friendsGroupedByLocation(_ friends: [Friend]) -> [FriendsLocation] {
         Dictionary(grouping: friends, by: \.location)
             .sorted { $0.value.count > $1.value.count }
             .map { dictionary in

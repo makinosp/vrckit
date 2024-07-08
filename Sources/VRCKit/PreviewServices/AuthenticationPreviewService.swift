@@ -23,7 +23,7 @@ public class AuthenticationPreviewService: AuthenticationService {
             friendKey: "",
             friends: [],
             homeLocation: "",
-            id: "",
+            id: "usr_\(UUID().uuidString)",
             isFriend: false,
             lastActivity: Date(),
             lastLogin: Date(),
