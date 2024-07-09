@@ -76,31 +76,6 @@ public struct FavoriteService {
         return results
     }
 
-    /// Fetch friend details from favorite IDs
-    public static func fetchFriendsInGroups(
-        _ client: APIClient,
-        favorites: [FavoriteDetail]
-    ) async throws -> [FavoriteFriendDetail] {
-        var results: [FavoriteFriendDetail] = []
-        try await withThrowingTaskGroup(of: FavoriteFriendDetail.self) { taskGroup in
-            for favoriteGroup in favorites {
-                taskGroup.addTask {
-                    try await FavoriteFriendDetail(
-                        favoriteGroupId: favoriteGroup.favoriteGroupId,
-                        friends: UserService.fetchUsers(
-                            client,
-                            userIds: favoriteGroup.favorites.map(\.favoriteId)
-                        )
-                    )
-                }
-            }
-            for try await result in taskGroup {
-                results.append(result)
-            }
-        }
-        return results
-    }
-
     public static func addFavorite(
         _ client: APIClient,
         type: FavoriteType,
