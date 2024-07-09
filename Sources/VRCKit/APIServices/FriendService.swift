@@ -14,7 +14,7 @@ import Foundation
 public protocol FriendServiceProtocol {
     func fetchFriends(offset: Int, n: Int, offline: Bool) async throws -> [Friend]
     func fetchFriends(count: Int, offline: Bool) async throws -> [Friend]
-    func unfriend(_ client: APIClient, id: String) async throws
+    func unfriend(id: String) async throws
     func friendsGroupedByLocation(_ friends: [Friend]) -> [FriendsLocation]
 }
 
@@ -67,7 +67,7 @@ public class FriendService: FriendServiceProtocol {
             .flatMap { $0.friends }
     }
 
-    public func unfriend(_ client: APIClient, id: String) async throws {
+    public func unfriend(id: String) async throws {
         _ = try await client.request(path: "\(path)/\(id)", method: .delete)
     }
 
