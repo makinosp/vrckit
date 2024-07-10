@@ -74,6 +74,7 @@ public final class APIClient {
     ///   - path: The path for the request.
     ///   - method: The HTTP method to use for the request.
     ///   - basic: Whether to include basic authorization.
+    ///   - queryItems: An array of `URLQueryItem` to include in the request.
     ///   - body: The HTTP body to include in the request.
     /// - Returns: A tuple containing the data and the HTTP response.
     /// - Throws: `VRCKitError` if an error occurs during the request.

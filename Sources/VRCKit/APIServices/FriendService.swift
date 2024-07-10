@@ -35,7 +35,7 @@ public class FriendService: FriendServiceProtocol {
             URLQueryItem(name: "n", value: n.description),
             URLQueryItem(name: "offline", value: offline.description)
         ]
-        let response = try await client.request(path: path, method: .get)
+        let response = try await client.request(path: path, method: .get, queryItems: queryItems)
         return try Serializer.shared.decode(response.data)
     }
 
