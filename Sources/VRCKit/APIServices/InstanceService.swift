@@ -11,16 +11,28 @@ import Foundation
 // MARK: Instance API
 //
 
+public protocol InstanceServiceProtocol {
+    func fetchInstance(worldId: String, instanceId: String) async throws -> Instance
+    func fetchInstance(location: String) async throws -> Instance
+}
+
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
-public struct InstanceService {
-    static let path = "instances"
+public class InstanceService {
+    let path = "instances"
+    var client: APIClient
 
-    public static func fetchInstance(
-        _ client: APIClient,
-        worldId: String,
-        instanceId: String
-    ) async throws -> Instance {
+    public init(client: APIClient) {
+        self.client = client
+    }
+
+    /// Fetches an instance of a world using the specified world ID and instance ID.
+    /// - Parameters:
+    ///   - worldId: The ID of the world to fetch the instance from.
+    ///   - instanceId: The ID of the instance to fetch.
+    /// - Returns: An `Instance` object representing the fetched instance.
+    /// - Throws: An error if the request fails or the data cannot be decoded.
+    public func fetchInstance(worldId: String, instanceId: String) async throws -> Instance {
         let response = try await client.request(
             path: "\(path)/\(worldId):\(instanceId)",
             method: .get
@@ -28,10 +40,11 @@ public struct InstanceService {
         return try Serializer.shared.decode(response.data)
     }
 
-    public static func fetchInstance(
-        _ client: APIClient,
-        location: String
-    ) async throws -> Instance {
+    /// Fetches an instance using the specified location string.
+    /// - Parameter location: The location string in the format "worldId:instanceId".
+    /// - Returns: An `Instance` object representing the fetched instance.
+    /// - Throws: An error if the request fails or the data cannot be decoded.
+    public func fetchInstance(location: String) async throws -> Instance {
         let response = try await client.request(path: "\(path)/\(location)", method: .get)
         return try Serializer.shared.decode(response.data)
     }
