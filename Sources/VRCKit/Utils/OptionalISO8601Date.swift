@@ -7,10 +7,16 @@
 
 import Foundation
 
-public struct OptionalISO8601Date: Codable, Hashable {
+public struct OptionalISO8601Date {
     private let date: Date?
     private let formatter = DateFormatter.iso8601Full
 
+    public init(date: Date? = nil) {
+        self.date = date
+    }
+}
+
+extension OptionalISO8601Date: Codable {
     public init(from decoder: any Decoder) throws {
         let container = try decoder.singleValueContainer()
         let dateString = try container.decode(String.self)
@@ -35,5 +41,15 @@ public struct OptionalISO8601Date: Codable, Hashable {
         } else {
             try container.encode("none")
         }
+    }
+}
+
+extension OptionalISO8601Date: Hashable {
+    public static func == (lhs: OptionalISO8601Date, rhs: OptionalISO8601Date) -> Bool {
+        lhs.date == rhs.date
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(date)
     }
 }
