@@ -15,13 +15,26 @@ public protocol UserOrRequires {}
 extension User: UserOrRequires {}
 extension VerifyType: UserOrRequires {}
 
+public protocol AuthenticationServiceProtocol {
+    func isExists(userId: String) async throws -> Bool
+    func loginUserInfo() async throws -> UserOrRequires
+    func verify2FA(verifyType: VerifyType, code: String) async throws -> Bool
+    func verifyAuthToken() async throws -> Bool
+    func logout() async throws
+}
+
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
-public struct AuthenticationService {
-    private static let authPath = "auth"
+public class AuthenticationService: AuthenticationServiceProtocol {
+    private let authPath = "auth"
+    private let client: APIClient
+
+    public init(client: APIClient) {
+        self.client = client
+    }
 
     /// Check User Exists
-    public static func isExists(_ client: APIClient, userId: String) async throws -> Bool {
+    public func isExists(userId: String) async throws -> Bool {
         let path = "\(authPath)/exists"
         let queryItems = [URLQueryItem(name: "username", value: userId.description)]
         let response = try await client.request(path: path, method: .get, queryItems: queryItems)
@@ -30,15 +43,13 @@ public struct AuthenticationService {
     }
 
     /// Login and/or Get Current User Info
-    public static func loginUserInfo(
-        _ client: APIClient
-    ) async throws -> UserOrRequires {
+    public func loginUserInfo() async throws -> UserOrRequires {
         let path = "\(authPath)/user"
         let response = try await client.request(path: path, method: .get, basic: true)
         do {
             let user: User = try Serializer.shared.decode(response.data)
             return user
-        } catch let error as DecodingError {
+        } catch _ as DecodingError {
             let result: RequiresTwoFactorAuthResponse = try Serializer.shared.decode(response.data)
             guard let requires = result.requires else {
                 throw VRCKitError.unexpectedError
@@ -48,11 +59,7 @@ public struct AuthenticationService {
     }
 
     /// Verify 2FA With TOTP or Email OTP
-    public static func verify2FA(
-        _ client: APIClient,
-        verifyType: VerifyType,
-        code: String
-    ) async throws -> Bool {
+    public func verify2FA(verifyType: VerifyType, code: String) async throws -> Bool {
         let path = "\(authPath)/twofactorauth/\(verifyType.rawValue.lowercased())/verify"
         let requestData = try Serializer.shared.encode(VerifyRequest(code: code))
         let response = try await client.request(
@@ -65,14 +72,14 @@ public struct AuthenticationService {
     }
 
     /// Verify Auth Token
-    public static func verifyAuthToken(_ client: APIClient) async throws -> Bool {
+    public func verifyAuthToken() async throws -> Bool {
         let response = try await client.request(path: authPath, method: .get)
         let result: VerifyAuthTokenResponse = try Serializer.shared.decode(response.data)
         return result.ok
     }
 
     /// Logout
-    public static func logout(_ client: APIClient) async throws {
+    public func logout() async throws {
         _ = try await client.request(path: "logout", method: .put)
         client.cookieManager.deleteCookies()
     }

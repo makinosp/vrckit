@@ -11,11 +11,6 @@ import Foundation
 // MARK: Favorite API
 //
 
-public typealias FavoriteDetail = (favoriteGroupId: String, favorites: [Favorite])
-@available(macOS 12.0, *)
-@available(iOS 15.0, *)
-public typealias FavoriteFriendDetail = (favoriteGroupId: String, friends: [UserDetail])
-
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
 public struct FavoriteService {
@@ -60,7 +55,7 @@ public struct FavoriteService {
             for favoriteGroup in favoriteGroups.filter({ $0.type == .friend }) {
                 taskGroup.addTask {
                     try await FavoriteDetail(
-                        favoriteGroupId: favoriteGroup.id,
+                        id: favoriteGroup.id,
                         favorites: FavoriteService.listFavorites(
                             client,
                             type: .friend,
@@ -71,31 +66,6 @@ public struct FavoriteService {
             }
             for try await favoriteGroupDetail in taskGroup {
                 results.append(favoriteGroupDetail)
-            }
-        }
-        return results
-    }
-
-    /// Fetch friend details from favorite IDs
-    public static func fetchFriendsInGroups(
-        _ client: APIClient,
-        favorites: [FavoriteDetail]
-    ) async throws -> [FavoriteFriendDetail] {
-        var results: [FavoriteFriendDetail] = []
-        try await withThrowingTaskGroup(of: FavoriteFriendDetail.self) { taskGroup in
-            for favoriteGroup in favorites {
-                taskGroup.addTask {
-                    try await FavoriteFriendDetail(
-                        favoriteGroupId: favoriteGroup.favoriteGroupId,
-                        friends: UserService.fetchUsers(
-                            client,
-                            userIds: favoriteGroup.favorites.map(\.favoriteId)
-                        )
-                    )
-                }
-            }
-            for try await result in taskGroup {
-                results.append(result)
             }
         }
         return results

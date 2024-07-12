@@ -26,8 +26,8 @@ public struct ErrorResponse: Codable, Error {
 public final class APIClient {
     typealias HTTPResponse = (data: Data, response: HTTPURLResponse)
 
-    private let username: String?
-    private let password: String?
+    private var username: String?
+    private var password: String?
     private let baseUrl: String
     public let cookieManager: CookieManager
 
@@ -40,15 +40,19 @@ public final class APIClient {
     }
 
     /// Initializes the API client with optional username and password.
-    /// - Parameters:
-    ///   - username: The username for basic authentication.
-    ///   - password: The password for basic authentication.
-    public init(username: String? = nil, password: String? = nil) {
-        self.username = username
-        self.password = password
+    public init() {
         let domainUrl = "https://api.vrchat.cloud"
         baseUrl = "\(domainUrl)/api/1"
         cookieManager = CookieManager(domainURL: domainUrl)
+    }
+
+    /// Set username and password.
+    /// - Parameters:
+    ///   - username: The username for basic authentication.
+    ///   - password: The password for basic authentication.
+    public func setCledentials(username: String, password: String) {
+        self.username = username
+        self.password = password
     }
 
     /// Encodes the given username and password into a Basic Authentication token.
@@ -70,6 +74,7 @@ public final class APIClient {
     ///   - path: The path for the request.
     ///   - method: The HTTP method to use for the request.
     ///   - basic: Whether to include basic authorization.
+    ///   - queryItems: An array of `URLQueryItem` to include in the request.
     ///   - body: The HTTP body to include in the request.
     /// - Returns: A tuple containing the data and the HTTP response.
     /// - Throws: `VRCKitError` if an error occurs during the request.

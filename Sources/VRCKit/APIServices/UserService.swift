@@ -25,36 +25,6 @@ public struct UserService {
         return try Serializer.shared.decode(response.data)
     }
 
-    /// Fetch uesrs
-    public static func fetchUsers(
-        _ client: APIClient,
-        userIds: [String]
-    ) async throws -> [UserDetail] {
-        typealias ResultSet = (index: Int, user: UserDetail)
-        var users: [ResultSet?] = []
-        try await withThrowingTaskGroup(of: ResultSet?.self) { taskGroup in
-            for (index, userId) in userIds.enumerated() {
-                taskGroup.addTask {
-                    do {
-                        return try await (
-                            index: index,
-                            user: UserService.fetchUser(client, userId: userId)
-                        )
-                    } catch let error as VRCKitError {
-                        return nil
-                    }
-                }
-            }
-            for try await result in taskGroup {
-                users.append(result)
-            }
-        }
-        return users
-            .compactMap { $0 }
-            .sorted { $0.index < $1.index }
-            .map(\.user)
-    }
-
     /// Update user
     public static func updateUser(
         _ client: APIClient,
