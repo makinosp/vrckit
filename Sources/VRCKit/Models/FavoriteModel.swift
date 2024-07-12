@@ -18,6 +18,15 @@ public struct Favorite: Codable, Identifiable {
     public let type: FavoriteType
 }
 
+public struct FavoriteDetail: Identifiable {
+    public let id: String
+    public let favorites: [Favorite]
+
+    public func allFavoritesAre(_ type: FavoriteType) -> Bool {
+        favorites.allSatisfy { $0.type == type }
+    }
+}
+
 public struct FavoriteGroup: Codable, Identifiable {
     public let id: String
     public let displayName: String
