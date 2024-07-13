@@ -59,7 +59,7 @@ class DemoDataProvider {
             statusDescription: "status",
             tags: [],
             twoFactorAuthEnabled: true,
-            userIcon: nil,
+            userIcon: "https://ul.h3z.jp/9gGIcerr.png",
             userLanguage: nil,
             userLanguageCode: nil
         )
@@ -80,7 +80,7 @@ class DemoDataProvider {
             status: .active,
             statusDescription: "",
             tags: [],
-            userIcon: nil,
+            userIcon: "https://ul.h3z.jp/9gGIcerr.png",
             location: location,
             friendKey: ""
         )
