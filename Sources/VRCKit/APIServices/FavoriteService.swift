@@ -11,25 +11,34 @@ import Foundation
 // MARK: Favorite API
 //
 
+public protocol FavoriteServiceProtocol {
+    func listFavoriteGroups() async throws -> [FavoriteGroup]
+    func listFavorites(n: Int, type: FavoriteType, tag: String?) async throws -> [Favorite]
+    func fetchFavoriteGroupDetails(favoriteGroups: [FavoriteGroup]) async throws -> [FavoriteDetail]
+    func addFavorite(type: FavoriteType, favoriteId: String, tag: String) async throws -> Favorite
+    func removeFavorite(favoriteId: String) async throws -> SuccessResponse
+}
+
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
-public struct FavoriteService {
-    private static let path = "favorites"
+public class FavoriteService: FavoriteServiceProtocol {
+    private let path = "favorites"
+    private let client: APIClient
+
+    public init(client: APIClient) {
+        self.client = client
+    }
 
     /// Asynchronously retrieves a list of favorite groups from the server.
-    /// - Parameter client: The API client used to make the network request.
     /// - Returns: An array of `FavoriteGroup` objects.
     /// - Throws: An error if the network request or decoding of the response fails.
-    public static func listFavoriteGroups(
-        _ client: APIClient
-    ) async throws -> [FavoriteGroup] {
+    public func listFavoriteGroups() async throws -> [FavoriteGroup] {
         let path = "favorite/groups"
         let response = try await client.request(path: path, method: .get)
         return try Serializer.shared.decode(response.data)
     }
 
-    public static func listFavorites(
-        _ client: APIClient,
+    public func listFavorites(
         n: Int = 60,
         type: FavoriteType,
         tag: String? = nil
@@ -46,22 +55,18 @@ public struct FavoriteService {
     }
 
     /// Fetch a list of favorite IDs for each favorite group
-    public static func fetchFavoriteGroupDetails(
-        _ client: APIClient,
+    public func fetchFavoriteGroupDetails(
         favoriteGroups: [FavoriteGroup]
     ) async throws -> [FavoriteDetail] {
         var results: [FavoriteDetail] = []
         try await withThrowingTaskGroup(of: FavoriteDetail.self) { taskGroup in
             for favoriteGroup in favoriteGroups.filter({ $0.type == .friend }) {
                 taskGroup.addTask {
-                    try await FavoriteDetail(
-                        id: favoriteGroup.id,
-                        favorites: FavoriteService.listFavorites(
-                            client,
-                            type: .friend,
-                            tag: favoriteGroup.name
-                        )
+                    let favorites = try await self.listFavorites(
+                        type: .friend,
+                        tag: favoriteGroup.name
                     )
+                    return FavoriteDetail(id: favoriteGroup.id, favorites: favorites)
                 }
             }
             for try await favoriteGroupDetail in taskGroup {
@@ -71,8 +76,7 @@ public struct FavoriteService {
         return results
     }
 
-    public static func addFavorite(
-        _ client: APIClient,
+    public func addFavorite(
         type: FavoriteType,
         favoriteId: String,
         tag: String
@@ -84,8 +88,7 @@ public struct FavoriteService {
         return try Serializer.shared.decode(response.data)
     }
 
-    public static func removeFavorite(
-        _ client: APIClient,
+    public func removeFavorite(
         favoriteId: String
     ) async throws -> SuccessResponse {
         let response = try await client.request(path: path, method: .delete)
