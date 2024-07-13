@@ -18,7 +18,7 @@ public protocol InstanceServiceProtocol {
 
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
-public class InstanceService {
+public class InstanceService: InstanceServiceProtocol {
     let path = "instances"
     var client: APIClient
 
