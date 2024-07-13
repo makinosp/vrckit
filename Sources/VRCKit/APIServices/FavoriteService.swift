@@ -11,11 +11,6 @@ import Foundation
 // MARK: Favorite API
 //
 
-public typealias FavoriteDetail = (favoriteGroupId: String, favorites: [Favorite])
-@available(macOS 12.0, *)
-@available(iOS 15.0, *)
-public typealias FavoriteFriendDetail = (favoriteGroupId: String, friends: [UserDetail])
-
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
 public struct FavoriteService {
@@ -60,7 +55,7 @@ public struct FavoriteService {
             for favoriteGroup in favoriteGroups.filter({ $0.type == .friend }) {
                 taskGroup.addTask {
                     try await FavoriteDetail(
-                        favoriteGroupId: favoriteGroup.id,
+                        id: favoriteGroup.id,
                         favorites: FavoriteService.listFavorites(
                             client,
                             type: .friend,
