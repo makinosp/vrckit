@@ -18,13 +18,8 @@ public protocol UserServiceProtocol {
 
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
-public class UserService: UserServiceProtocol {
+public class UserService: APIServiceBase, UserServiceProtocol {
     let path = "users"
-    let client: APIClient
-
-    public init(client: APIClient) {
-        self.client = client
-    }
 
     /// Fetch a user
     public func fetchUser(userId: String) async throws -> UserDetail {

@@ -21,13 +21,8 @@ public protocol FavoriteServiceProtocol {
 
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
-public class FavoriteService: FavoriteServiceProtocol {
+public class FavoriteService: APIServiceBase, FavoriteServiceProtocol {
     private let path = "favorites"
-    private let client: APIClient
-
-    public init(client: APIClient) {
-        self.client = client
-    }
 
     /// Asynchronously retrieves a list of favorite groups from the server.
     /// - Returns: An array of `FavoriteGroup` objects.
