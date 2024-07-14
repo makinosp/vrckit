@@ -25,13 +25,8 @@ public protocol AuthenticationServiceProtocol {
 
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
-public class AuthenticationService: AuthenticationServiceProtocol {
+public class AuthenticationService: APIService, AuthenticationServiceProtocol {
     private let authPath = "auth"
-    private let client: APIClient
-
-    public init(client: APIClient) {
-        self.client = client
-    }
 
     /// Check User Exists
     public func isExists(userId: String) async throws -> Bool {
