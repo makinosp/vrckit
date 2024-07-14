@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class FavoritePreviewService: FavoriteService {
+public final class FavoritePreviewService: FavoriteService {
     override public func listFavoriteGroups() async throws -> [FavoriteGroup] {
         [
             FavoriteGroup(

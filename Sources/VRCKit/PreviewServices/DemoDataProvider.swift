@@ -7,7 +7,7 @@
 
 import Foundation
 
-class DemoDataProvider {
+final class DemoDataProvider {
     static let shared = DemoDataProvider()
     let onlineFriends: [Friend]
     let instances: [Instance]
@@ -127,8 +127,8 @@ class DemoDataProvider {
             capacity: 32,
             tags: [],
             releaseStatus: .public,
-            imageUrl: "",
-            thumbnailImageUrl: "",
+            imageUrl: "https://ul.h3z.jp/ecWPM0Wk.jpg",
+            thumbnailImageUrl: "https://ul.h3z.jp/ecWPM0Wk.jpg",
             namespace: nil,
             organization: "",
             previewYoutubeId: "",

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class FriendPreviewService: FriendService {
+public final class FriendPreviewService: FriendService {
     override public func fetchFriends(offset: Int, n: Int, offline: Bool) async throws -> [Friend] {
         var friends: [Friend] = []
         if !offline {

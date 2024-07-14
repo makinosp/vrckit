@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class InstancePreviewService: InstanceService {
+public final class InstancePreviewService: InstanceService {
     override public func fetchInstance(location: String) async throws -> Instance {
         DemoDataProvider.shared.instances[0]
     }

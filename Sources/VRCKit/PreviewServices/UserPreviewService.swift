@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class UserPreviewService: UserService {
+public final class UserPreviewService: UserService {
     override public func fetchUser(userId: String) async throws -> UserDetail {
         UserDetail(
             bio: "Demo",
