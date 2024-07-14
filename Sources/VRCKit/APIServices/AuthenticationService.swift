@@ -7,31 +7,10 @@
 
 import Foundation
 
-//
-// MARK: Authentication API
-//
-
-public protocol UserOrRequires {}
-extension User: UserOrRequires {}
-extension VerifyType: UserOrRequires {}
-
-public protocol AuthenticationServiceProtocol {
-    func isExists(userId: String) async throws -> Bool
-    func loginUserInfo() async throws -> UserOrRequires
-    func verify2FA(verifyType: VerifyType, code: String) async throws -> Bool
-    func verifyAuthToken() async throws -> Bool
-    func logout() async throws
-}
-
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
-public class AuthenticationService: AuthenticationServiceProtocol {
+public class AuthenticationService: APIService, AuthenticationServiceProtocol {
     private let authPath = "auth"
-    private let client: APIClient
-
-    public init(client: APIClient) {
-        self.client = client
-    }
 
     /// Check User Exists
     public func isExists(userId: String) async throws -> Bool {

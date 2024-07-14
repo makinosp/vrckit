@@ -7,24 +7,10 @@
 
 import Foundation
 
-//
-// MARK: Instance API
-//
-
-public protocol InstanceServiceProtocol {
-    func fetchInstance(worldId: String, instanceId: String) async throws -> Instance
-    func fetchInstance(location: String) async throws -> Instance
-}
-
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
-public class InstanceService {
+public class InstanceService: APIService, InstanceServiceProtocol {
     let path = "instances"
-    var client: APIClient
-
-    public init(client: APIClient) {
-        self.client = client
-    }
 
     /// Fetches an instance of a world using the specified world ID and instance ID.
     /// - Parameters:

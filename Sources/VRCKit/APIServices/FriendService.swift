@@ -7,26 +7,10 @@
 
 import Foundation
 
-//
-// MARK: Friends API
-//
-
-public protocol FriendServiceProtocol {
-    func fetchFriends(offset: Int, n: Int, offline: Bool) async throws -> [Friend]
-    func fetchFriends(count: Int, offline: Bool) async throws -> [Friend]
-    func unfriend(id: String) async throws
-    func friendsGroupedByLocation(_ friends: [Friend]) -> [FriendsLocation]
-}
-
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
-public class FriendService: FriendServiceProtocol {
+public class FriendService: APIService, FriendServiceProtocol {
     private let path = "auth/user/friends"
-    private let client: APIClient
-
-    public init(client: APIClient) {
-        self.client = client
-    }
 
     /// List information about friends.
     public func fetchFriends(offset: Int, n: Int = 60, offline: Bool) async throws -> [Friend] {
