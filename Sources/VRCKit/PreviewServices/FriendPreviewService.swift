@@ -9,10 +9,6 @@ import Foundation
 
 public final class FriendPreviewService: FriendService {
     override public func fetchFriends(offset: Int, n: Int, offline: Bool) async throws -> [Friend] {
-        var friends: [Friend] = []
-        if !offline {
-            friends = PreviewDataProvider.shared.onlineFriends
-        }
-        return friends
+        offline ? PreviewDataProvider.shared.offlineFriends : PreviewDataProvider.shared.onlineFriends
     }
 }
