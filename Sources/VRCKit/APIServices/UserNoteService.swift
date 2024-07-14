@@ -7,14 +7,17 @@
 
 import Foundation
 
+public protocol UserNoteServiceProtocol {
+    func updateUserNote(targetUserId: String, note: String) async throws -> UserNoteResponse
+}
+
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
-public struct UserNoteService {
-    static let path = "userNotes"
+public class UserNoteService: APIService, UserNoteServiceProtocol {
+    let path = "userNotes"
 
     /// Update user's note
-    public static func updateUserNote(
-        _ client: APIClient,
+    public func updateUserNote(
         targetUserId: String,
         note: String
     ) async throws -> UserNoteResponse {
