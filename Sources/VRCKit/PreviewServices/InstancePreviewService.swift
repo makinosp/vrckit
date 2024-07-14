@@ -9,13 +9,13 @@ import Foundation
 
 public final class InstancePreviewService: InstanceService {
     override public func fetchInstance(location: String) async throws -> Instance {
-        DemoDataProvider.shared.instances[0]
+        PreviewDataProvider.shared.instances[0]
     }
 
     override public func fetchInstance(
         worldId: String,
         instanceId: String
     ) async throws -> Instance {
-        DemoDataProvider.shared.instances[0]
+        PreviewDataProvider.shared.instances[0]
     }
 }

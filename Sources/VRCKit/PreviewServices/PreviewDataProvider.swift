@@ -1,5 +1,5 @@
 //
-//  DemoDataProvider.swift
+//  PreviewDataProvider.swift
 //
 //
 //  Created by makinosp on 2024/07/13.
@@ -7,14 +7,14 @@
 
 import Foundation
 
-final class DemoDataProvider {
-    static let shared = DemoDataProvider()
+final class PreviewDataProvider {
+    static let shared = PreviewDataProvider()
     let onlineFriends: [Friend]
     let instances: [Instance]
 
     private init() {
         let instances = [
-            DemoDataProvider.generateInstance(
+            PreviewDataProvider.generateInstance(
                 worldId: Int.random(in: 0..<99999).description,
                 instanceId: "wrld_\(UUID().uuidString)"
             )
@@ -23,9 +23,9 @@ final class DemoDataProvider {
         onlineFriends = (0..<50).map { number in
             switch number {
             case ..<10:
-                DemoDataProvider.generateFriend(id: "usr_\(UUID().uuidString)", location: instances[0].id)
+                PreviewDataProvider.generateFriend(id: "usr_\(UUID().uuidString)", location: instances[0].id)
             default:
-                DemoDataProvider.generateFriend(id: "usr_\(UUID().uuidString)", location: "private")
+                PreviewDataProvider.generateFriend(id: "usr_\(UUID().uuidString)", location: "private")
             }
         }
     }

@@ -9,7 +9,7 @@ import Foundation
 
 public final class AuthenticationPreviewService: AuthenticationService {
     override public func loginUserInfo() async throws -> UserOrRequires {
-        DemoDataProvider.shared.getDemoUesr()
+        PreviewDataProvider.shared.getDemoUesr()
     }
 
     /// Logout
