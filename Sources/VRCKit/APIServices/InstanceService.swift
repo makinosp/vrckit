@@ -7,15 +7,6 @@
 
 import Foundation
 
-//
-// MARK: Instance API
-//
-
-public protocol InstanceServiceProtocol {
-    func fetchInstance(worldId: String, instanceId: String) async throws -> Instance
-    func fetchInstance(location: String) async throws -> Instance
-}
-
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
 public class InstanceService: APIService, InstanceServiceProtocol {

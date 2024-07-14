@@ -7,15 +7,6 @@
 
 import Foundation
 
-//
-// MARK: User API
-//
-
-public protocol UserServiceProtocol {
-    func fetchUser(userId: String) async throws -> UserDetail
-    func updateUser(id: String) async throws -> User
-}
-
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
 public class UserService: APIService, UserServiceProtocol {

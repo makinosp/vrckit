@@ -7,10 +7,6 @@
 
 import Foundation
 
-public protocol UserNoteServiceProtocol {
-    func updateUserNote(targetUserId: String, note: String) async throws -> UserNoteResponse
-}
-
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
 public class UserNoteService: APIService, UserNoteServiceProtocol {

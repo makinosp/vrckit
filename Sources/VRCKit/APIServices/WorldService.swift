@@ -7,10 +7,6 @@
 
 import Foundation
 
-//
-// MARK: World API
-//
-
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
 public class WorldService: APIService {
