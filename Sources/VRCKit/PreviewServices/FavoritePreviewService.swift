@@ -35,4 +35,18 @@ public final class FavoritePreviewService: FavoriteService {
             []
         }
     }
+
+    override public func addFavorite(
+        type: FavoriteType,
+        favoriteId: String,
+        tag: String
+    ) async throws -> Favorite {
+        Favorite(id: UUID().uuidString, favoriteId: favoriteId, tags: [tag], type: type)
+    }
+
+    override public func removeFavorite(
+        favoriteId: String
+    ) async throws -> SuccessResponse {
+        SuccessResponse(success: ResponseMessage(message: "OK", statusCode: 200))
+    }
 }

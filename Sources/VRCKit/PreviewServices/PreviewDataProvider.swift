@@ -41,7 +41,13 @@ final class PreviewDataProvider {
     }
 
     private static func previewUserDetail(id: UUID, instance: Instance) -> UserDetail {
-        PreviewDataProvider.generateUserDetail(id: id, location: instance.id, state: .active, status: .active)
+        PreviewDataProvider.generateUserDetail(
+            id: id,
+            location: instance.id,
+            state: .active,
+            status: .active,
+            isFriend: false
+        )
     }
 
     var onlineFriends: [Friend] {
@@ -136,7 +142,8 @@ final class PreviewDataProvider {
         id: UUID,
         location: String,
         state: User.State,
-        status: User.Status
+        status: User.Status,
+        isFriend: Bool = true
     ) -> UserDetail {
         UserDetail(
             bio: "Demo",
@@ -145,7 +152,7 @@ final class PreviewDataProvider {
             currentAvatarThumbnailImageUrl: nil,
             displayName: "User_\(id.uuidString.prefix(8))",
             id: "usr_\(id.uuidString)",
-            isFriend: true,
+            isFriend: isFriend,
             lastLogin: Date(),
             lastPlatform: "standalonewindows",
             profilePicOverride: nil,
