@@ -13,7 +13,7 @@ import Foundation
 
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
-public class WorldService: APIServiceBase {
+public class WorldService: APIService {
     let path = "worlds"
 
     public func fetchWorld(worldId: String) async throws -> World {

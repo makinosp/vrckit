@@ -18,7 +18,7 @@ public protocol InstanceServiceProtocol {
 
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
-public class InstanceService: APIServiceBase, InstanceServiceProtocol {
+public class InstanceService: APIService, InstanceServiceProtocol {
     let path = "instances"
 
     /// Fetches an instance of a world using the specified world ID and instance ID.

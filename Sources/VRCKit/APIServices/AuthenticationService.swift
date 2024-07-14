@@ -25,7 +25,7 @@ public protocol AuthenticationServiceProtocol {
 
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
-public class AuthenticationService: APIServiceBase, AuthenticationServiceProtocol {
+public class AuthenticationService: APIService, AuthenticationServiceProtocol {
     private let authPath = "auth"
 
     /// Check User Exists

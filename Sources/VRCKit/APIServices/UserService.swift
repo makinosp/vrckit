@@ -18,7 +18,7 @@ public protocol UserServiceProtocol {
 
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
-public class UserService: APIServiceBase, UserServiceProtocol {
+public class UserService: APIService, UserServiceProtocol {
     let path = "users"
 
     /// Fetch a user

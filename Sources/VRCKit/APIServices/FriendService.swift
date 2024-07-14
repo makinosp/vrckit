@@ -20,7 +20,7 @@ public protocol FriendServiceProtocol {
 
 @available(macOS 12.0, *)
 @available(iOS 15.0, *)
-public class FriendService: APIServiceBase, FriendServiceProtocol {
+public class FriendService: APIService, FriendServiceProtocol {
     private let path = "auth/user/friends"
 
     /// List information about friends.
