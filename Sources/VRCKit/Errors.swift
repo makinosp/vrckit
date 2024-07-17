@@ -1,6 +1,6 @@
 //
 //  Errors.swift
-//  
+//  VRCKit
 //
 //  Created by makinosp on 2024/04/28.
 //

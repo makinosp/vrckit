@@ -1,6 +1,6 @@
 //
 //  UserModel.swift
-//
+//  VRCKit
 //
 //  Created by makinosp on 2024/02/18.
 //
