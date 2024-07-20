@@ -7,12 +7,8 @@
 
 import Foundation
 
-@available(macOS 12.0, *)
-@available(iOS 15.0, *)
 extension UserDetail: ProfileDetailRepresentable, LocationRepresentable {}
 
-@available(macOS 12.0, *)
-@available(iOS 15.0, *)
 public struct UserDetail: Codable {
     public let bio: String?
     public let bioLinks: [String]?

@@ -7,13 +7,13 @@
 
 import Foundation
 
-public final class Serializer {
-    public static let shared = Serializer()
+final class Serializer {
+    static let shared = Serializer()
     private var decoder = JSONDecoder()
     private var encoder = JSONEncoder()
 
     /// Initializes the `Util` class, setting up custom encoding and decoding strategies.
-    init() {
+    private init() {
         decoder.dateDecodingStrategy = .formatted(.iso8601Full)
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         encoder.dateEncodingStrategy = .formatted(.iso8601Full)
