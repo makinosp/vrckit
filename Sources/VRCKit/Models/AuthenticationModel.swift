@@ -9,19 +9,19 @@ public enum VerifyType: String, Codable {
     case emailOtp, totp, otp
 }
 
-public struct ExistsResponse: Codable {
+struct ExistsResponse: Codable {
     let userExists: Bool
 }
 
-public struct VerifyRequest: Codable {
+struct VerifyRequest: Codable {
     let code: String
 }
 
-public struct VerifyResponse: Codable {
+struct VerifyResponse: Codable {
     let verified: Bool
 }
 
-public struct RequiresTwoFactorAuthResponse: Codable {
+struct RequiresTwoFactorAuthResponse: Codable {
     let requiresTwoFactorAuth: [VerifyType]
 
     var requires: VerifyType? {
@@ -29,7 +29,7 @@ public struct RequiresTwoFactorAuthResponse: Codable {
     }
 }
 
-public struct VerifyAuthTokenResponse: Codable {
+struct VerifyAuthTokenResponse: Codable {
     let ok: Bool
     let token: String
 }

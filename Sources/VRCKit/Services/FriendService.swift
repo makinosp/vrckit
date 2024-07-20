@@ -7,8 +7,6 @@
 
 import Foundation
 
-@available(macOS 12.0, *)
-@available(iOS 15.0, *)
 public class FriendService: APIService, FriendServiceProtocol {
     private let path = "auth/user/friends"
 

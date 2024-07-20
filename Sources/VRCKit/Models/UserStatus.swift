@@ -5,8 +5,6 @@
 //  Created by makinosp on 2024/07/20.
 //
 
-import Foundation
-
 public enum UserStatus: String, Codable, CaseIterable {
     case joinMe = "join me"
     case active

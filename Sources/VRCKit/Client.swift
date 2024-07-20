@@ -22,7 +22,6 @@ public struct ErrorResponse: Codable, Error {
 //
 // MARK: API Client
 //
-@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
 public final class APIClient {
     typealias HTTPResponse = (data: Data, response: HTTPURLResponse)
 
@@ -120,7 +119,6 @@ public final class APIClient {
     }
 }
 
-@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
 extension APIClient.Method: CustomStringConvertible {
     var description: String {
         self.rawValue.uppercased()

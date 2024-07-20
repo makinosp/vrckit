@@ -5,8 +5,6 @@
 //  Created by makinosp on 2024/07/09.
 //
 
-import Foundation
-
 public final class InstancePreviewService: InstanceService {
     override public func fetchInstance(location: String) async throws -> Instance {
         PreviewDataProvider.shared.instances[0]

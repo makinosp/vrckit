@@ -5,10 +5,6 @@
 //  Created by makinosp on 2024/02/18.
 //
 
-import Foundation
-
-@available(macOS 12.0, *)
-@available(iOS 15.0, *)
 public class WorldService: APIService {
     let path = "worlds"
 

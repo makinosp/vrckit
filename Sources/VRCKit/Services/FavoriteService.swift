@@ -7,8 +7,6 @@
 
 import Foundation
 
-@available(macOS 12.0, *)
-@available(iOS 15.0, *)
 public class FavoriteService: APIService, FavoriteServiceProtocol {
     private let path = "favorites"
 
