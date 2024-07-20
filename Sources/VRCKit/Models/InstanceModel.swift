@@ -45,4 +45,29 @@ public struct Instance: Identifiable, Hashable, Codable {
         case `private`
         case group
     }
+
+    public enum InstanceType: String {
+        case `public` = "Public"
+        case friendsPlus = "Friends+"
+        case friends = "Friends"
+        case `private` = "Private"
+        case group = "Group"
+        case groupPlus = "Group+"
+        case groupPublic = "Group Public"
+    }
+
+    public var instanceType: InstanceType {
+        switch self.type {
+        case .public: .public
+        case .hidden: .friendsPlus
+        case .friends: .friends
+        case .private: .private
+        case .group:
+            switch self.groupAccessType {
+            case .plus: .groupPlus
+            case .public: .groupPublic
+            default: .group
+            }
+        }
+    }
 }
