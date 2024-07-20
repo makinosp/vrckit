@@ -25,7 +25,7 @@ public struct UserDetail: Codable {
     public let lastPlatform: String
     public let profilePicOverride: String?
     public let state: User.State
-    public let status: User.Status
+    public let status: UserStatus
     public let statusDescription: String
     public let tags: [String]
     public let userIcon: String?

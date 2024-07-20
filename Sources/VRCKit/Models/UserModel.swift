@@ -31,7 +31,7 @@ public struct User: Codable, ProfileDetailRepresentable {
     public let pastDisplayNames: [DisplayName]
     public let profilePicOverride: String?
     public let state: State
-    public let status: Status
+    public let status: UserStatus
     public let statusDescription: String
     public let tags: [String]
     public let twoFactorAuthEnabled: Bool
@@ -44,16 +44,6 @@ public struct User: Codable, ProfileDetailRepresentable {
         public let updatedAt: Date
     }
 
-    /// Defines the User's current status, for example "ask me", "join me" or "offline.
-    /// This status is a combined indicator of their online activity and privacy preference.
-    public enum Status: String, Codable, CaseIterable {
-        case joinMe = "join me"
-        case active
-        case askMe = "ask me"
-        case busy
-        case offline
-    }
-
     public enum State: String, Codable {
         /// User is online in VRChat
         case online
@@ -61,29 +51,6 @@ public struct User: Codable, ProfileDetailRepresentable {
         case active
         /// User is offline
         case offline
-    }
-}
-
-extension User.Status: CustomStringConvertible {
-    public var description: String {
-        switch self {
-        case .joinMe:
-            "Join Me"
-        case .active:
-            "Online"
-        case .askMe:
-            "Ask Me"
-        case .busy:
-            "Do Not Disturb"
-        case .offline:
-            "Offline"
-        }
-    }
-}
-
-extension User.Status: Identifiable {
-    public var id: Int {
-        self.hashValue
     }
 }
 
