@@ -46,7 +46,7 @@ public struct Instance: Identifiable, Hashable, Codable {
         case group
     }
 
-    public enum InstanceType: String {
+    public enum InstanceType: String, CustomStringConvertible {
         case `public` = "Public"
         case friendsPlus = "Friends+"
         case friends = "Friends"
@@ -54,6 +54,10 @@ public struct Instance: Identifiable, Hashable, Codable {
         case group = "Group"
         case groupPlus = "Group+"
         case groupPublic = "Group Public"
+
+        public var description: String {
+            rawValue
+        }
     }
 
     public var instanceType: InstanceType {
