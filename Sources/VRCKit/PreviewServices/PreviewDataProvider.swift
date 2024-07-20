@@ -174,6 +174,7 @@ final class PreviewDataProvider {
             active: true,
             capacity: 32,
             full: false,
+            groupAccessType: nil,
             id: "wrld_\(worldId):\(instanceId)",
             instanceId: instanceId.description,
             location: "wrld_\(worldId.uuidString)",
