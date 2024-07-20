@@ -1,6 +1,6 @@
 //
 //  PreviewDataProvider.swift
-//
+//  VRCKit
 //
 //  Created by makinosp on 2024/07/13.
 //
@@ -96,7 +96,7 @@ final class PreviewDataProvider {
     private static func generateFriendSet(
         id: UUID,
         location: String,
-        status: User.Status
+        status: UserStatus
     ) -> FriendSet {
         (
             PreviewDataProvider.generateFriend(
@@ -116,7 +116,7 @@ final class PreviewDataProvider {
     private static func generateFriend(
         id: UUID,
         location: String,
-        status: User.Status
+        status: UserStatus
     ) -> Friend {
         Friend(
             bio: nil,
@@ -142,7 +142,7 @@ final class PreviewDataProvider {
         id: UUID,
         location: String,
         state: User.State,
-        status: User.Status,
+        status: UserStatus,
         isFriend: Bool = true
     ) -> UserDetail {
         UserDetail(

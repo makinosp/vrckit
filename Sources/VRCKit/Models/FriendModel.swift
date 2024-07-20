@@ -1,6 +1,6 @@
 //
 //  FriendModel.swift
-//  
+//  VRCKit
 //
 //  Created by makinosp on 2024/03/03.
 //
@@ -20,7 +20,7 @@ public struct Friend: Codable {
     public let lastLogin: Date
     public let lastPlatform: String
     public let profilePicOverride: String?
-    public let status: User.Status
+    public let status: UserStatus
     public let statusDescription: String
     public let tags: [String]
     public let userIcon: String?

@@ -1,6 +1,6 @@
 //
 //  ProfileProtocols.swift
-//
+//  VRCKit
 //
 //  Created by makinosp on 2024/03/17.
 //
@@ -21,7 +21,7 @@ public protocol ProfileElementRepresentable: Hashable, Identifiable {
     var lastLogin: Date { get }
     var lastPlatform: String { get }
     var profilePicOverride: String? { get }
-    var status: User.Status { get }
+    var status: UserStatus { get }
     var statusDescription: String { get }
     var tags: [String] { get }
     var userIcon: String? { get }
