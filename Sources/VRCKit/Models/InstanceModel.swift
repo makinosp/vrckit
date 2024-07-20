@@ -9,6 +9,7 @@ public struct Instance: Identifiable, Hashable, Codable {
     public let active: Bool
     public let capacity: Int
     public let full: Bool
+    public let groupAccessType: GroupAccessType?
     public let id: String
     public let instanceId: String
     public let location: String
@@ -27,6 +28,10 @@ public struct Instance: Identifiable, Hashable, Codable {
         public let android: Int
         public let ios: Int
         public let standalonewindows: Int
+    }
+
+    public enum GroupAccessType: String, Codable {
+        case `public`, plus
     }
 
     public enum Region: String, Codable {
