@@ -33,3 +33,34 @@ public struct UserDetail: Codable {
     public var note: String
     public let lastActivity: Date
 }
+
+public struct EditableUserInfo: Codable, Hashable {
+    public var bio: String
+    public var bioLinks: [URL]
+    public var status: UserStatus
+    public var statusDescription: String
+    public var tags: [Tag]
+
+    public init(
+        bio: String,
+        bioLinks: [URL],
+        status: UserStatus,
+        statusDescription: String,
+        tags: [Tag]
+    ) {
+        self.bio = bio
+        self.bioLinks = bioLinks
+        self.status = status
+        self.statusDescription = statusDescription
+        self.tags = tags
+    }
+
+    public init(detail: any ProfileDetailRepresentable) {
+        self.bio = detail.bio ?? ""
+        // FIXME: [URL]
+        self.bioLinks = []
+        self.status = detail.status
+        self.statusDescription = detail.statusDescription
+        self.tags = detail.tags
+    }
+}
