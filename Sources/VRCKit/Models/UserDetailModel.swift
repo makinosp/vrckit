@@ -9,8 +9,10 @@ import Foundation
 
 extension UserDetail: ProfileDetailRepresentable, LocationRepresentable {}
 
+public typealias Tag = String
+
 public struct UserDetail: Codable {
-    public let bio: String?
+    public var bio: String?
     public let bioLinks: [String]?
     public let currentAvatarImageUrl: String?
     public let currentAvatarThumbnailImageUrl: String?
@@ -22,8 +24,8 @@ public struct UserDetail: Codable {
     public let profilePicOverride: String?
     public let state: User.State
     public let status: UserStatus
-    public let statusDescription: String
-    public let tags: [String]
+    public var statusDescription: String
+    public var tags: [Tag]
     public let userIcon: String?
     public let location: String
     public let friendKey: String

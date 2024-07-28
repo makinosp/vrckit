@@ -22,7 +22,7 @@ public protocol ProfileElementRepresentable: Hashable, Identifiable {
     var profilePicOverride: String? { get }
     var status: UserStatus { get }
     var statusDescription: String { get }
-    var tags: [String] { get }
+    var tags: [Tag] { get }
     var userIcon: String? { get }
     var friendKey: String { get }
 }

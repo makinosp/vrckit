@@ -22,7 +22,7 @@ public struct Friend: Codable {
     public let profilePicOverride: String?
     public let status: UserStatus
     public let statusDescription: String
-    public let tags: [String]
+    public let tags: [Tag]
     public let userIcon: String?
     public let location: String
     public let friendKey: String

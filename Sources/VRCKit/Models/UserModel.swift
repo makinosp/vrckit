@@ -33,7 +33,7 @@ public struct User: Codable, ProfileDetailRepresentable {
     public let state: State
     public let status: UserStatus
     public let statusDescription: String
-    public let tags: [String]
+    public let tags: [Tag]
     public let twoFactorAuthEnabled: Bool
     public let userIcon: String?
     public let userLanguage: String?
