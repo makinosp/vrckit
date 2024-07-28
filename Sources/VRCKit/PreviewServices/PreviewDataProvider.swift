@@ -63,7 +63,7 @@ final class PreviewDataProvider {
             activeFriends: onlineFriends.map(\.id),
             allowAvatarCopying: false,
             bio: "This is the demo user.",
-            bioLinks: ["https://example.com"],
+            bioLinks: [],
             currentAvatar: "",
             currentAvatarAssetUrl: "",
             currentAvatarImageUrl: "",
@@ -120,7 +120,7 @@ final class PreviewDataProvider {
     ) -> Friend {
         Friend(
             bio: nil,
-            bioLinks: nil,
+            bioLinks: [],
             currentAvatarImageUrl: nil,
             currentAvatarThumbnailImageUrl: nil,
             displayName: "User_\(id.uuidString.prefix(8))",

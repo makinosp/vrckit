@@ -11,7 +11,7 @@ extension Friend: ProfileElementRepresentable, LocationRepresentable {}
 
 public struct Friend: Codable {
     public let bio: String?
-    public let bioLinks: [String]?
+    @NullableArray public var bioLinks: [URL]
     public let currentAvatarImageUrl: String?
     public let currentAvatarThumbnailImageUrl: String?
     public let displayName: String

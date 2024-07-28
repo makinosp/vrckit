@@ -13,7 +13,7 @@ public typealias Tag = String
 
 public struct UserDetail: Codable {
     public var bio: String?
-    public let bioLinks: [String]?
+    @NullableArray public var bioLinks: [URL]
     public let currentAvatarImageUrl: String?
     public let currentAvatarThumbnailImageUrl: String?
     public let displayName: String
@@ -43,8 +43,7 @@ public struct EditableUserInfo: Codable, Hashable {
 
     public init(detail: any ProfileDetailRepresentable) {
         self.bio = detail.bio ?? ""
-        // FIXME: [URL]
-        self.bioLinks = []
+        self.bioLinks = detail.bioLinks
         self.status = detail.status
         self.statusDescription = detail.statusDescription
         self.tags = detail.tags

@@ -8,15 +8,26 @@
 import Foundation
 
 @propertyWrapper
-struct NullableArray<T: Decodable>: Decodable {
-    var wrappedValue: [T]
+public struct NullableArray<T: Codable & Hashable> {
+    public let wrappedValue: [T]
+    public init(wrappedValue: [T]) {
+        self.wrappedValue = wrappedValue
+    }
+}
 
-    init(from decoder: Decoder) throws {
+extension NullableArray: Codable {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         if container.decodeNil() {
-            self.wrappedValue = []
+            wrappedValue = []
         } else {
-            self.wrappedValue = try container.decode([T].self)
+            wrappedValue = try container.decode([T].self)
         }
+    }
+}
+
+extension NullableArray: Hashable {
+    public static func == (lhs: NullableArray<T>, rhs: NullableArray<T>) -> Bool {
+        lhs == rhs
     }
 }

@@ -11,7 +11,7 @@ public struct User: Codable, ProfileDetailRepresentable {
     public let activeFriends: [String]
     public let allowAvatarCopying: Bool
     public let bio: String?
-    public let bioLinks: [String]?
+    @NullableArray public var bioLinks: [URL]
     public let currentAvatar: String
     public let currentAvatarAssetUrl: String
     public let currentAvatarImageUrl: String?
