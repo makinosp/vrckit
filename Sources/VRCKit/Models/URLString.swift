@@ -5,7 +5,9 @@
 //  Created by makinosp on 2024/07/28.
 //
 
-public struct URLString: Codable {
+import Foundation
+
+public struct URLString: Codable, Hashable {
     let url: URL
 
     public init(from decoder: any Decoder) throws {
