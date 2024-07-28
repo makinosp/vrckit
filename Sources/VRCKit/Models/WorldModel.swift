@@ -17,8 +17,8 @@ public struct World: Codable, Identifiable, Hashable {
     public let capacity: Int
     public let tags: [String]
     public let releaseStatus: ReleaseStatus
-    public let imageUrl: String
-    public let thumbnailImageUrl: String
+    public let imageUrl: URLString
+    public let thumbnailImageUrl: URLString
     public let namespace: String?
     public let organization: String
     public let previewYoutubeId: String?
