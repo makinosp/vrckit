@@ -15,13 +15,12 @@ public class UserService: APIService, UserServiceProtocol {
     }
 
     /// Update user
-    public func updateUser(id: String, editedInfo: EditableUserInfo) async throws -> User {
+    public func updateUser(id: String, editedInfo: EditableUserInfo) async throws {
         let requestData = try Serializer.shared.encode(editedInfo)
-        let response = try await client.request(
+        _ = try await client.request(
             path: "\(path)/\(id)",
             method: .put,
             body: requestData
         )
-        return try Serializer.shared.decode(response.data)
     }
 }

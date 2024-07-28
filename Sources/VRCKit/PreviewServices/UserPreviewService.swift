@@ -10,7 +10,5 @@ public final class UserPreviewService: UserService {
         PreviewDataProvider.shared.userDetails.first { $0.id == userId }!
     }
 
-    override public func updateUser(id: String, editedInfo: EditableUserInfo) async throws -> User {
-        PreviewDataProvider.shared.previewUser
-    }
+    override public func updateUser(id: String, editedInfo: EditableUserInfo) async throws {}
 }
