@@ -8,7 +8,11 @@
 import Foundation
 
 public struct URLString: Codable, Hashable {
-    let url: URL
+    public let url: URL
+
+    public init(url: URL) {
+        self.url = url
+    }
 
     public init(from decoder: any Decoder) throws {
         let container = try decoder.singleValueContainer()
