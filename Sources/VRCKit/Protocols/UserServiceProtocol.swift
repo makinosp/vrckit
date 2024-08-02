@@ -7,5 +7,5 @@
 
 public protocol UserServiceProtocol {
     func fetchUser(userId: String) async throws -> UserDetail
-    func updateUser(id: String) async throws -> User
+    func updateUser(id: String, editedInfo: EditableUserInfo) async throws
 }

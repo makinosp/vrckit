@@ -7,4 +7,5 @@
 
 public protocol UserNoteServiceProtocol {
     func updateUserNote(targetUserId: String, note: String) async throws -> UserNoteResponse
+    func clearUserNote(targetUserId: String) async throws
 }

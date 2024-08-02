@@ -13,9 +13,18 @@ public class UserNoteService: APIService, UserNoteServiceProtocol {
         targetUserId: String,
         note: String
     ) async throws -> UserNoteResponse {
-        let userNoteRequest = UserNoteRequest(targetUserId: targetUserId, note: note)
-        let requestData = try Serializer.shared.encode(userNoteRequest)
-        let response = try await client.request(path: path, method: .post, body: requestData)
+        let response = try await request(
+            userNote: UserNoteRequest(targetUserId: targetUserId, note: note)
+        )
         return try Serializer.shared.decode(response.data)
+    }
+
+    public func clearUserNote(targetUserId: String) async throws {
+        _ = try await request(userNote: UserNoteRequest(targetUserId: targetUserId, note: ""))
+    }
+
+    private func request(userNote: UserNoteRequest) async throws -> APIClient.HTTPResponse {
+        let requestData = try Serializer.shared.encode(userNote)
+        return try await client.request(path: path, method: .post, body: requestData)
     }
 }
