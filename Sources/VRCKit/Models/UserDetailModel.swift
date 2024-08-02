@@ -13,7 +13,7 @@ public typealias Tag = String
 
 public struct UserDetail {
     public var bio: String?
-    public var bioLinks: [String]
+    public var bioLinks: SafeDecodingArray<URL>
     public let currentAvatarImageUrl: String?
     public let currentAvatarThumbnailImageUrl: String?
     public let displayName: String
@@ -38,7 +38,10 @@ extension UserDetail: Codable {
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         bio = try container.decodeIfPresent(String.self, forKey: .bio)
-        bioLinks = try container.decodeIfPresent([String].self, forKey: .bioLinks) ?? []
+        bioLinks = try container.decodeIfPresent(
+            SafeDecodingArray<URL>.self,
+            forKey: .bioLinks
+        ) ?? SafeDecodingArray(elements: [])
         currentAvatarImageUrl = try container.decodeIfPresent(String.self, forKey: .currentAvatarImageUrl)
         currentAvatarThumbnailImageUrl = try container.decodeIfPresent(
             String.self,
@@ -72,7 +75,7 @@ public struct EditableUserInfo: Codable, Hashable {
 
     public init(detail: any ProfileDetailRepresentable) {
         self.bio = detail.bio ?? ""
-        self.bioLinks = []
+        self.bioLinks = detail.bioLinks.elements
         self.status = detail.status
         self.statusDescription = detail.statusDescription
         self.tags = detail.tags

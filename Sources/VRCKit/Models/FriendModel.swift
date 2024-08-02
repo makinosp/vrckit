@@ -11,7 +11,7 @@ extension Friend: ProfileElementRepresentable, LocationRepresentable {}
 
 public struct Friend {
     public let bio: String?
-    public var bioLinks: [String]
+    public var bioLinks: SafeDecodingArray<URL>
     public let currentAvatarImageUrl: String?
     public let currentAvatarThumbnailImageUrl: String?
     public let displayName: String
@@ -26,14 +26,16 @@ public struct Friend {
     public let userIcon: String?
     public let location: String
     public let friendKey: String
-
 }
 
 extension Friend: Codable {
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.bio = try container.decodeIfPresent(String.self, forKey: .bio)
-        self.bioLinks = try container.decodeIfPresent([String].self, forKey: .bioLinks) ?? []
+        self.bioLinks = try container.decodeIfPresent(
+            SafeDecodingArray<URL>.self,
+            forKey: .bioLinks
+        ) ?? SafeDecodingArray(elements: [])
         self.currentAvatarImageUrl = try container.decodeIfPresent(String.self, forKey: .currentAvatarImageUrl)
         self.currentAvatarThumbnailImageUrl = try container.decodeIfPresent(
             String.self,

@@ -11,7 +11,7 @@ public struct User: ProfileDetailRepresentable {
     public let activeFriends: [String]
     public let allowAvatarCopying: Bool
     public let bio: String?
-    public var bioLinks: [String]
+    public var bioLinks: SafeDecodingArray<URL>
     public let currentAvatar: String
     public let currentAvatarAssetUrl: String
     public let currentAvatarImageUrl: String?
@@ -60,7 +60,10 @@ extension User: Codable {
         self.activeFriends = try container.decode([String].self, forKey: .activeFriends)
         self.allowAvatarCopying = try container.decode(Bool.self, forKey: .allowAvatarCopying)
         self.bio = try container.decodeIfPresent(String.self, forKey: .bio)
-        self.bioLinks = try container.decodeIfPresent([String].self, forKey: .bioLinks) ?? []
+        self.bioLinks = try container.decodeIfPresent(
+            SafeDecodingArray<URL>.self,
+            forKey: .bioLinks
+        ) ?? SafeDecodingArray(elements: [])
         self.currentAvatar = try container.decode(String.self, forKey: .currentAvatar)
         self.currentAvatarAssetUrl = try container.decode(String.self, forKey: .currentAvatarAssetUrl)
         self.currentAvatarImageUrl = try container.decodeIfPresent(String.self, forKey: .currentAvatarImageUrl)
