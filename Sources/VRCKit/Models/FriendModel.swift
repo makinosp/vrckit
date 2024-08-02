@@ -9,9 +9,9 @@ import Foundation
 
 extension Friend: ProfileElementRepresentable, LocationRepresentable {}
 
-public struct Friend: Codable {
+public struct Friend {
     public let bio: String?
-    @NullableArray public var bioLinks: [URL]
+    public var bioLinks: [String]
     public let currentAvatarImageUrl: String?
     public let currentAvatarThumbnailImageUrl: String?
     public let displayName: String
@@ -26,6 +26,32 @@ public struct Friend: Codable {
     public let userIcon: String?
     public let location: String
     public let friendKey: String
+
+}
+
+extension Friend: Codable {
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.bio = try container.decodeIfPresent(String.self, forKey: .bio)
+        self.bioLinks = try container.decodeIfPresent([String].self, forKey: .bioLinks) ?? []
+        self.currentAvatarImageUrl = try container.decodeIfPresent(String.self, forKey: .currentAvatarImageUrl)
+        self.currentAvatarThumbnailImageUrl = try container.decodeIfPresent(
+            String.self,
+            forKey: .currentAvatarThumbnailImageUrl
+        )
+        self.displayName = try container.decode(String.self, forKey: .displayName)
+        self.id = try container.decode(String.self, forKey: .id)
+        self.isFriend = try container.decode(Bool.self, forKey: .isFriend)
+        self.lastLogin = try container.decode(Date.self, forKey: .lastLogin)
+        self.lastPlatform = try container.decode(String.self, forKey: .lastPlatform)
+        self.profilePicOverride = try container.decodeIfPresent(String.self, forKey: .profilePicOverride)
+        self.status = try container.decode(UserStatus.self, forKey: .status)
+        self.statusDescription = try container.decode(String.self, forKey: .statusDescription)
+        self.tags = try container.decode([Tag].self, forKey: .tags)
+        self.userIcon = try container.decodeIfPresent(String.self, forKey: .userIcon)
+        self.location = try container.decode(String.self, forKey: .location)
+        self.friendKey = try container.decode(String.self, forKey: .friendKey)
+    }
 }
 
 extension FriendsLocation: LocationRepresentable {}

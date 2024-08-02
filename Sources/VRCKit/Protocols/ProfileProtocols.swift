@@ -11,7 +11,7 @@ import Foundation
 /// This protocol can be adopted by structures such as User, Friend, and UserDetail.
 public protocol ProfileElementRepresentable: Hashable, Identifiable {
     var bio: String? { get }
-    var bioLinks: [URL] { get }
+    var bioLinks: [String] { get }
     var currentAvatarImageUrl: String? { get }
     var currentAvatarThumbnailImageUrl: String? { get }
     var displayName: String { get }
