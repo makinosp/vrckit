@@ -65,9 +65,8 @@ final class PreviewDataProvider {
             bio: "This is the demo user.",
             bioLinks: SafeDecodingArray(),
             currentAvatar: "",
-            currentAvatarAssetUrl: "",
-            currentAvatarImageUrl: "",
-            currentAvatarThumbnailImageUrl: "",
+            avatarImageUrl: nil,
+            avatarThumbnailUrl: nil,
             dateJoined: "2024/07/01",
             displayName: "usr_\(previewUserId.uuidString.prefix(8))",
             friendKey: "",
@@ -87,7 +86,7 @@ final class PreviewDataProvider {
             statusDescription: "status",
             tags: [],
             twoFactorAuthEnabled: true,
-            userIcon: "https://ul.h3z.jp/9gGIcerr.png",
+            userIcon: URL(string: "https://ul.h3z.jp/9gGIcerr.png"),
             userLanguage: nil,
             userLanguageCode: nil
         )
@@ -121,8 +120,8 @@ final class PreviewDataProvider {
         Friend(
             bio: nil,
             bioLinks: SafeDecodingArray(),
-            currentAvatarImageUrl: nil,
-            currentAvatarThumbnailImageUrl: nil,
+            avatarImageUrl: nil,
+            avatarThumbnailUrl: nil,
             displayName: "User_\(id.uuidString.prefix(8))",
             id: "usr_\(id.uuidString)",
             isFriend: true,
@@ -132,7 +131,7 @@ final class PreviewDataProvider {
             status: status,
             statusDescription: "",
             tags: [],
-            userIcon: "https://ul.h3z.jp/9gGIcerr.png",
+            userIcon: URL(string: "https://ul.h3z.jp/9gGIcerr.png"),
             location: location,
             friendKey: ""
         )
@@ -148,8 +147,8 @@ final class PreviewDataProvider {
         UserDetail(
             bio: "Demo",
             bioLinks: SafeDecodingArray(),
-            currentAvatarImageUrl: nil,
-            currentAvatarThumbnailImageUrl: nil,
+            avatarImageUrl: nil,
+            avatarThumbnailUrl: nil,
             displayName: "User_\(id.uuidString.prefix(8))",
             id: "usr_\(id.uuidString)",
             isFriend: isFriend,
@@ -160,7 +159,7 @@ final class PreviewDataProvider {
             status: status,
             statusDescription: "Demo",
             tags: [],
-            userIcon: "https://ul.h3z.jp/9gGIcerr.png",
+            userIcon: URL(string: "https://ul.h3z.jp/9gGIcerr.png"),
             location: location,
             friendKey: "",
             dateJoined: "",

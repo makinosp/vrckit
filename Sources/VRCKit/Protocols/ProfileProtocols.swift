@@ -12,18 +12,18 @@ import Foundation
 public protocol ProfileElementRepresentable: Hashable, Identifiable {
     var bio: String? { get }
     var bioLinks: SafeDecodingArray<URL> { get }
-    var currentAvatarImageUrl: String? { get }
-    var currentAvatarThumbnailImageUrl: String? { get }
+    var avatarImageUrl: URL? { get }
+    var avatarThumbnailUrl: URL? { get }
     var displayName: String { get }
     var id: String { get }
     var isFriend: Bool { get }
     var lastLogin: Date { get }
     var lastPlatform: String { get }
-    var profilePicOverride: String? { get }
+    var profilePicOverride: URL? { get }
     var status: UserStatus { get }
     var statusDescription: String { get }
     var tags: [Tag] { get }
-    var userIcon: String? { get }
+    var userIcon: URL? { get }
     var friendKey: String { get }
 }
 
@@ -37,20 +37,20 @@ public protocol ProfileDetailRepresentable: ProfileElementRepresentable {
 
 public extension ProfileElementRepresentable {
     var thumbnailUrl: URL? {
-        if let userIcon = userIcon, !userIcon.isEmpty {
-            return URL(string: userIcon)
+        if let userIcon = userIcon {
+            return userIcon
         }
-        guard let url = currentAvatarThumbnailImageUrl,
-              let urlString = url.hasSuffix("256")
-                ? String(url.dropLast(3)) + "512"
-                : currentAvatarImageUrl else { return nil }
+        guard let url = avatarThumbnailUrl,
+              let urlString = url.absoluteString.hasSuffix("256")
+                ? String(url.absoluteString.dropLast(3)) + "512"
+                : avatarImageUrl?.absoluteString else { return nil }
         return URL(string: urlString)
     }
 
     var userIconUrl: URL? {
-        guard let urlString = userIcon?.isEmpty ?? false
-                ? currentAvatarThumbnailImageUrl
-                : userIcon else { return nil }
-        return URL(string: urlString)
+        if let userIcon = userIcon {
+            return userIcon
+        }
+        return avatarThumbnailUrl
     }
 }

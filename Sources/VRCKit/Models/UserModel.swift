@@ -13,9 +13,8 @@ public struct User: ProfileDetailRepresentable {
     public let bio: String?
     public var bioLinks: SafeDecodingArray<URL>
     public let currentAvatar: String
-    public let currentAvatarAssetUrl: String
-    public let currentAvatarImageUrl: String?
-    public let currentAvatarThumbnailImageUrl: String?
+    public let avatarImageUrl: URL?
+    public let avatarThumbnailUrl: URL?
     public let dateJoined: String
     public let displayName: String
     public let friendKey: String
@@ -29,13 +28,13 @@ public struct User: ProfileDetailRepresentable {
     public let offlineFriends: [String]
     public let onlineFriends: [String]
     public let pastDisplayNames: [DisplayName]
-    public let profilePicOverride: String?
+    public let profilePicOverride: URL?
     public let state: State
     public let status: UserStatus
     public let statusDescription: String
     public let tags: [Tag]
     public let twoFactorAuthEnabled: Bool
-    public let userIcon: String?
+    public let userIcon: URL?
     public let userLanguage: String?
     public let userLanguageCode: String?
 
@@ -60,17 +59,10 @@ extension User: Codable {
         activeFriends = try container.decode([String].self, forKey: .activeFriends)
         allowAvatarCopying = try container.decode(Bool.self, forKey: .allowAvatarCopying)
         bio = try container.decodeIfPresent(String.self, forKey: .bio)
-        bioLinks = try container.decodeIfPresent(
-            SafeDecodingArray<URL>.self,
-            forKey: .bioLinks
-        ) ?? SafeDecodingArray()
+        bioLinks = try container.decodeSafeNullableArray(URL.self, forKey: .bioLinks)
         currentAvatar = try container.decode(String.self, forKey: .currentAvatar)
-        currentAvatarAssetUrl = try container.decode(String.self, forKey: .currentAvatarAssetUrl)
-        currentAvatarImageUrl = try container.decodeIfPresent(String.self, forKey: .currentAvatarImageUrl)
-        currentAvatarThumbnailImageUrl = try container.decodeIfPresent(
-            String.self,
-            forKey: .currentAvatarThumbnailImageUrl
-        )
+        avatarImageUrl = try? container.decodeIfPresent(URL.self, forKey: .avatarImageUrl)
+        avatarThumbnailUrl = try? container.decodeIfPresent(URL.self, forKey: .avatarThumbnailUrl)
         dateJoined = try container.decode(String.self, forKey: .dateJoined)
         displayName = try container.decode(String.self, forKey: .displayName)
         friendKey = try container.decode(String.self, forKey: .friendKey)
@@ -84,15 +76,49 @@ extension User: Codable {
         offlineFriends = try container.decode([String].self, forKey: .offlineFriends)
         onlineFriends = try container.decode([String].self, forKey: .onlineFriends)
         pastDisplayNames = try container.decode([User.DisplayName].self, forKey: .pastDisplayNames)
-        profilePicOverride = try container.decodeIfPresent(String.self, forKey: .profilePicOverride)
+        profilePicOverride = try? container.decodeIfPresent(URL.self, forKey: .profilePicOverride)
         state = try container.decode(User.State.self, forKey: .state)
         status = try container.decode(UserStatus.self, forKey: .status)
         statusDescription = try container.decode(String.self, forKey: .statusDescription)
         tags = try container.decode([Tag].self, forKey: .tags)
         twoFactorAuthEnabled = try container.decode(Bool.self, forKey: .twoFactorAuthEnabled)
-        userIcon = try container.decodeIfPresent(String.self, forKey: .userIcon)
+        userIcon = try? container.decodeIfPresent(URL.self, forKey: .userIcon)
         userLanguage = try container.decodeIfPresent(String.self, forKey: .userLanguage)
         userLanguageCode = try container.decodeIfPresent(String.self, forKey: .userLanguageCode)
+    }
+}
+
+extension User {
+    private enum CodingKeys: String, CodingKey {
+        case activeFriends
+        case allowAvatarCopying
+        case bio
+        case bioLinks
+        case currentAvatar
+        case avatarImageUrl = "currentAvatarImageUrl"
+        case avatarThumbnailUrl = "currentAvatarThumbnailImageUrl"
+        case dateJoined
+        case displayName
+        case friendKey
+        case friends
+        case homeLocation
+        case id
+        case isFriend
+        case lastActivity
+        case lastLogin
+        case lastPlatform
+        case offlineFriends
+        case onlineFriends
+        case pastDisplayNames
+        case profilePicOverride
+        case state
+        case status
+        case statusDescription
+        case tags
+        case twoFactorAuthEnabled
+        case userIcon
+        case userLanguage
+        case userLanguageCode
     }
 }
 
