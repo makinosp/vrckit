@@ -11,6 +11,12 @@ public struct SafeDecodingArray<Element: Codable & Hashable> {
     public let elements: [Element]
 }
 
+extension SafeDecodingArray {
+    init() {
+        elements = []
+    }
+}
+
 extension SafeDecodingArray: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()

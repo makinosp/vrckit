@@ -63,7 +63,7 @@ extension User: Codable {
         self.bioLinks = try container.decodeIfPresent(
             SafeDecodingArray<URL>.self,
             forKey: .bioLinks
-        ) ?? SafeDecodingArray(elements: [])
+        ) ?? SafeDecodingArray()
         self.currentAvatar = try container.decode(String.self, forKey: .currentAvatar)
         self.currentAvatarAssetUrl = try container.decode(String.self, forKey: .currentAvatarAssetUrl)
         self.currentAvatarImageUrl = try container.decodeIfPresent(String.self, forKey: .currentAvatarImageUrl)

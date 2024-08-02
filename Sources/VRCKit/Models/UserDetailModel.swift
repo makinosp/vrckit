@@ -41,7 +41,7 @@ extension UserDetail: Codable {
         bioLinks = try container.decodeIfPresent(
             SafeDecodingArray<URL>.self,
             forKey: .bioLinks
-        ) ?? SafeDecodingArray(elements: [])
+        ) ?? SafeDecodingArray()
         currentAvatarImageUrl = try container.decodeIfPresent(String.self, forKey: .currentAvatarImageUrl)
         currentAvatarThumbnailImageUrl = try container.decodeIfPresent(
             String.self,

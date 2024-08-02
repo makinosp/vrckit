@@ -35,7 +35,7 @@ extension Friend: Codable {
         self.bioLinks = try container.decodeIfPresent(
             SafeDecodingArray<URL>.self,
             forKey: .bioLinks
-        ) ?? SafeDecodingArray(elements: [])
+        ) ?? SafeDecodingArray()
         self.currentAvatarImageUrl = try container.decodeIfPresent(String.self, forKey: .currentAvatarImageUrl)
         self.currentAvatarThumbnailImageUrl = try container.decodeIfPresent(
             String.self,
