@@ -74,10 +74,10 @@ public struct EditableUserInfo: Codable, Hashable {
     public var tags: [Tag]
 
     public init(detail: any ProfileDetailRepresentable) {
-        self.bio = detail.bio ?? ""
-        self.bioLinks = detail.bioLinks.elements
-        self.status = detail.status
-        self.statusDescription = detail.statusDescription
-        self.tags = detail.tags
+        bio = detail.bio ?? ""
+        bioLinks = detail.bioLinks.elements
+        status = detail.status
+        statusDescription = detail.statusDescription
+        tags = detail.tags
     }
 }

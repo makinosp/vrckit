@@ -57,42 +57,42 @@ public struct User: ProfileDetailRepresentable {
 extension User: Codable {
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.activeFriends = try container.decode([String].self, forKey: .activeFriends)
-        self.allowAvatarCopying = try container.decode(Bool.self, forKey: .allowAvatarCopying)
-        self.bio = try container.decodeIfPresent(String.self, forKey: .bio)
-        self.bioLinks = try container.decodeIfPresent(
+        activeFriends = try container.decode([String].self, forKey: .activeFriends)
+        allowAvatarCopying = try container.decode(Bool.self, forKey: .allowAvatarCopying)
+        bio = try container.decodeIfPresent(String.self, forKey: .bio)
+        bioLinks = try container.decodeIfPresent(
             SafeDecodingArray<URL>.self,
             forKey: .bioLinks
         ) ?? SafeDecodingArray()
-        self.currentAvatar = try container.decode(String.self, forKey: .currentAvatar)
-        self.currentAvatarAssetUrl = try container.decode(String.self, forKey: .currentAvatarAssetUrl)
-        self.currentAvatarImageUrl = try container.decodeIfPresent(String.self, forKey: .currentAvatarImageUrl)
-        self.currentAvatarThumbnailImageUrl = try container.decodeIfPresent(
+        currentAvatar = try container.decode(String.self, forKey: .currentAvatar)
+        currentAvatarAssetUrl = try container.decode(String.self, forKey: .currentAvatarAssetUrl)
+        currentAvatarImageUrl = try container.decodeIfPresent(String.self, forKey: .currentAvatarImageUrl)
+        currentAvatarThumbnailImageUrl = try container.decodeIfPresent(
             String.self,
             forKey: .currentAvatarThumbnailImageUrl
         )
-        self.dateJoined = try container.decode(String.self, forKey: .dateJoined)
-        self.displayName = try container.decode(String.self, forKey: .displayName)
-        self.friendKey = try container.decode(String.self, forKey: .friendKey)
-        self.friends = try container.decode([String].self, forKey: .friends)
-        self.homeLocation = try container.decode(String.self, forKey: .homeLocation)
-        self.id = try container.decode(String.self, forKey: .id)
-        self.isFriend = try container.decode(Bool.self, forKey: .isFriend)
-        self.lastActivity = try container.decode(Date.self, forKey: .lastActivity)
-        self.lastLogin = try container.decode(Date.self, forKey: .lastLogin)
-        self.lastPlatform = try container.decode(String.self, forKey: .lastPlatform)
-        self.offlineFriends = try container.decode([String].self, forKey: .offlineFriends)
-        self.onlineFriends = try container.decode([String].self, forKey: .onlineFriends)
-        self.pastDisplayNames = try container.decode([User.DisplayName].self, forKey: .pastDisplayNames)
-        self.profilePicOverride = try container.decodeIfPresent(String.self, forKey: .profilePicOverride)
-        self.state = try container.decode(User.State.self, forKey: .state)
-        self.status = try container.decode(UserStatus.self, forKey: .status)
-        self.statusDescription = try container.decode(String.self, forKey: .statusDescription)
-        self.tags = try container.decode([Tag].self, forKey: .tags)
-        self.twoFactorAuthEnabled = try container.decode(Bool.self, forKey: .twoFactorAuthEnabled)
-        self.userIcon = try container.decodeIfPresent(String.self, forKey: .userIcon)
-        self.userLanguage = try container.decodeIfPresent(String.self, forKey: .userLanguage)
-        self.userLanguageCode = try container.decodeIfPresent(String.self, forKey: .userLanguageCode)
+        dateJoined = try container.decode(String.self, forKey: .dateJoined)
+        displayName = try container.decode(String.self, forKey: .displayName)
+        friendKey = try container.decode(String.self, forKey: .friendKey)
+        friends = try container.decode([String].self, forKey: .friends)
+        homeLocation = try container.decode(String.self, forKey: .homeLocation)
+        id = try container.decode(String.self, forKey: .id)
+        isFriend = try container.decode(Bool.self, forKey: .isFriend)
+        lastActivity = try container.decode(Date.self, forKey: .lastActivity)
+        lastLogin = try container.decode(Date.self, forKey: .lastLogin)
+        lastPlatform = try container.decode(String.self, forKey: .lastPlatform)
+        offlineFriends = try container.decode([String].self, forKey: .offlineFriends)
+        onlineFriends = try container.decode([String].self, forKey: .onlineFriends)
+        pastDisplayNames = try container.decode([User.DisplayName].self, forKey: .pastDisplayNames)
+        profilePicOverride = try container.decodeIfPresent(String.self, forKey: .profilePicOverride)
+        state = try container.decode(User.State.self, forKey: .state)
+        status = try container.decode(UserStatus.self, forKey: .status)
+        statusDescription = try container.decode(String.self, forKey: .statusDescription)
+        tags = try container.decode([Tag].self, forKey: .tags)
+        twoFactorAuthEnabled = try container.decode(Bool.self, forKey: .twoFactorAuthEnabled)
+        userIcon = try container.decodeIfPresent(String.self, forKey: .userIcon)
+        userLanguage = try container.decodeIfPresent(String.self, forKey: .userLanguage)
+        userLanguageCode = try container.decodeIfPresent(String.self, forKey: .userLanguageCode)
     }
 }
 
