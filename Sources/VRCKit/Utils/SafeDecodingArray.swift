@@ -26,6 +26,6 @@ extension SafeDecodingArray: Codable {
 
 extension SafeDecodingArray: Hashable {
     public static func == (lhs: SafeDecodingArray<Element>, rhs: SafeDecodingArray<Element>) -> Bool {
-        lhs == rhs
+        lhs.elements.hashValue == rhs.elements.hashValue
     }
 }
