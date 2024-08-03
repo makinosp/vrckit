@@ -1,5 +1,5 @@
 //
-//  UserTagModel.swift
+//  TagModel.swift
 //  VRCKit
 //
 //  Created by makinosp on 2024/08/03.
