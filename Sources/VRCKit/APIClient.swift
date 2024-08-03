@@ -1,27 +1,12 @@
-import Foundation
 //
-//  Client.swift
+//  APIClient.swift
 //  VRCKit
 //
 //  Created by makinosp on 2024/02/12.
 //
 
-public struct ResponseMessage: Codable {
-    let message: String
-    let statusCode: Int
-}
+import Foundation
 
-public struct SuccessResponse: Codable {
-    let success: ResponseMessage
-}
-
-public struct ErrorResponse: Codable, Error {
-    let error: ResponseMessage
-}
-
-//
-// MARK: API Client
-//
 public final class APIClient {
     typealias HTTPResponse = (data: Data, response: HTTPURLResponse)
 

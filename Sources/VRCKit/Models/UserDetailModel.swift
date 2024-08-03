@@ -91,8 +91,10 @@ public struct EditableUserInfo: Codable, Hashable {
     public var status: UserStatus
     public var statusDescription: String
     public var tags: [Tag]
+}
 
-    public init(detail: any ProfileDetailRepresentable) {
+public extension EditableUserInfo {
+    init(detail: any ProfileDetailRepresentable) {
         bio = detail.bio ?? ""
         bioLinks = detail.bioLinks.elements
         status = detail.status

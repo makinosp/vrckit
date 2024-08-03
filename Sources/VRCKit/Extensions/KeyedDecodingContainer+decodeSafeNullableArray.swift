@@ -18,10 +18,10 @@ public extension KeyedDecodingContainer {
     ///   - key: The key that the decoded value is associated with.
     /// - Returns: A `SafeDecodingArray` of the specified type.
     /// - Throws: Rethrows any errors encountered during decoding.
-    func decodeSafeNullableArray<T>(
-        _ type: T.Type,
+    func decodeSafeNullableArray<Element>(
+        _ type: Element.Type,
         forKey key: KeyedDecodingContainer<K>.Key
-    ) throws -> SafeDecodingArray<T> where T: Decodable {
-        try decodeIfPresent(SafeDecodingArray<T>.self, forKey: key) ?? SafeDecodingArray()
+    ) throws -> SafeDecodingArray<Element> where Element: Decodable {
+        try decodeIfPresent(SafeDecodingArray<Element>.self, forKey: key) ?? SafeDecodingArray()
     }
 }
