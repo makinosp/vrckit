@@ -7,11 +7,9 @@
 
 import Foundation
 
-extension UserDetail: ProfileDetailRepresentable, LocationRepresentable {}
-
 public typealias Tag = String
 
-public struct UserDetail {
+public struct UserDetail: ProfileDetailRepresentable, LocationRepresentable {
     public var bio: String?
     public var bioLinks: SafeDecodingArray<URL>
     public let avatarImageUrl: URL?
@@ -25,17 +23,49 @@ public struct UserDetail {
     public let state: User.State
     public let status: UserStatus
     public var statusDescription: String
-    public var tags: [Tag]
+    public var tags: Tags
     public let userIcon: URL?
     public let location: String
     public let friendKey: String
     public let dateJoined: String
     public var note: String
     public let lastActivity: Date
+
+    public struct Tags: Codable, Hashable {
+        let systemTags: [SystemTag]
+        var languageTags: [LanguageTag]
+    }
+}
+
+public extension UserDetail.Tags {
+    init() {
+        systemTags = []
+        languageTags = []
+    }
+}
+
+public extension UserDetail.Tags {
+    init(from decoder: Decoder) throws {
+        var systemTags: [SystemTag] = []
+        var languageTags: [LanguageTag] = []
+        var container = try decoder.unkeyedContainer()
+        while !container.isAtEnd {
+            let systemTag = try? container.decode(SystemTag.self)
+            let languageTag = try? container.decode(LanguageTag.self)
+            if let systemTag = systemTag {
+                systemTags.append(systemTag)
+            }
+            if let languageTag = languageTag {
+                languageTags.append(languageTag)
+            }
+        }
+        self.systemTags = systemTags
+        self.languageTags = languageTags
+    }
 }
 
 extension UserDetail: Codable {
-    public init(from decoder: any Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         bio = try container.decodeIfPresent(String.self, forKey: .bio)
         bioLinks = try container.decodeSafeNullableArray(URL.self, forKey: .bioLinks)
@@ -50,7 +80,7 @@ extension UserDetail: Codable {
         state = try container.decode(User.State.self, forKey: .state)
         status = try container.decode(UserStatus.self, forKey: .status)
         statusDescription = try container.decode(String.self, forKey: .statusDescription)
-        tags = try container.decode([Tag].self, forKey: .tags)
+        tags = try container.decode(Tags.self, forKey: .tags)
         userIcon = try? container.decodeIfPresent(URL.self, forKey: .userIcon)
         location = try container.decode(String.self, forKey: .location)
         friendKey = try container.decode(String.self, forKey: .friendKey)
@@ -99,6 +129,7 @@ public extension EditableUserInfo {
         bioLinks = detail.bioLinks.elements
         status = detail.status
         statusDescription = detail.statusDescription
-        tags = detail.tags
+//        tags = detail.tags
+        tags = []
     }
 }

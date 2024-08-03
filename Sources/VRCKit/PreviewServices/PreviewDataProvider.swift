@@ -158,7 +158,7 @@ final class PreviewDataProvider {
             state: state,
             status: status,
             statusDescription: "Demo",
-            tags: [],
+            tags: UserDetail.Tags(),
             userIcon: URL(string: "https://ul.h3z.jp/9gGIcerr.png"),
             location: location,
             friendKey: "",
