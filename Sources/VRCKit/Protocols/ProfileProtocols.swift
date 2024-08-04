@@ -34,23 +34,3 @@ public protocol ProfileDetailRepresentable: ProfileElementRepresentable {
     var lastActivity: Date { get }
     var state: User.State { get }
 }
-
-public extension ProfileElementRepresentable {
-    var thumbnailUrl: URL? {
-        if let userIcon = userIcon {
-            return userIcon
-        }
-        guard let url = avatarThumbnailUrl,
-              let urlString = url.absoluteString.hasSuffix("256")
-                ? String(url.absoluteString.dropLast(3)) + "512"
-                : avatarImageUrl?.absoluteString else { return nil }
-        return URL(string: urlString)
-    }
-
-    var userIconUrl: URL? {
-        if let userIcon = userIcon {
-            return userIcon
-        }
-        return avatarThumbnailUrl
-    }
-}
