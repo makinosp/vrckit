@@ -7,11 +7,7 @@
 
 import Foundation
 
-extension UserDetail: ProfileDetailRepresentable, LocationRepresentable {}
-
-public typealias Tag = String
-
-public struct UserDetail {
+public struct UserDetail: ProfileDetailRepresentable, LocationRepresentable {
     public var bio: String?
     public var bioLinks: SafeDecodingArray<URL>
     public let avatarImageUrl: URL?
@@ -25,7 +21,7 @@ public struct UserDetail {
     public let state: User.State
     public let status: UserStatus
     public var statusDescription: String
-    public var tags: [Tag]
+    public var tags: UserTags
     public let userIcon: URL?
     public let location: String
     public let friendKey: String
@@ -35,7 +31,7 @@ public struct UserDetail {
 }
 
 extension UserDetail: Codable {
-    public init(from decoder: any Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         bio = try container.decodeIfPresent(String.self, forKey: .bio)
         bioLinks = try container.decodeSafeNullableArray(URL.self, forKey: .bioLinks)
@@ -50,7 +46,7 @@ extension UserDetail: Codable {
         state = try container.decode(User.State.self, forKey: .state)
         status = try container.decode(UserStatus.self, forKey: .status)
         statusDescription = try container.decode(String.self, forKey: .statusDescription)
-        tags = try container.decode([Tag].self, forKey: .tags)
+        tags = try container.decode(UserTags.self, forKey: .tags)
         userIcon = try? container.decodeIfPresent(URL.self, forKey: .userIcon)
         location = try container.decode(String.self, forKey: .location)
         friendKey = try container.decode(String.self, forKey: .friendKey)
@@ -90,9 +86,11 @@ public struct EditableUserInfo: Codable, Hashable {
     public var bioLinks: [URL]
     public var status: UserStatus
     public var statusDescription: String
-    public var tags: [Tag]
+    public var tags: UserTags
+}
 
-    public init(detail: any ProfileDetailRepresentable) {
+public extension EditableUserInfo {
+    init(detail: any ProfileDetailRepresentable) {
         bio = detail.bio ?? ""
         bioLinks = detail.bioLinks.elements
         status = detail.status

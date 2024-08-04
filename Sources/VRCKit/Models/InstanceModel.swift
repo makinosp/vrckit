@@ -20,7 +20,7 @@ public struct Instance: Identifiable, Hashable, Codable {
     public let recommendedCapacity: Int
     public let region: Region
     public let tags: [String]
-    public let type: WorldType
+    public let type: InstanceType
     public let userCount: Int
     public let world: World
 
@@ -38,15 +38,13 @@ public struct Instance: Identifiable, Hashable, Codable {
         case us, use, eu, jp, unknown
     }
 
-    public enum WorldType: String, Codable {
-        case `public`
-        case hidden
-        case friends
-        case `private`
-        case group
+    public enum InstanceType: String, Codable {
+        case `public`, hidden, friends, `private`, group
     }
+}
 
-    public enum InstanceType: String, CustomStringConvertible {
+public extension Instance {
+    enum InstanceTypeDescription: String {
         case `public` = "Public"
         case friendsPlus = "Friends+"
         case friends = "Friends"
@@ -54,24 +52,32 @@ public struct Instance: Identifiable, Hashable, Codable {
         case group = "Group"
         case groupPlus = "Group+"
         case groupPublic = "Group Public"
-
-        public var description: String {
-            rawValue
-        }
     }
 
-    public var instanceType: InstanceType {
-        switch self.type {
+    var instanceTypeDescription: InstanceTypeDescription {
+        switch type {
         case .public: .public
         case .hidden: .friendsPlus
         case .friends: .friends
         case .private: .private
-        case .group:
-            switch self.groupAccessType {
-            case .plus: .groupPlus
-            case .public: .groupPublic
-            default: .group
-            }
+        case .group: groupAccessType?.instanceTypeDescription ?? .group
         }
     }
+}
+
+extension Instance.GroupAccessType {
+    var instanceTypeDescription: Instance.InstanceTypeDescription {
+        switch self {
+        case .public: .groupPublic
+        case .plus: .groupPlus
+        }
+    }
+}
+
+extension Instance.InstanceType: CustomStringConvertible {
+    public var description: String { rawValue }
+}
+
+extension Instance.InstanceTypeDescription: CustomStringConvertible {
+    public var description: String { rawValue }
 }

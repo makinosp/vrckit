@@ -10,9 +10,11 @@ import Foundation
 public struct OptionalISO8601Date {
     private let date: Date?
     private let formatter = DateFormatter.iso8601Full
+}
 
-    public init(date: Date? = nil) {
-        self.date = date
+public extension OptionalISO8601Date {
+    init() {
+        date = nil
     }
 }
 
