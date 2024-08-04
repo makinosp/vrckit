@@ -7,9 +7,7 @@
 
 import Foundation
 
-extension Friend: ProfileElementRepresentable, LocationRepresentable {}
-
-public struct Friend {
+public struct Friend: ProfileElementRepresentable, LocationRepresentable {
     public let bio: String?
     public var bioLinks: SafeDecodingArray<URL>
     public let avatarImageUrl: URL?
@@ -22,7 +20,7 @@ public struct Friend {
     public let profilePicOverride: URL?
     public let status: UserStatus
     public let statusDescription: String
-    public let tags: [Tag]
+    public let tags: UserTags
     public let userIcon: URL?
     public let location: String
     public let friendKey: String
@@ -43,7 +41,7 @@ extension Friend: Codable {
         profilePicOverride = try? container.decodeIfPresent(URL.self, forKey: .profilePicOverride)
         status = try container.decode(UserStatus.self, forKey: .status)
         statusDescription = try container.decode(String.self, forKey: .statusDescription)
-        tags = try container.decode([Tag].self, forKey: .tags)
+        tags = try container.decode(UserTags.self, forKey: .tags)
         userIcon = try? container.decodeIfPresent(URL.self, forKey: .userIcon)
         location = try container.decode(String.self, forKey: .location)
         friendKey = try container.decode(String.self, forKey: .friendKey)

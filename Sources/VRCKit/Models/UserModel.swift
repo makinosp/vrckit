@@ -32,7 +32,7 @@ public struct User: ProfileDetailRepresentable {
     public let state: State
     public let status: UserStatus
     public let statusDescription: String
-    public let tags: [Tag]
+    public let tags: UserTags
     public let twoFactorAuthEnabled: Bool
     public let userIcon: URL?
     public let userLanguage: String?
@@ -80,7 +80,7 @@ extension User: Codable {
         state = try container.decode(User.State.self, forKey: .state)
         status = try container.decode(UserStatus.self, forKey: .status)
         statusDescription = try container.decode(String.self, forKey: .statusDescription)
-        tags = try container.decode([Tag].self, forKey: .tags)
+        tags = try container.decode(UserTags.self, forKey: .tags)
         twoFactorAuthEnabled = try container.decode(Bool.self, forKey: .twoFactorAuthEnabled)
         userIcon = try? container.decodeIfPresent(URL.self, forKey: .userIcon)
         userLanguage = try container.decodeIfPresent(String.self, forKey: .userLanguage)

@@ -7,8 +7,6 @@
 
 import Foundation
 
-public typealias Tag = String
-
 public struct UserDetail: ProfileDetailRepresentable, LocationRepresentable {
     public var bio: String?
     public var bioLinks: SafeDecodingArray<URL>
@@ -23,45 +21,13 @@ public struct UserDetail: ProfileDetailRepresentable, LocationRepresentable {
     public let state: User.State
     public let status: UserStatus
     public var statusDescription: String
-    public var tags: Tags
+    public var tags: UserTags
     public let userIcon: URL?
     public let location: String
     public let friendKey: String
     public let dateJoined: String
     public var note: String
     public let lastActivity: Date
-
-    public struct Tags: Codable, Hashable {
-        let systemTags: [SystemTag]
-        var languageTags: [LanguageTag]
-    }
-}
-
-public extension UserDetail.Tags {
-    init() {
-        systemTags = []
-        languageTags = []
-    }
-}
-
-public extension UserDetail.Tags {
-    init(from decoder: Decoder) throws {
-        var systemTags: [SystemTag] = []
-        var languageTags: [LanguageTag] = []
-        var container = try decoder.unkeyedContainer()
-        while !container.isAtEnd {
-            let systemTag = try? container.decode(SystemTag.self)
-            let languageTag = try? container.decode(LanguageTag.self)
-            if let systemTag = systemTag {
-                systemTags.append(systemTag)
-            }
-            if let languageTag = languageTag {
-                languageTags.append(languageTag)
-            }
-        }
-        self.systemTags = systemTags
-        self.languageTags = languageTags
-    }
 }
 
 extension UserDetail: Codable {
@@ -80,7 +46,7 @@ extension UserDetail: Codable {
         state = try container.decode(User.State.self, forKey: .state)
         status = try container.decode(UserStatus.self, forKey: .status)
         statusDescription = try container.decode(String.self, forKey: .statusDescription)
-        tags = try container.decode(Tags.self, forKey: .tags)
+        tags = try container.decode(UserTags.self, forKey: .tags)
         userIcon = try? container.decodeIfPresent(URL.self, forKey: .userIcon)
         location = try container.decode(String.self, forKey: .location)
         friendKey = try container.decode(String.self, forKey: .friendKey)
@@ -120,7 +86,7 @@ public struct EditableUserInfo: Codable, Hashable {
     public var bioLinks: [URL]
     public var status: UserStatus
     public var statusDescription: String
-    public var tags: [Tag]
+    public var tags: UserTags
 }
 
 public extension EditableUserInfo {
@@ -129,7 +95,6 @@ public extension EditableUserInfo {
         bioLinks = detail.bioLinks.elements
         status = detail.status
         statusDescription = detail.statusDescription
-//        tags = detail.tags
-        tags = []
+        tags = detail.tags
     }
 }
