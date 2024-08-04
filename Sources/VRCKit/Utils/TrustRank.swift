@@ -17,7 +17,7 @@ public extension ProfileElementRepresentable {
             .systemTrustKnown,
             .systemTrustBasic
         ]
-        let rankTag = rankTags.first(where: { tags.systemTags.contains($0) })
+        let rankTag = rankTags.first { tags.systemTags.contains($0) }
         guard let rankTag = rankTag else { return .visitor }
         return switch rankTag {
         case .systemTrustVeteran: .trusted
