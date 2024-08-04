@@ -44,7 +44,7 @@ public struct Instance: Identifiable, Hashable, Codable {
 }
 
 public extension Instance {
-    enum InstanceTypeDescription: String {
+    enum InstanceTypeAlias: String {
         case `public` = "Public"
         case friendsPlus = "Friends+"
         case friends = "Friends"
@@ -54,19 +54,20 @@ public extension Instance {
         case groupPublic = "Group Public"
     }
 
-    var instanceTypeDescription: InstanceTypeDescription {
-        switch type {
+    var typeDescription: String {
+        let instanceTypeAlias: InstanceTypeAlias = switch type {
         case .public: .public
         case .hidden: .friendsPlus
         case .friends: .friends
         case .private: .private
-        case .group: groupAccessType?.instanceTypeDescription ?? .group
+        case .group: groupAccessType?.typeDescription ?? .group
         }
+        return instanceTypeAlias.description
     }
 }
 
 extension Instance.GroupAccessType {
-    var instanceTypeDescription: Instance.InstanceTypeDescription {
+    var typeDescription: Instance.InstanceTypeAlias {
         switch self {
         case .public: .groupPublic
         case .plus: .groupPlus
@@ -78,6 +79,6 @@ extension Instance.InstanceType: CustomStringConvertible {
     public var description: String { rawValue }
 }
 
-extension Instance.InstanceTypeDescription: CustomStringConvertible {
+extension Instance.InstanceTypeAlias: CustomStringConvertible {
     public var description: String { rawValue }
 }
