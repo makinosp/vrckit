@@ -67,7 +67,7 @@ final class PreviewDataProvider {
             currentAvatar: "",
             avatarImageUrl: nil,
             avatarThumbnailUrl: nil,
-            dateJoined: "2024/07/01",
+            dateJoined: Date(),
             displayName: "usr_\(previewUserId.uuidString.prefix(8))",
             friendKey: "",
             friends: friends.map(\.id),
@@ -162,7 +162,7 @@ final class PreviewDataProvider {
             userIcon: URL(string: "https://ul.h3z.jp/9gGIcerr.png"),
             location: location,
             friendKey: "",
-            dateJoined: "",
+            dateJoined: Date(),
             note: "",
             lastActivity: Date()
         )

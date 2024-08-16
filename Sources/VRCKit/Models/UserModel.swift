@@ -15,7 +15,7 @@ public struct User: ProfileDetailRepresentable {
     public let currentAvatar: String
     public let avatarImageUrl: URL?
     public let avatarThumbnailUrl: URL?
-    public let dateJoined: String
+    public let dateJoined: Date?
     public let displayName: String
     public let friendKey: String
     public let friends: [String]
@@ -63,7 +63,8 @@ extension User: Codable {
         currentAvatar = try container.decode(String.self, forKey: .currentAvatar)
         avatarImageUrl = try? container.decodeIfPresent(URL.self, forKey: .avatarImageUrl)
         avatarThumbnailUrl = try? container.decodeIfPresent(URL.self, forKey: .avatarThumbnailUrl)
-        dateJoined = try container.decode(String.self, forKey: .dateJoined)
+        let dateJoinedString = try container.decode(String.self, forKey: .dateJoined)
+        dateJoined = DateFormatter.dateStringFormat.date(from: dateJoinedString)
         displayName = try container.decode(String.self, forKey: .displayName)
         friendKey = try container.decode(String.self, forKey: .friendKey)
         friends = try container.decode([String].self, forKey: .friends)

@@ -25,7 +25,7 @@ public struct UserDetail: ProfileDetailRepresentable, LocationRepresentable {
     public let userIcon: URL?
     public let location: String
     public let friendKey: String
-    public let dateJoined: String
+    public let dateJoined: Date?
     public var note: String
     public let lastActivity: Date
 }
@@ -50,7 +50,8 @@ extension UserDetail: Codable {
         userIcon = try? container.decodeIfPresent(URL.self, forKey: .userIcon)
         location = try container.decode(String.self, forKey: .location)
         friendKey = try container.decode(String.self, forKey: .friendKey)
-        dateJoined = try container.decode(String.self, forKey: .dateJoined)
+        let dateJoinedString = try container.decode(String.self, forKey: .dateJoined)
+        dateJoined = DateFormatter.dateStringFormat.date(from: dateJoinedString)
         note = try container.decode(String.self, forKey: .note)
         lastActivity = try container.decode(Date.self, forKey: .lastActivity)
     }
