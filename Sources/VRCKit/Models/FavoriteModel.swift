@@ -27,7 +27,7 @@ public struct FavoriteDetail: Identifiable {
     }
 }
 
-public struct FavoriteGroup: Codable, Identifiable {
+public struct FavoriteGroup: Codable, Identifiable, Hashable {
     public let id: String
     public let displayName: String
     public let name: String

@@ -30,7 +30,7 @@ public protocol ProfileElementRepresentable: Hashable, Identifiable {
 /// A protocol representing detailed profile properties for users.
 /// This protocol extends ProfileElementRepresentable and can be adopted by structures like User and UserDetail.
 public protocol ProfileDetailRepresentable: ProfileElementRepresentable {
-    var dateJoined: String { get }
+    var dateJoined: Date? { get }
     var lastActivity: Date { get }
     var state: User.State { get }
 }

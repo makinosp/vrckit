@@ -16,4 +16,12 @@ public extension DateFormatter {
         formatter.locale = Locale(identifier: "en_US_POSIX")
         return formatter
     }()
+
+    static let dateStringFormat: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyy-MM-dd"
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return formatter
+    }()
 }
