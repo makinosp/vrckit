@@ -16,7 +16,7 @@ public extension DateFormatter {
         formatter.locale = Locale(identifier: "en_US_POSIX")
         return formatter
     }()
-    
+
     static let dateStringFormat: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyy-MM-dd"
