@@ -6,9 +6,9 @@
 //
 
 public struct UserTags: Codable, Hashable {
-    let systemTags: [SystemTag]
-    var languageTags: [LanguageTag]
-    let unknownTags: [String]
+    public let systemTags: [SystemTag]
+    public let languageTags: [LanguageTag]
+    public let unknownTags: [String]
 }
 
 public extension UserTags {
