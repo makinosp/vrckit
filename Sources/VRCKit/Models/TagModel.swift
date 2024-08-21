@@ -75,3 +75,11 @@ public enum LanguageTag: String, Hashable, Codable {
     case koreanSignLanguage = "language_kvk"
     case noLinguisticContent = "language_zxx"
 }
+
+extension SystemTag: Identifiable {
+    public var id: Int { hashValue }
+}
+
+extension LanguageTag: Identifiable {
+    public var id: Int { hashValue }
+}
