@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum LanguageTag: String, Hashable, Codable {
+public enum LanguageTag: String, Hashable, Codable, CaseIterable {
     case english = "language_eng"
     case korean = "language_kor"
     case russian = "language_rus"
