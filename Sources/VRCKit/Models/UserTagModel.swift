@@ -5,7 +5,7 @@
 //  Created by makinosp on 2024/08/04.
 //
 
-public struct UserTags: Codable, Hashable {
+public struct UserTags: Hashable {
     public var systemTags: [SystemTag]
     public var languageTags: [LanguageTag]
     public var unknownTags: [String]
@@ -19,8 +19,8 @@ public extension UserTags {
     }
 }
 
-public extension UserTags {
-    init(from decoder: Decoder) throws {
+extension UserTags: Decodable {
+    public init(from decoder: Decoder) throws {
         var systemTags: [SystemTag] = []
         var languageTags: [LanguageTag] = []
         var unknownTags: [String] = []
@@ -42,5 +42,13 @@ public extension UserTags {
         self.systemTags = systemTags
         self.languageTags = languageTags
         self.unknownTags = unknownTags
+    }
+}
+
+extension UserTags: Encodable {
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.unkeyedContainer()
+        let tags = languageTags.map(\.rawValue)
+        try container.encode(tags)
     }
 }
