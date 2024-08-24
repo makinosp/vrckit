@@ -22,7 +22,7 @@ public struct World: Codable, Identifiable, Hashable {
     public let namespace: String?
     public let organization: String
     public let previewYoutubeId: String?
-    public let favorites: Int
+    public let favorites: Int?
     public let createdAt: Date
     public let updatedAt: Date
     public let publicationDate: OptionalISO8601Date

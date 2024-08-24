@@ -18,7 +18,7 @@ public extension OptionalISO8601Date {
     }
 }
 
-extension OptionalISO8601Date: Codable {
+extension OptionalISO8601Date: Decodable {
     public init(from decoder: any Decoder) throws {
         let container = try decoder.singleValueContainer()
         let dateString = try container.decode(String.self)
@@ -34,7 +34,9 @@ extension OptionalISO8601Date: Codable {
             )
         }
     }
+}
 
+extension OptionalISO8601Date: Encodable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         if let date = self.date {
