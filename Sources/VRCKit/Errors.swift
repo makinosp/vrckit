@@ -33,7 +33,7 @@ public enum VRCKitError: Error, LocalizedError {
     /// Provides a localized description of the error.
     public var errorDescription: String? {
         switch self {
-        case .apiError(let _):
+        case .apiError:
             "API Error"
         case .clientDeallocated:
             "Client Deallocated"

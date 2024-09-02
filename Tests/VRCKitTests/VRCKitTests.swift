@@ -1,11 +1,10 @@
-@testable import VRCKit
-import XCTest
+// import Testing
+// @testable import VRCKit
 
-final class VRCKitTests: XCTestCase {
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-//        XCTAssertEqual(SwiftVRChatAPI().text, "Hello, World!")
-    }
-}
+// struct Test {
+//     @Test
+//     func cookieManager() async throws {
+//         let cookieManager = CookieManager(domainURL: "example.com")
+//         #expect(cookieManager.cookies.isEmpty)
+//     }
+// }

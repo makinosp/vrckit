@@ -7,9 +7,9 @@
 
 import Foundation
 
-final class PreviewDataProvider {
+public final class PreviewDataProvider {
     typealias FriendSet = (friend: Friend, userDetail: UserDetail)
-    static let shared = PreviewDataProvider()
+    public static let shared = PreviewDataProvider()
     private let previewUserId = UUID()
     let friends: [Friend]
     let userDetails: [UserDetail]
@@ -58,9 +58,9 @@ final class PreviewDataProvider {
         friends.filter { $0.status == .offline }
     }
 
-    var previewUser: User {
+    public var previewUser: User {
         User(
-            activeFriends: onlineFriends.map(\.id),
+            activeFriends: [],
             allowAvatarCopying: false,
             bio: "This is the demo user.",
             bioLinks: SafeDecodingArray(),
@@ -77,8 +77,8 @@ final class PreviewDataProvider {
             lastActivity: Date(),
             lastLogin: Date(),
             lastPlatform: "standalonewindows",
-            offlineFriends: onlineFriends.map(\.id),
-            onlineFriends: offlineFriends.map(\.id),
+            offlineFriends: offlineFriends.map(\.id),
+            onlineFriends: onlineFriends.map(\.id),
             pastDisplayNames: [],
             profilePicOverride: nil,
             state: .active,
@@ -88,7 +88,8 @@ final class PreviewDataProvider {
             twoFactorAuthEnabled: true,
             userIcon: URL(string: "https://ul.h3z.jp/9gGIcerr.png"),
             userLanguage: nil,
-            userLanguageCode: nil
+            userLanguageCode: nil,
+            presence: User.Presence()
         )
     }
 
@@ -127,6 +128,7 @@ final class PreviewDataProvider {
             isFriend: true,
             lastLogin: Date(),
             lastPlatform: "standalonewindows",
+            platform: .blank,
             profilePicOverride: nil,
             status: status,
             statusDescription: "",
@@ -164,7 +166,8 @@ final class PreviewDataProvider {
             friendKey: "",
             dateJoined: Date(),
             note: "",
-            lastActivity: Date()
+            lastActivity: Date(),
+            platform: .blank
         )
     }
 

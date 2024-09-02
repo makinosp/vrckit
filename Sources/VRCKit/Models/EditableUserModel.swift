@@ -24,3 +24,8 @@ public extension EditableUserInfo {
         tags = detail.tags
     }
 }
+
+public struct UpdatedUser: Codable {
+    public let bio: String?
+    public let statusDescription: String?
+}

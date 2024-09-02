@@ -33,7 +33,7 @@ public class FriendService: APIService, FriendServiceProtocol {
         try await withThrowingTaskGroup(of: ResultSet.self) { taskGroup in
             for offset in stride(from: 0, to: count, by: n) {
                 taskGroup.addTask { [weak client] in
-                    guard let client = client else {
+                    guard client != nil else {
                         throw VRCKitError.clientDeallocated
                     }
                     let friends = try await self.fetchFriends(offset: offset, n: n, offline: offline)

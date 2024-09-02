@@ -9,7 +9,7 @@ import Foundation
 
 /// A protocol representing common properties for user profile elements.
 /// This protocol can be adopted by structures such as User, Friend, and UserDetail.
-public protocol ProfileElementRepresentable: Hashable, Identifiable {
+public protocol ProfileElementRepresentable: Hashable, Identifiable, ImageUrlRepresentable {
     var bio: String? { get }
     var bioLinks: SafeDecodingArray<URL> { get }
     var avatarImageUrl: URL? { get }
@@ -19,6 +19,7 @@ public protocol ProfileElementRepresentable: Hashable, Identifiable {
     var isFriend: Bool { get }
     var lastLogin: Date { get }
     var lastPlatform: String { get }
+    var platform: UserPlatform { get }
     var profilePicOverride: URL? { get }
     var status: UserStatus { get }
     var statusDescription: String { get }
@@ -33,4 +34,11 @@ public protocol ProfileDetailRepresentable: ProfileElementRepresentable {
     var dateJoined: Date? { get }
     var lastActivity: Date { get }
     var state: User.State { get }
+}
+
+public extension ProfileElementRepresentable {
+    func imageUrl(_ resolution: ImageResolution) -> URL? {
+        guard let url = profilePicOverride ?? avatarThumbnailUrl else { return nil }
+        return replaceImageUrl(url: url, resolution: resolution)
+    }
 }

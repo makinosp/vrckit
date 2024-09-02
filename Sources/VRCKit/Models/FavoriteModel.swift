@@ -6,9 +6,7 @@
 //
 
 public enum FavoriteType: String, Codable {
-    case world
-    case avatar
-    case friend
+    case world, avatar, friend
 }
 
 public struct Favorite: Codable, Identifiable {
