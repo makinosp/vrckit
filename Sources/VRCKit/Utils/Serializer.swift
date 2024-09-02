@@ -27,17 +27,15 @@ final class Serializer {
     func decode<T: Decodable>(_ data: Data) throws -> T {
         do {
             return try decoder.decode(T.self, from: data)
-        } catch {
+        } catch let error as DecodingError {
             do {
                 let errorResponse = try decoder.decode(ErrorResponse.self, from: data)
                 throw VRCKitError.apiError(errorResponse.error.message)
-            } catch let error as DecodingError {
+            } catch _ as DecodingError {
                 // for debug
                 print(type(of: T.self))
                 print(error)
                 print(String(decoding: data, as: UTF8.self))
-                throw error
-            } catch {
                 throw error
             }
         }
