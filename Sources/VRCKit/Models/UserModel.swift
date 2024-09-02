@@ -39,12 +39,16 @@ public struct User: ProfileDetailRepresentable {
     public let userLanguageCode: String?
     public let presence: Presence
 
+    public var platform: UserPlatform {
+        presence.platform
+    }
+
     public struct Presence: Codable, Hashable {
         public let groups: [String]
         public let id: String
         public let instance: String
         public let instanceType: String
-        public let platform: String
+        public let platform: UserPlatform
         public let status: UserStatus
         public let travelingToInstance: String
         public let travelingToWorld: String
@@ -144,7 +148,7 @@ extension User.Presence {
         id = UUID().uuidString
         instance = ""
         instanceType = ""
-        platform = ""
+        platform = .blank
         status = .offline
         travelingToInstance = ""
         travelingToWorld = ""

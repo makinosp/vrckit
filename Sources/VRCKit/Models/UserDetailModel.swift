@@ -28,6 +28,7 @@ public struct UserDetail: ProfileDetailRepresentable, LocationRepresentable {
     public let dateJoined: Date?
     public var note: String
     public let lastActivity: Date
+    public let platform: UserPlatform
 }
 
 extension UserDetail: Codable {
@@ -54,6 +55,7 @@ extension UserDetail: Codable {
         dateJoined = DateFormatter.dateStringFormat.date(from: dateJoinedString)
         note = try container.decode(String.self, forKey: .note)
         lastActivity = try container.decode(Date.self, forKey: .lastActivity)
+        platform = try container.decode(UserPlatform.self, forKey: .platform)
     }
 }
 
@@ -79,5 +81,6 @@ extension UserDetail {
         case dateJoined
         case note
         case lastActivity
+        case platform
     }
 }

@@ -128,6 +128,7 @@ public final class PreviewDataProvider {
             isFriend: true,
             lastLogin: Date(),
             lastPlatform: "standalonewindows",
+            platform: .blank,
             profilePicOverride: nil,
             status: status,
             statusDescription: "",
@@ -165,7 +166,8 @@ public final class PreviewDataProvider {
             friendKey: "",
             dateJoined: Date(),
             note: "",
-            lastActivity: Date()
+            lastActivity: Date(),
+            platform: .blank
         )
     }
 

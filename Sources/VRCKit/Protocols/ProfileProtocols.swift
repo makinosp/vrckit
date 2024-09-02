@@ -19,12 +19,18 @@ public protocol ProfileElementRepresentable: Hashable, Identifiable {
     var isFriend: Bool { get }
     var lastLogin: Date { get }
     var lastPlatform: String { get }
+    var platform: UserPlatform { get }
     var profilePicOverride: URL? { get }
     var status: UserStatus { get }
     var statusDescription: String { get }
     var tags: UserTags { get }
     var userIcon: URL? { get }
     var friendKey: String { get }
+}
+
+public enum UserPlatform: String, Codable {
+    case android, ios, standalonewindows, web
+    case blank = ""
 }
 
 /// A protocol representing detailed profile properties for users.

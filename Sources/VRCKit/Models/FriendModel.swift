@@ -17,6 +17,7 @@ public struct Friend: ProfileElementRepresentable, LocationRepresentable {
     public let isFriend: Bool
     public let lastLogin: Date
     public let lastPlatform: String
+    public let platform: UserPlatform
     public let profilePicOverride: URL?
     public let status: UserStatus
     public let statusDescription: String
@@ -45,6 +46,7 @@ extension Friend: Codable {
         userIcon = try? container.decodeIfPresent(URL.self, forKey: .userIcon)
         location = try container.decode(String.self, forKey: .location)
         friendKey = try container.decode(String.self, forKey: .friendKey)
+        platform = try container.decode(UserPlatform.self, forKey: .platform)
     }
 }
 
@@ -66,6 +68,7 @@ extension Friend {
         case userIcon
         case location
         case friendKey
+        case platform
     }
 }
 
