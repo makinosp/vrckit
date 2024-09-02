@@ -39,3 +39,10 @@ public struct World: Codable, Identifiable, Hashable {
         case `public`, `private`, hidden, all
     }
 }
+
+extension World: ImageUrlRepresentable {
+    public func imageUrl(_ resolution: ImageResolution) -> URL? {
+        guard let url = thumbnailImageUrl else { return nil }
+        return replaceImageUrl(url: url, resolution: resolution)
+    }
+}

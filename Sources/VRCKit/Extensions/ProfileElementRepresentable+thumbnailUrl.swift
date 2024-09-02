@@ -7,13 +7,12 @@
 
 import Foundation
 
-public extension ProfileElementRepresentable {
-    func imageUrl(_ resolution: ImageResolution) -> URL? {
-        guard let url = userIcon ?? avatarThumbnailUrl else { return nil }
-        return replaceImageUrl(url: url, resolution: resolution)
-    }
+public protocol ImageUrlRepresentable {
+    func imageUrl(_ resolution: ImageResolution) -> URL?
+}
 
-    private func replaceImageUrl(url: URL, resolution: ImageResolution) -> URL? {
+public extension ImageUrlRepresentable {
+    func replaceImageUrl(url: URL, resolution: ImageResolution) -> URL? {
         guard resolution != .origin, Int(url.lastPathComponent) != nil else { return url }
         var urlString = url.absoluteString
         if let range = urlString.range(of: url.lastPathComponent, options: .backwards) {
