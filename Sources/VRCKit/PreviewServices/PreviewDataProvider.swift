@@ -88,7 +88,8 @@ public final class PreviewDataProvider {
             twoFactorAuthEnabled: true,
             userIcon: URL(string: "https://ul.h3z.jp/9gGIcerr.png"),
             userLanguage: nil,
-            userLanguageCode: nil
+            userLanguageCode: nil,
+            presence: User.Presence()
         )
     }
 

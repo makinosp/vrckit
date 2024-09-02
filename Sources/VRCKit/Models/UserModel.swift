@@ -37,6 +37,19 @@ public struct User: ProfileDetailRepresentable {
     public let userIcon: URL?
     public let userLanguage: String?
     public let userLanguageCode: String?
+    public let presence: Presence
+
+    public struct Presence: Codable, Hashable {
+        public let groups: [String]
+        public let id: String
+        public let instance: String
+        public let instanceType: String
+        public let platform: String
+        public let status: UserStatus
+        public let travelingToInstance: String
+        public let travelingToWorld: String
+        public let world: String
+    }
 
     public struct DisplayName: Codable, Hashable {
         public let displayName: String
@@ -86,6 +99,7 @@ extension User: Codable {
         userIcon = try? container.decodeIfPresent(URL.self, forKey: .userIcon)
         userLanguage = try container.decodeIfPresent(String.self, forKey: .userLanguage)
         userLanguageCode = try container.decodeIfPresent(String.self, forKey: .userLanguageCode)
+        presence = try container.decode(Presence.self, forKey: .presence)
     }
 }
 
@@ -111,6 +125,7 @@ extension User {
         case offlineFriends
         case onlineFriends
         case pastDisplayNames
+        case presence
         case profilePicOverride
         case state
         case status
@@ -120,6 +135,20 @@ extension User {
         case userIcon
         case userLanguage
         case userLanguageCode
+    }
+}
+
+extension User.Presence {
+    init() {
+        groups = []
+        id = UUID().uuidString
+        instance = ""
+        instanceType = ""
+        platform = ""
+        status = .offline
+        travelingToInstance = ""
+        travelingToWorld = ""
+        world = ""
     }
 }
 
