@@ -30,3 +30,9 @@ public struct UserDetail: ProfileDetailRepresentable, LocationRepresentable {
     public let lastActivity: Date
     public let platform: UserPlatform
 }
+
+public extension UserDetail {
+    var url: URL? {
+        URL(string: [Const.homeBaseUrl, "user", id].joined(separator: "/"))
+    }
+}
