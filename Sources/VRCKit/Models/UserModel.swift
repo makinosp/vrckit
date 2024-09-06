@@ -44,6 +44,9 @@ public extension User {
     var platform: UserPlatform {
         presence.platform
     }
+    var url: URL? {
+        URL(string: [Const.homeBaseUrl, "user", id].joined(separator: "/"))
+    }
 }
 
 public extension User {
