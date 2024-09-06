@@ -25,9 +25,8 @@ public final class APIClient {
 
     /// Initializes the API client with optional username and password.
     public init() {
-        let domainUrl = "https://api.vrchat.cloud"
-        baseUrl = "\(domainUrl)/api/1"
-        cookieManager = CookieManager(domainURL: domainUrl)
+        baseUrl = "\(Const.apiBaseUrl)/\(Const.apiVersion)"
+        cookieManager = CookieManager(domainURL: Const.apiBaseUrl)
     }
 
     /// Set username and password.
