@@ -70,7 +70,7 @@ public extension Instance {
             platforms.android > 0 ? UserPlatform.android : nil,
             platforms.ios > 0 ? UserPlatform.ios : nil,
             platforms.standalonewindows > 0 ? UserPlatform.standalonewindows : nil
-        ].compactMap(\.self)
+        ].compactMap { $0 }
     }
 }
 
