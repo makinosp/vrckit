@@ -67,9 +67,9 @@ public extension Instance {
 
     var userPlatforms: [UserPlatform] {
         [
-            platforms.android > 0 ? .android : nil,
-            platforms.ios > 0 ? .ios : nil,
-            platforms.standalonewindows > 0 ? .standalonewindows : nil
+            platforms.android > 0 ? UserPlatform.android : nil,
+            platforms.ios > 0 ? UserPlatform.ios : nil,
+            platforms.standalonewindows > 0 ? UserPlatform.standalonewindows : nil
         ].compactMap(\.self)
     }
 }
