@@ -64,6 +64,14 @@ public extension Instance {
         }
         return instanceTypeAlias.description
     }
+
+    public var userPlatforms: [UserPlatform] {
+        [
+            platforms.android > 0 ? .android : nil,
+            platforms.ios > 0 ? .ios : nil,
+            platforms.standalonewindows > 0 ? .standalonewindows : nil
+        ].compactMap(\.self)
+    }
 }
 
 extension Instance.GroupAccessType {
