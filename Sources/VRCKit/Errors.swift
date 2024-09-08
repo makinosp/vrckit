@@ -9,7 +9,7 @@ import Foundation
 
 /// An enumeration that represents various errors that can occur in the VRCKit framework.
 /// Conforms to the `Error` and `LocalizedError` protocols for better error handling and localization.
-public enum VRCKitError: Error, LocalizedError {
+public enum VRCKitError: Error, LocalizedError, Equatable {
     private typealias RawValue = String
 
     /// Represents an error from the API with details.
