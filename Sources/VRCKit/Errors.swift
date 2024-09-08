@@ -24,6 +24,9 @@ public enum VRCKitError: Error, LocalizedError {
     /// Represents an error indicating an invalid request with additional details.
     case invalidRequest(_ details: String)
 
+    /// Represents an error indicating an authentication failure.
+    case unauthorized
+
     /// Represents an unexpected error.
     case unexpectedError
 
@@ -41,6 +44,8 @@ public enum VRCKitError: Error, LocalizedError {
             "Invalid Response Error"
         case .invalidRequest:
             "Invalid Request"
+        case .unauthorized:
+            "Unauthorized"
         case .unexpectedError:
             "Unexpected Error"
         case .urlError:

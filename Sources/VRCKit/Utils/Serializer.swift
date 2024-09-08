@@ -30,7 +30,11 @@ final class Serializer {
         } catch let error as DecodingError {
             do {
                 let errorResponse = try decoder.decode(ErrorResponse.self, from: data)
-                throw VRCKitError.apiError(errorResponse.error.message)
+                if errorResponse.error.statusCode == 401 {
+                    throw VRCKitError.unauthorized
+                } else {
+                    throw VRCKitError.apiError(errorResponse.error.message)
+                }
             } catch _ as DecodingError {
                 // for debug
                 print(type(of: T.self))
