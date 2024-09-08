@@ -23,15 +23,15 @@ public struct Friend: ProfileElementRepresentable, LocationRepresentable {
     public let statusDescription: String
     public let tags: UserTags
     public let userIcon: URL?
-    public let location: String
+    public let location: Location
     public let friendKey: String
 }
 
 public struct FriendsLocation: LocationRepresentable {
-    public let location: String
+    public let location: Location
     public let friends: [Friend]
 }
 
 extension FriendsLocation: Hashable, Identifiable {
-    public var id: String { location }
+    public var id: Int { location.hashValue }
 }

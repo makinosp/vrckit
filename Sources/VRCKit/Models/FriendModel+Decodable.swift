@@ -24,7 +24,7 @@ extension Friend: Decodable {
         statusDescription = try container.decode(String.self, forKey: .statusDescription)
         tags = try container.decode(UserTags.self, forKey: .tags)
         userIcon = try? container.decodeIfPresent(URL.self, forKey: .userIcon)
-        location = try container.decode(String.self, forKey: .location)
+        location = try container.decode(Location.self, forKey: .location)
         friendKey = try container.decode(String.self, forKey: .friendKey)
         platform = try container.decode(UserPlatform.self, forKey: .platform)
     }

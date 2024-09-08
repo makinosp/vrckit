@@ -23,7 +23,7 @@ public struct UserDetail: ProfileDetailRepresentable, LocationRepresentable {
     public var statusDescription: String
     public var tags: UserTags
     public let userIcon: URL?
-    public let location: String
+    public let location: Location
     public let friendKey: String
     public let dateJoined: Date?
     public var note: String
