@@ -19,7 +19,7 @@ public enum VRCKitError: Error, LocalizedError {
     case clientDeallocated
 
     /// Represents an error indicating an invalid response was received.
-    case invalidResponseError
+    case invalidResponse
 
     /// Represents an error indicating an invalid request with additional details.
     case invalidRequest(_ details: String)
@@ -28,7 +28,7 @@ public enum VRCKitError: Error, LocalizedError {
     case unauthorized
 
     /// Represents an unexpected error.
-    case unexpectedError
+    case unexpected
 
     /// Represents an url error.
     case urlError
@@ -36,20 +36,13 @@ public enum VRCKitError: Error, LocalizedError {
     /// Provides a localized description of the error.
     public var errorDescription: String? {
         switch self {
-        case .apiError:
-            "API Error"
-        case .clientDeallocated:
-            "Client Deallocated"
-        case .invalidResponseError:
-            "Invalid Response Error"
-        case .invalidRequest:
-            "Invalid Request"
-        case .unauthorized:
-            "Unauthorized"
-        case .unexpectedError:
-            "Unexpected Error"
-        case .urlError:
-            "URL Error"
+        case .apiError: "API Error"
+        case .clientDeallocated: "Client Deallocated"
+        case .invalidResponse: "Invalid Response"
+        case .invalidRequest: "Invalid Request"
+        case .unauthorized: "Unauthorized"
+        case .unexpected: "Unexpected"
+        case .urlError: "URL Error"
         }
     }
 
