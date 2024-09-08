@@ -49,9 +49,9 @@ extension Instance: ImageUrlRepresentable {
     public func imageUrl(_ resolution: ImageResolution) -> URL? {
         switch location {
         case .offline:
-            return URL(string: [Const.assetsUrl, Const.offlineImagePath].joined(separator: "/"))
+            return Const.offlineImageUrl
         case .private, .traveling:
-            return URL(string: [Const.privateWorldImagePath].joined(separator: "/"))
+            return Const.privateWorldImageUrl
         case .id:
             guard let url = world.thumbnailImageUrl else { return nil }
             return replaceImageUrl(url: url, resolution: resolution)
