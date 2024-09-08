@@ -228,4 +228,8 @@ public final class PreviewDataProvider {
             version: 1
         )
     }
+
+    public static func generateWorld() -> World {
+        generateWorld(worldId: UUID())
+    }
 }
