@@ -47,7 +47,7 @@ public final class APIClient {
     func encodeAuthorization(_ username: String, _ password: String) throws -> String {
         let authString = "\(username):\(password)"
         guard let payload = authString.data(using: .utf8) else {
-            throw VRCKitError.unexpectedError
+            throw VRCKitError.unexpected
         }
         return "Basic \(payload.base64EncodedString())"
     }
@@ -97,7 +97,7 @@ public final class APIClient {
 
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let response = response as? HTTPURLResponse else {
-            throw VRCKitError.invalidResponseError
+            throw VRCKitError.invalidResponse
         }
         return (data, response)
     }

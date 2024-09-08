@@ -113,7 +113,7 @@ public final class PreviewDataProvider {
         )
     }
 
-    private static func generateFriend(
+    public static func generateFriend(
         id: UUID,
         location: Location,
         status: UserStatus
@@ -139,7 +139,7 @@ public final class PreviewDataProvider {
         )
     }
 
-    private static func generateUserDetail(
+    public static func generateUserDetail(
         id: UUID,
         location: Location,
         state: User.State,
@@ -171,7 +171,7 @@ public final class PreviewDataProvider {
         )
     }
 
-    private static func generateInstance(worldId: UUID, instanceId: Int) -> Instance {
+    public static func generateInstance(worldId: UUID, instanceId: Int) -> Instance {
         Instance(
             active: true,
             capacity: 32,
@@ -197,7 +197,11 @@ public final class PreviewDataProvider {
         )
     }
 
-    private static func generateWorld(worldId: UUID) -> World {
+    public static func generateInstance() -> Instance {
+        generateInstance(worldId: UUID(), instanceId: 0)
+    }
+
+    public static func generateWorld(worldId: UUID) -> World {
         World(
             id: "wrld_\(worldId.uuidString)",
             name: "DummyWorld",

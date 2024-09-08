@@ -29,7 +29,7 @@ public class AuthenticationService: APIService, AuthenticationServiceProtocol {
         } catch _ as DecodingError {
             let result: RequiresTwoFactorAuthResponse = try Serializer.shared.decode(response.data)
             guard let requires = result.requires else {
-                throw VRCKitError.unexpectedError
+                throw VRCKitError.unexpected
             }
             return requires
         }
