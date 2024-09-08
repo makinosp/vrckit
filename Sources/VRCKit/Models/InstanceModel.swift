@@ -12,7 +12,7 @@ public struct Instance: Identifiable, Hashable, Codable {
     public let groupAccessType: GroupAccessType?
     public let id: String
     public let instanceId: String
-    public let location: String
+    public let location: Location
     public let name: String
     public let ownerId: String?
     public let permanent: Bool

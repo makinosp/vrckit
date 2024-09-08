@@ -179,7 +179,7 @@ public final class PreviewDataProvider {
             groupAccessType: nil,
             id: "wrld_\(worldId):\(instanceId)",
             instanceId: instanceId.description,
-            location: "wrld_\(worldId.uuidString)",
+            location: .id("wrld_\(worldId.uuidString)"),
             name: "DummyInstance_\(instanceId)",
             ownerId: "usr_\(UUID().uuidString)",
             permanent: false,
