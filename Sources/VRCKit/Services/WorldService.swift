@@ -2,14 +2,20 @@
 //  WorldService.swift
 //  VRCKit
 //
-//  Created by makinosp on 2024/02/18.
+//  Created by kiripoipoi on 2024/09/07.
 //
 
-public class WorldService: APIService {
+public class WorldService: APIService, WorldServiceProtocol {
     let path = "worlds"
 
     public func fetchWorld(worldId: String) async throws -> World {
         let response = try await client.request(path: "\(path)/\(worldId)", method: .get)
+        return try Serializer.shared.decode(response.data)
+    }
+
+    public func fetchFavoritedWorlds() async throws -> [World] {
+        let path = "worlds/favorites"
+        let response = try await client.request(path: path, method: .get)
         return try Serializer.shared.decode(response.data)
     }
 }

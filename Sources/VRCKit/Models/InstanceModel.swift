@@ -5,14 +5,16 @@
 //  Created by makinosp on 2024/06/03.
 //
 
-public struct Instance: Identifiable, Hashable, Codable {
+import Foundation
+
+public struct Instance: Identifiable, Hashable, Decodable {
     public let active: Bool
     public let capacity: Int
     public let full: Bool
     public let groupAccessType: GroupAccessType?
     public let id: String
     public let instanceId: String
-    public let location: String
+    public let location: Location
     public let name: String
     public let ownerId: String?
     public let permanent: Bool
@@ -40,6 +42,20 @@ public struct Instance: Identifiable, Hashable, Codable {
 
     public enum InstanceType: String, Codable {
         case `public`, hidden, friends, `private`, group
+    }
+}
+
+extension Instance: ImageUrlRepresentable {
+    public func imageUrl(_ resolution: ImageResolution) -> URL? {
+        switch location {
+        case .offline:
+            return Const.offlineImageUrl
+        case .private, .traveling:
+            return Const.privateWorldImageUrl
+        case .id:
+            guard let url = world.thumbnailImageUrl else { return nil }
+            return replaceImageUrl(url: url, resolution: resolution)
+        }
     }
 }
 

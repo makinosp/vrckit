@@ -7,13 +7,16 @@
 
 /// Represents a type that has a location string.
 public protocol LocationRepresentable {
-    var location: String { get }
+    var location: Location { get }
     var isVisible: Bool { get }
 }
 
 public extension LocationRepresentable {
-    /// Determines if the location is visible based on predefined criteria.
     var isVisible: Bool {
-        !["private", "offline", "traveling"].contains(location)
+        if case .id = location {
+            true
+        } else {
+            false
+        }
     }
 }

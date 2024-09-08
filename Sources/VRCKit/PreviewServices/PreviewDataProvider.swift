@@ -21,15 +21,15 @@ public final class PreviewDataProvider {
             let id = UUID()
             return switch count {
             case ..<10:
-                Self.generateFriendSet(id: id, location: instance.id, status: .active)
+                Self.generateFriendSet(id: id, location: .id(instance.id), status: .active)
             case ..<20:
-                Self.generateFriendSet(id: id, location: "private", status: .askMe)
+                Self.generateFriendSet(id: id, location: .private, status: .askMe)
             case ..<30:
-                Self.generateFriendSet(id: id, location: instance.id, status: .joinMe)
+                Self.generateFriendSet(id: id, location: .id(instance.id), status: .joinMe)
             case ..<40:
-                Self.generateFriendSet(id: id, location: "private", status: .busy)
+                Self.generateFriendSet(id: id, location: .private, status: .busy)
             default:
-                Self.generateFriendSet(id: id, location: "offline", status: .offline)
+                Self.generateFriendSet(id: id, location: .offline, status: .offline)
             }
         }
         var userDetails = onlineFriendsSet.map(\.userDetail)
@@ -43,7 +43,7 @@ public final class PreviewDataProvider {
     private static func previewUserDetail(id: UUID, instance: Instance) -> UserDetail {
         PreviewDataProvider.generateUserDetail(
             id: id,
-            location: instance.id,
+            location: .id(instance.id),
             state: .active,
             status: .active,
             isFriend: false
@@ -95,7 +95,7 @@ public final class PreviewDataProvider {
 
     private static func generateFriendSet(
         id: UUID,
-        location: String,
+        location: Location,
         status: UserStatus
     ) -> FriendSet {
         (
@@ -115,7 +115,7 @@ public final class PreviewDataProvider {
 
     private static func generateFriend(
         id: UUID,
-        location: String,
+        location: Location,
         status: UserStatus
     ) -> Friend {
         Friend(
@@ -141,7 +141,7 @@ public final class PreviewDataProvider {
 
     private static func generateUserDetail(
         id: UUID,
-        location: String,
+        location: Location,
         state: User.State,
         status: UserStatus,
         isFriend: Bool = true
@@ -179,7 +179,7 @@ public final class PreviewDataProvider {
             groupAccessType: nil,
             id: "wrld_\(worldId):\(instanceId)",
             instanceId: instanceId.description,
-            location: "wrld_\(worldId.uuidString)",
+            location: .id("wrld_\(worldId.uuidString)"),
             name: "DummyInstance_\(instanceId)",
             ownerId: "usr_\(UUID().uuidString)",
             permanent: false,
