@@ -5,7 +5,9 @@
 //  Created by makinosp on 2024/06/03.
 //
 
-public struct Instance: Identifiable, Hashable, Codable {
+import Foundation
+
+public struct Instance: Identifiable, Hashable, Decodable {
     public let active: Bool
     public let capacity: Int
     public let full: Bool
@@ -40,6 +42,20 @@ public struct Instance: Identifiable, Hashable, Codable {
 
     public enum InstanceType: String, Codable {
         case `public`, hidden, friends, `private`, group
+    }
+}
+
+extension Instance: ImageUrlRepresentable {
+    public func imageUrl(_ resolution: ImageResolution) -> URL? {
+        switch location {
+        case .offline:
+            return URL(string: [Const.assetsUrl, Const.offlineImagePath].joined(separator: "/"))
+        case .private, .traveling:
+            return URL(string: [Const.privateWorldImagePath].joined(separator: "/"))
+        case .id:
+            guard let url = world.thumbnailImageUrl else { return nil }
+            return replaceImageUrl(url: url, resolution: resolution)
+        }
     }
 }
 
