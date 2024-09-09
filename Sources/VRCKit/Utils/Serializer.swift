@@ -39,7 +39,7 @@ final class Serializer {
                 // for debug
                 print(type(of: T.self))
                 print(error)
-                print(String(decoding: data, as: UTF8.self))
+                print(String(data: data, encoding: .utf8) ?? "")
                 throw error
             }
         }

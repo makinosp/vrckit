@@ -15,6 +15,8 @@ public final class PreviewDataProvider {
     let userDetails: [UserDetail]
     let instances: [Instance]
 
+    static let iconImageUrl = URL(string: "https://www.mediafire.com/convkey/f444/fmivuoxwvdvnucx9g.jpg")
+
     private init() {
         let instance = Self.generateInstance(worldId: UUID(), instanceId: 0)
         let onlineFriendsSet: [FriendSet] = (0..<50).map { count in
@@ -65,8 +67,8 @@ public final class PreviewDataProvider {
             bio: "This is the demo user.",
             bioLinks: SafeDecodingArray(),
             currentAvatar: "",
-            avatarImageUrl: nil,
-            avatarThumbnailUrl: nil,
+            avatarImageUrl: PreviewDataProvider.iconImageUrl,
+            avatarThumbnailUrl: PreviewDataProvider.iconImageUrl,
             dateJoined: Date(),
             displayName: "usr_\(previewUserId.uuidString.prefix(8))",
             friendKey: "",
@@ -80,13 +82,13 @@ public final class PreviewDataProvider {
             offlineFriends: offlineFriends.map(\.id),
             onlineFriends: onlineFriends.map(\.id),
             pastDisplayNames: [],
-            profilePicOverride: nil,
+            profilePicOverride: PreviewDataProvider.iconImageUrl,
             state: .active,
             status: .active,
             statusDescription: "status",
             tags: UserTags(),
             twoFactorAuthEnabled: true,
-            userIcon: URL(string: "https://ul.h3z.jp/9gGIcerr.png"),
+            userIcon: PreviewDataProvider.iconImageUrl,
             userLanguage: nil,
             userLanguageCode: nil,
             presence: User.Presence()
@@ -119,21 +121,21 @@ public final class PreviewDataProvider {
         status: UserStatus
     ) -> Friend {
         Friend(
-            bio: nil,
+            bio: "Biography",
             bioLinks: SafeDecodingArray(),
-            avatarImageUrl: nil,
-            avatarThumbnailUrl: nil,
+            avatarImageUrl: iconImageUrl,
+            avatarThumbnailUrl: iconImageUrl,
             displayName: "User_\(id.uuidString.prefix(8))",
             id: "usr_\(id.uuidString)",
             isFriend: true,
             lastLogin: Date(),
             lastPlatform: "standalonewindows",
             platform: .blank,
-            profilePicOverride: nil,
+            profilePicOverride: iconImageUrl,
             status: status,
             statusDescription: "",
             tags: UserTags(),
-            userIcon: URL(string: "https://ul.h3z.jp/9gGIcerr.png"),
+            userIcon: iconImageUrl,
             location: location,
             friendKey: ""
         )
@@ -149,19 +151,19 @@ public final class PreviewDataProvider {
         UserDetail(
             bio: "Demo",
             bioLinks: SafeDecodingArray(),
-            avatarImageUrl: nil,
-            avatarThumbnailUrl: nil,
+            avatarImageUrl: iconImageUrl,
+            avatarThumbnailUrl: iconImageUrl,
             displayName: "User_\(id.uuidString.prefix(8))",
             id: "usr_\(id.uuidString)",
             isFriend: isFriend,
             lastLogin: Date(),
             lastPlatform: "standalonewindows",
-            profilePicOverride: nil,
+            profilePicOverride: iconImageUrl,
             state: state,
             status: status,
             statusDescription: "Demo",
             tags: UserTags(),
-            userIcon: URL(string: "https://ul.h3z.jp/9gGIcerr.png"),
+            userIcon: iconImageUrl,
             location: location,
             friendKey: "",
             dateJoined: Date(),
@@ -212,8 +214,8 @@ public final class PreviewDataProvider {
             capacity: 32,
             tags: [],
             releaseStatus: .public,
-            imageUrl: URL(string: "https://ul.h3z.jp/ecWPM0Wk.jpg"),
-            thumbnailImageUrl: URL(string: "https://ul.h3z.jp/ecWPM0Wk.jpg"),
+            imageUrl: Const.privateWorldImageUrl,
+            thumbnailImageUrl: Const.privateWorldImageUrl,
             namespace: nil,
             organization: "",
             previewYoutubeId: "",
@@ -227,5 +229,9 @@ public final class PreviewDataProvider {
             heat: 1,
             version: 1
         )
+    }
+
+    public static func generateWorld() -> World {
+        generateWorld(worldId: UUID())
     }
 }

@@ -6,7 +6,7 @@
 //
 
 public enum UserPlatform: String, Codable {
-    case android, ios, standalonewindows, web
+    case android, ios, nativemobile, standalonewindows, web
     case blank = ""
 }
 
@@ -19,6 +19,7 @@ extension UserPlatform: CustomStringConvertible {
         switch self {
         case .android: "Android"
         case .ios: "iOS"
+        case .nativemobile: "Native Mobile"
         case .standalonewindows: "PC"
         case .web: "Web"
         case .blank: ""
