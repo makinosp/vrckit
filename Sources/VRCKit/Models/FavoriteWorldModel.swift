@@ -21,7 +21,7 @@ extension FavoriteWorldWrapper: Decodable {
             if let world = try? container.decode(World.self) {
                 worlds.append(world)
             } else {
-                try container.decode(AnyCodable.self)
+                _ = try container.decode(AnyCodable.self)
             }
         }
         self.worlds = worlds
