@@ -15,6 +15,8 @@ public final class PreviewDataProvider {
     let userDetails: [UserDetail]
     let instances: [Instance]
 
+    static let iconImageUrl = URL(string: "https://www.mediafire.com/convkey/f444/fmivuoxwvdvnucx9g.jpg")
+
     private init() {
         let instance = Self.generateInstance(worldId: UUID(), instanceId: 0)
         let onlineFriendsSet: [FriendSet] = (0..<50).map { count in
@@ -86,7 +88,7 @@ public final class PreviewDataProvider {
             statusDescription: "status",
             tags: UserTags(),
             twoFactorAuthEnabled: true,
-            userIcon: URL(string: "https://ul.h3z.jp/9gGIcerr.png"),
+            userIcon: URL(string: "https://www.mediafire.com/convkey/f444/fmivuoxwvdvnucx9g.jpg"),
             userLanguage: nil,
             userLanguageCode: nil,
             presence: User.Presence()
@@ -149,19 +151,19 @@ public final class PreviewDataProvider {
         UserDetail(
             bio: "Demo",
             bioLinks: SafeDecodingArray(),
-            avatarImageUrl: nil,
-            avatarThumbnailUrl: nil,
+            avatarImageUrl: iconImageUrl,
+            avatarThumbnailUrl: iconImageUrl,
             displayName: "User_\(id.uuidString.prefix(8))",
             id: "usr_\(id.uuidString)",
             isFriend: isFriend,
             lastLogin: Date(),
             lastPlatform: "standalonewindows",
-            profilePicOverride: nil,
+            profilePicOverride: iconImageUrl,
             state: state,
             status: status,
             statusDescription: "Demo",
             tags: UserTags(),
-            userIcon: URL(string: "https://ul.h3z.jp/9gGIcerr.png"),
+            userIcon: iconImageUrl,
             location: location,
             friendKey: "",
             dateJoined: Date(),
