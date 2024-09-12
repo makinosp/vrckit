@@ -1,5 +1,5 @@
 //
-//  TrustRank.swift
+//  TrustRankModel.swift
 //  VRCKit
 //
 //  Created by makinosp on 2024/08/04.
