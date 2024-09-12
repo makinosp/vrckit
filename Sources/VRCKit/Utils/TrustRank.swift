@@ -5,7 +5,7 @@
 //  Created by makinosp on 2024/08/04.
 //
 
-public enum TrustRank {
+public enum TrustRank: Equatable {
     case trusted, known, user, newUser, visitor, unknown
 }
 
