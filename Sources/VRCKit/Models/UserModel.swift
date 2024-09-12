@@ -44,7 +44,7 @@ public struct User: ProfileDetailRepresentable {
         public let updatedAt: Date
     }
 
-    enum State: String, Codable {
+    public enum State: String, Codable {
         /// User is online in VRChat
         case online
         /// User is online, but not in VRChat
