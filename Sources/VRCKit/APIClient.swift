@@ -44,7 +44,7 @@ public final class APIClient {
     ///   - password: The password associated with the username.
     /// - Returns: A Basic Authentication token string.
     /// - Throws: `VRCKitError.unexpectedError` if the username and password cannot be converted to UTF-8 data.
-    func encodeAuthorization(_ username: String, _ password: String) throws -> String {
+    private func encodeAuthorization(_ username: String, _ password: String) throws -> String {
         let authString = "\(username):\(password)"
         guard let payload = authString.data(using: .utf8) else {
             throw VRCKitError.unexpected
