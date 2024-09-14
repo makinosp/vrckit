@@ -227,6 +227,7 @@ public final class PreviewDataProvider {
             visits: 1,
             popularity: 1,
             heat: 1,
+            favoriteGroup: "",
             version: 1
         )
     }
