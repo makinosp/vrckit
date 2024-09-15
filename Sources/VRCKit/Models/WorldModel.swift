@@ -31,9 +31,6 @@ public struct World: Codable, Identifiable, Hashable {
     public let popularity: Int
     public let heat: Int
     public let favoriteGroup: String?
-    // MARK: Only world info params
-    // public let publicOccupants: Int
-    // public let privateOccupants: Int
     public let version: Int?
 
     public enum ReleaseStatus: String, Codable {
