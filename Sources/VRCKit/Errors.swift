@@ -15,6 +15,9 @@ public enum VRCKitError: Error, LocalizedError, Equatable {
     /// Represents an error from the API with details.
     case apiError(_ details: String)
 
+    /// Represents a bad gatewaty error.
+    case badGateway
+
     /// Represents an error indicating that the client has been deallocated.
     case clientDeallocated
 
@@ -37,6 +40,7 @@ public enum VRCKitError: Error, LocalizedError, Equatable {
     public var errorDescription: String? {
         switch self {
         case .apiError: "API Error"
+        case .badGateway: "Bad Gateway"
         case .clientDeallocated: "Client Deallocated"
         case .invalidResponse: "Invalid Response"
         case .invalidRequest: "Invalid Request"
