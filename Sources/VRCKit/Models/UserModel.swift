@@ -74,6 +74,7 @@ public extension User {
         URL(string: [Const.homeBaseUrl, "user", id].joined(separator: "/"))
     }
 }
+
 extension User.Presence {
     init() {
         groups = []

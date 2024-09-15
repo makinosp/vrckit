@@ -48,11 +48,13 @@ extension OptionalISO8601Date: Encodable {
     }
 }
 
-extension OptionalISO8601Date: Hashable {
+extension OptionalISO8601Date: Equatable {
     public static func == (lhs: OptionalISO8601Date, rhs: OptionalISO8601Date) -> Bool {
         lhs.date == rhs.date
     }
+}
 
+extension OptionalISO8601Date: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(date)
     }
