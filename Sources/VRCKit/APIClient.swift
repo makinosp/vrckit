@@ -101,13 +101,13 @@ public final class APIClient {
         #if canImport(FoundationNetworking)
         return try await requestWithFoundationNetworking(request)
         #else
-        return try await request(request)
+        return try await requestWithFoundation(request)
         #endif
     }
 
     #if canImport(FoundationNetworking)
     private func requestWithFoundationNetworking(_ request: URLRequest) async throws -> HTTPResponse {
-        var requestError: Error? = nil
+        var requestError: Error?
         let httpResponse = await withCheckedContinuation { continuation in
             URLSession.shared.dataTask(with: request) { data, urlResponse, error in
                 guard let data = data, let reponse = urlResponse as? HTTPURLResponse else {
@@ -125,7 +125,7 @@ public final class APIClient {
     }
 
     #else
-    private func request(_ request: URLRequest) async throws -> HTTPResponse {
+    private func requestWithFoundation(_ request: URLRequest) async throws -> HTTPResponse {
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let response = response as? HTTPURLResponse else {
             throw VRCKitError.invalidResponse
