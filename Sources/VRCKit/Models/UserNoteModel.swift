@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct UserNoteRequest: Codable {
+struct UserNoteRequest: Codable, Sendable {
     var targetUserId: String
     var note: String
 }
 
-public struct UserNoteResponse: Codable, Identifiable {
+public struct UserNoteResponse: Codable, Sendable, Identifiable {
     public let id: String
     public let targetUserId: String
     public let note: String

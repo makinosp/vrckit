@@ -9,7 +9,7 @@ public enum Location: Hashable {
     case id(String), `private`, offline, traveling
 }
 
-extension Location: Codable {
+extension Location: Codable, Sendable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let value = try container.decode(String.self)

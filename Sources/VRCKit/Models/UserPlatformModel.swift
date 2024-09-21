@@ -5,7 +5,7 @@
 //  Created by makinosp on 2024/09/02.
 //
 
-public enum UserPlatform: String, Codable {
+public enum UserPlatform: String, Codable, Sendable {
     case android, ios, nativemobile, standalonewindows, web
     case blank = ""
 }
