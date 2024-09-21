@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct World: Codable, Identifiable, Hashable {
+public struct World: Codable, Sendable, Identifiable, Hashable {
     public let id: String
     public let name: String
     public let description: String?
@@ -33,7 +33,7 @@ public struct World: Codable, Identifiable, Hashable {
     public let favoriteGroup: String?
     public let version: Int?
 
-    public enum ReleaseStatus: String, Codable {
+    public enum ReleaseStatus: String, Codable, Sendable {
         case `public`, `private`, hidden, all
     }
 }
