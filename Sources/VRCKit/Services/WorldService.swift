@@ -14,8 +14,7 @@ public class WorldService: APIService, WorldServiceProtocol {
     }
 
     public func fetchFavoritedWorlds() async throws -> [World] {
-        let path = "worlds/favorites"
-        let response = try await client.request(path: path, method: .get)
+        let response = try await client.request(path: "\(path)/favorites", method: .get)
         let favoriteWorldWrapper: FavoriteWorldWrapper = try Serializer.shared.decode(response.data)
         return favoriteWorldWrapper.worlds
     }

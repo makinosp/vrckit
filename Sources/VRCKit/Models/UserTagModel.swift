@@ -49,6 +49,8 @@ extension UserTags: Encodable {
     public func encode(to encoder: any Encoder) throws {
         var container = encoder.unkeyedContainer()
         let tags = languageTags.map(\.rawValue)
-        try container.encode(tags)
+        for tag in tags {
+            try container.encode(tag)
+        }
     }
 }

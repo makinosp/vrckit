@@ -38,26 +38,13 @@ public struct User: ProfileDetailRepresentable {
     public let userLanguage: String?
     public let userLanguageCode: String?
     public let presence: Presence
-}
 
-public extension User {
-    var platform: UserPlatform {
-        presence.platform
-    }
-    var url: URL? {
-        URL(string: [Const.homeBaseUrl, "user", id].joined(separator: "/"))
-    }
-}
-
-public extension User {
-    struct DisplayName: Codable, Hashable {
+    public struct DisplayName: Codable, Hashable {
         public let displayName: String
         public let updatedAt: Date
     }
-}
 
-public extension User {
-    enum State: String, Codable {
+    public enum State: String, Codable {
         /// User is online in VRChat
         case online
         /// User is online, but not in VRChat
@@ -65,10 +52,8 @@ public extension User {
         /// User is offline
         case offline
     }
-}
 
-public extension User {
-    struct Presence: Codable, Hashable {
+    public struct Presence: Codable, Hashable {
         public let groups: [String]
         public let id: String
         public let instance: String
@@ -78,6 +63,15 @@ public extension User {
         public let travelingToInstance: String
         public let travelingToWorld: String
         public let world: String
+    }
+}
+
+public extension User {
+    var platform: UserPlatform {
+        presence.platform
+    }
+    var url: URL? {
+        URL(string: [Const.homeBaseUrl, "user", id].joined(separator: "/"))
     }
 }
 

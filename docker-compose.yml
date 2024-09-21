@@ -1,0 +1,12 @@
+services:
+  build:
+    image: swift:5.10.1
+    command: bash -c "swift build -c release"
+    volumes:
+      - ${PWD}:${PWD}
+    working_dir: ${PWD}
+  lint:
+    image: ghcr.io/realm/swiftlint:latest
+    volumes:
+      - ${PWD}:${PWD}
+    working_dir: ${PWD}

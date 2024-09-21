@@ -37,6 +37,7 @@ public class AuthenticationService: APIService, AuthenticationServiceProtocol {
 
     /// Verify 2FA With TOTP or Email OTP
     public func verify2FA(verifyType: VerifyType, code: String) async throws -> Bool {
+        guard code.count == 6 else { throw VRCKitError.invalidRequest("Code must be 6 digits") }
         let path = "\(authPath)/twofactorauth/\(verifyType.rawValue.lowercased())/verify"
         let requestData = try Serializer.shared.encode(VerifyRequest(code: code))
         let response = try await client.request(
