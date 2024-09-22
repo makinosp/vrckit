@@ -19,7 +19,7 @@ public class InstanceService: APIService, InstanceServiceProtocol {
             path: "\(path)/\(worldId):\(instanceId)",
             method: .get
         )
-        return try Serializer.shared.decode(response.data)
+        return try await Serializer.shared.decode(response.data)
     }
 
     /// Fetches an instance using the specified location string.
@@ -28,6 +28,6 @@ public class InstanceService: APIService, InstanceServiceProtocol {
     /// - Throws: An error if the request fails or the data cannot be decoded.
     public func fetchInstance(location: String) async throws -> Instance {
         let response = try await client.request(path: "\(path)/\(location)", method: .get)
-        return try Serializer.shared.decode(response.data)
+        return try await Serializer.shared.decode(response.data)
     }
 }

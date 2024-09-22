@@ -27,7 +27,7 @@ public struct Friend: Sendable, ProfileElementRepresentable, LocationRepresentab
     public let friendKey: String
 }
 
-public struct FriendsLocation: LocationRepresentable {
+public struct FriendsLocation: Sendable, LocationRepresentable {
     public let location: Location
     public let friends: [Friend]
 }

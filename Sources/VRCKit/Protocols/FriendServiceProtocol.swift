@@ -9,5 +9,5 @@ public protocol FriendServiceProtocol {
     func fetchFriends(offset: Int, n: Int, offline: Bool) async throws -> [Friend]
     func fetchFriends(count: Int, offline: Bool) async throws -> [Friend]
     func unfriend(id: String) async throws
-    func friendsGroupedByLocation(_ friends: [Friend]) -> [FriendsLocation]
+    func friendsGroupedByLocation(_ friends: [Friend]) async -> [FriendsLocation]
 }

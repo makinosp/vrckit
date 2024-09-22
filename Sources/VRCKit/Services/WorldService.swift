@@ -10,12 +10,12 @@ public class WorldService: APIService, WorldServiceProtocol {
 
     public func fetchWorld(worldId: String) async throws -> World {
         let response = try await client.request(path: "\(path)/\(worldId)", method: .get)
-        return try Serializer.shared.decode(response.data)
+        return try await Serializer.shared.decode(response.data)
     }
 
     public func fetchFavoritedWorlds() async throws -> [World] {
         let response = try await client.request(path: "\(path)/favorites", method: .get)
-        let favoriteWorldWrapper: FavoriteWorldWrapper = try Serializer.shared.decode(response.data)
+        let favoriteWorldWrapper: FavoriteWorldWrapper = try await Serializer.shared.decode(response.data)
         return favoriteWorldWrapper.worlds
     }
 }

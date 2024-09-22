@@ -7,7 +7,7 @@
 
 import Foundation
 
-public final class PreviewDataProvider {
+public actor PreviewDataProvider {
     typealias FriendSet = (friend: Friend, userDetail: UserDetail)
     public static let shared = PreviewDataProvider()
     private let previewUserId = UUID()
