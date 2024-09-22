@@ -141,6 +141,10 @@ public actor PreviewDataProvider {
         )
     }
 
+    public static func generateFriend() -> Friend {
+        generateFriend(id: UUID(), location: .offline, status: .offline)
+    }
+
     public static func generateUserDetail(
         id: UUID,
         location: Location,
