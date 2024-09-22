@@ -21,8 +21,4 @@ public final actor FriendPreviewService: APIService, FriendServiceProtocol {
     }
 
     public func unfriend(id: String) async throws {}
-
-    public func friendsGroupedByLocation(_ friends: [Friend]) async -> [FriendsLocation] {
-        []
-    }
 }

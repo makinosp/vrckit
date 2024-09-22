@@ -9,5 +9,14 @@ public protocol FriendServiceProtocol {
     func fetchFriends(offset: Int, n: Int, offline: Bool) async throws -> [Friend]
     func fetchFriends(count: Int, offline: Bool) async throws -> [Friend]
     func unfriend(id: String) async throws
-    func friendsGroupedByLocation(_ friends: [Friend]) async -> [FriendsLocation]
+}
+
+extension FriendServiceProtocol {
+    public func friendsGroupedByLocation(_ friends: [Friend]) async -> [FriendsLocation] {
+        Dictionary(grouping: friends, by: \.location)
+            .sorted { $0.value.count > $1.value.count }
+            .map { dictionary in
+                FriendsLocation(location: dictionary.key, friends: dictionary.value)
+            }
+    }
 }

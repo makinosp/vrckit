@@ -57,12 +57,4 @@ public final actor FriendService: APIService, FriendServiceProtocol {
     public func unfriend(id: String) async throws {
         _ = try await client.request(path: "\(path)/\(id)", method: .delete)
     }
-
-    public func friendsGroupedByLocation(_ friends: [Friend]) async -> [FriendsLocation] {
-        Dictionary(grouping: friends, by: \.location)
-            .sorted { $0.value.count > $1.value.count }
-            .map { dictionary in
-                FriendsLocation(location: dictionary.key, friends: dictionary.value)
-            }
-    }
 }
