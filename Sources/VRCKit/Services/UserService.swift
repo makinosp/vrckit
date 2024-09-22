@@ -5,8 +5,13 @@
 //  Created by makinosp on 2024/02/18.
 //
 
-public class UserService: APIService, UserServiceProtocol {
-    let path = "users"
+public final class UserService: APIService, UserServiceProtocol {
+    let client: APIClient
+    private let path = "users"
+
+    init(client: APIClient) {
+        self.client = client
+    }
 
     /// Fetch a user
     public func fetchUser(userId: String) async throws -> UserDetail {

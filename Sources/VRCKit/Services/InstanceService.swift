@@ -5,8 +5,13 @@
 //  Created by makinosp on 2024/02/18.
 //
 
-public class InstanceService: APIService, InstanceServiceProtocol {
-    let path = "instances"
+public final class InstanceService: APIService, InstanceServiceProtocol {
+    let client: APIClient
+    private let path = "instances"
+
+    init(client: APIClient) {
+        self.client = client
+    }
 
     /// Fetches an instance of a world using the specified world ID and instance ID.
     /// - Parameters:

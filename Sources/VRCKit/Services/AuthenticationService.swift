@@ -7,8 +7,13 @@
 
 import Foundation
 
-public class AuthenticationService: APIService, AuthenticationServiceProtocol {
+public final class AuthenticationService: APIService, AuthenticationServiceProtocol {
+    let client: APIClient
     private let authPath = "auth"
+
+    init(client: APIClient) {
+        self.client = client
+    }
 
     /// Check User Exists
     public func isExists(userId: String) async throws -> Bool {

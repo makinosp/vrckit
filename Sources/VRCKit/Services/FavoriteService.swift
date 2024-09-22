@@ -7,7 +7,7 @@
 
 import Foundation
 
-public final actor FavoriteService: FavoriteServiceProtocol {
+public final actor FavoriteService: APIService, FavoriteServiceProtocol {
     let client: APIClient
     private let path = "favorites"
 

@@ -5,8 +5,13 @@
 //  Created by makinosp on 2024/03/17.
 //
 
-public class UserNoteService: APIService, UserNoteServiceProtocol {
-    let path = "userNotes"
+public final class UserNoteService: APIService, UserNoteServiceProtocol {
+    let client: APIClient
+    private let path = "userNotes"
+
+    init(client: APIClient) {
+        self.client = client
+    }
 
     /// Update user's note
     public func updateUserNote(

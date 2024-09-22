@@ -5,8 +5,13 @@
 //  Created by kiripoipoi on 2024/09/07.
 //
 
-public class WorldService: APIService, WorldServiceProtocol {
-    let path = "worlds"
+public final class WorldService: APIService, WorldServiceProtocol {
+    let client: APIClient
+    private let path = "worlds"
+
+    init(client: APIClient) {
+        self.client = client
+    }
 
     public func fetchWorld(worldId: String) async throws -> World {
         let response = try await client.request(path: "\(path)/\(worldId)", method: .get)
