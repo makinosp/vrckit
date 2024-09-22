@@ -59,6 +59,6 @@ public class AuthenticationService: APIService, AuthenticationServiceProtocol {
     /// Logout
     public func logout() async throws {
         _ = try await client.request(path: "logout", method: .put)
-        client.cookieManager.deleteCookies()
+        await client.cookieManager.deleteCookies()
     }
 }

@@ -10,7 +10,7 @@ import Foundation
 import FoundationNetworking
 #endif
 
-public final class APIClient {
+public final actor APIClient {
     typealias HTTPResponse = (data: Data, response: HTTPURLResponse)
 
     private var username: String?
@@ -90,7 +90,7 @@ public final class APIClient {
         }
 
         // Add cookies to the request headers.
-        request.allHTTPHeaderFields = cookieManager.httpField
+        request.allHTTPHeaderFields = await cookieManager.httpField
 
         // Add HTTP body and content type if body is provided.
         if let body = body {
