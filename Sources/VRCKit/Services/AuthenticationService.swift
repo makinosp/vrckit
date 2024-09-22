@@ -7,7 +7,7 @@
 
 import Foundation
 
-public final class AuthenticationService: APIService, AuthenticationServiceProtocol {
+public final actor AuthenticationService: APIService, AuthenticationServiceProtocol {
     let client: APIClient
     private let authPath = "auth"
 
