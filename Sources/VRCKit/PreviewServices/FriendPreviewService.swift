@@ -13,11 +13,11 @@ public final actor FriendPreviewService: APIService, FriendServiceProtocol {
     }
 
     public func fetchFriends(offset: Int, n: Int, offline: Bool) async throws -> [Friend] {
-        offline ? await PreviewDataProvider.shared.offlineFriends : await PreviewDataProvider.shared.onlineFriends
+        offline ? PreviewDataProvider.shared.offlineFriends : PreviewDataProvider.shared.onlineFriends
     }
 
     public func fetchFriends(count: Int, offline: Bool) async throws -> [Friend] {
-        offline ? await PreviewDataProvider.shared.offlineFriends : await PreviewDataProvider.shared.onlineFriends
+        offline ? PreviewDataProvider.shared.offlineFriends : PreviewDataProvider.shared.onlineFriends
     }
 
     public func unfriend(id: String) async throws {}
