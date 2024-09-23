@@ -5,11 +5,11 @@
 //  Created by makinosp on 2024/02/18.
 //
 
-public final class UserService: APIService, UserServiceProtocol {
+public final actor UserService: APIService, UserServiceProtocol {
     let client: APIClient
     private let path = "users"
 
-    init(client: APIClient) {
+    public init(client: APIClient) {
         self.client = client
     }
 

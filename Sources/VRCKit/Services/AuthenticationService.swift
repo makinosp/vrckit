@@ -11,7 +11,7 @@ public final actor AuthenticationService: APIService, AuthenticationServiceProto
     let client: APIClient
     private let authPath = "auth"
 
-    init(client: APIClient) {
+    public init(client: APIClient) {
         self.client = client
     }
 

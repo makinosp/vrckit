@@ -8,7 +8,7 @@
 public final actor UserPreviewService: APIService, UserServiceProtocol {
     let client: APIClient
 
-    init(client: APIClient) {
+    public init(client: APIClient) {
         self.client = client
     }
 

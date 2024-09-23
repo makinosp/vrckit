@@ -5,11 +5,11 @@
 //  Created by kiripoipoi on 2024/09/07.
 //
 
-public final class WorldService: APIService, WorldServiceProtocol {
+public final actor WorldService: APIService, WorldServiceProtocol {
     let client: APIClient
     private let path = "worlds"
 
-    init(client: APIClient) {
+    public init(client: APIClient) {
         self.client = client
     }
 

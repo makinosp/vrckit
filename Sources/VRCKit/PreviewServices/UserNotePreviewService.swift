@@ -10,7 +10,7 @@ import Foundation
 public final actor UserNotePreviewService: APIService, UserNoteServiceProtocol {
     let client: APIClient
 
-    init(client: APIClient) {
+    public init(client: APIClient) {
         self.client = client
     }
 

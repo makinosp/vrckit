@@ -5,11 +5,11 @@
 //  Created by makinosp on 2024/03/17.
 //
 
-public final class UserNoteService: APIService, UserNoteServiceProtocol {
+public final actor UserNoteService: APIService, UserNoteServiceProtocol {
     let client: APIClient
     private let path = "userNotes"
 
-    init(client: APIClient) {
+    public init(client: APIClient) {
         self.client = client
     }
 

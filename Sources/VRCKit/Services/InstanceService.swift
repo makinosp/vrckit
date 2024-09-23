@@ -9,7 +9,7 @@ public final class InstanceService: APIService, InstanceServiceProtocol {
     let client: APIClient
     private let path = "instances"
 
-    init(client: APIClient) {
+    public init(client: APIClient) {
         self.client = client
     }
 

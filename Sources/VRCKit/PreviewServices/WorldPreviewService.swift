@@ -8,7 +8,7 @@
 public final actor WorldPreviewService: APIService, WorldServiceProtocol {
     let client: APIClient
 
-    init(client: APIClient) {
+    public init(client: APIClient) {
         self.client = client
     }
 

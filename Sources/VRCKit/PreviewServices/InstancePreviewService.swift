@@ -8,7 +8,7 @@
 public final actor InstancePreviewService: APIService, InstanceServiceProtocol {
     let client: APIClient
 
-    init(client: APIClient) {
+    public init(client: APIClient) {
         self.client = client
     }
 

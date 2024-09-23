@@ -10,7 +10,7 @@ import Foundation
 public final actor FavoritePreviewService: APIService, FavoriteServiceProtocol {
     let client: APIClient
 
-    init(client: APIClient) {
+    public init(client: APIClient) {
         self.client = client
     }
 
