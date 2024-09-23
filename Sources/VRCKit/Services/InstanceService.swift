@@ -5,7 +5,7 @@
 //  Created by makinosp on 2024/02/18.
 //
 
-public final class InstanceService: APIService, InstanceServiceProtocol {
+public final actor InstanceService: APIService, InstanceServiceProtocol {
     let client: APIClient
     private let path = "instances"
 
