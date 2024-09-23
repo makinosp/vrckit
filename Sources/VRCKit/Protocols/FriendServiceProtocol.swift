@@ -11,8 +11,8 @@ public protocol FriendServiceProtocol {
     func unfriend(id: String) async throws
 }
 
-extension FriendServiceProtocol {
-    public func friendsGroupedByLocation(_ friends: [Friend]) async -> [FriendsLocation] {
+public extension FriendServiceProtocol {
+    func friendsGroupedByLocation(_ friends: [Friend]) async -> [FriendsLocation] {
         Dictionary(grouping: friends, by: \.location)
             .sorted { $0.value.count > $1.value.count }
             .map { dictionary in
