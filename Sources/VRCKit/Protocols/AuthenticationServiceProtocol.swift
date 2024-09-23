@@ -5,7 +5,7 @@
 //  Created by makinosp on 2024/07/14.
 //
 
-public protocol UserOrRequires {}
+public protocol UserOrRequires: Sendable {}
 extension User: UserOrRequires {}
 extension VerifyType: UserOrRequires {}
 

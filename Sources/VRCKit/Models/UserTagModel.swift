@@ -5,7 +5,7 @@
 //  Created by makinosp on 2024/08/04.
 //
 
-public struct UserTags: Hashable {
+public struct UserTags: Hashable, Sendable {
     public var systemTags: [SystemTag]
     public var languageTags: [LanguageTag]
     public var unknownTags: [String]

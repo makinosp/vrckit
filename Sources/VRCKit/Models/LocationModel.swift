@@ -5,7 +5,7 @@
 //  Created by makinosp on 2024/09/08.
 //
 
-public enum Location: Hashable {
+public enum Location: Sendable, Hashable {
     case id(String), `private`, offline, traveling
 }
 

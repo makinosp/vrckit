@@ -5,23 +5,23 @@
 //  Created by makinosp on 2024/02/12.
 //
 
-public enum VerifyType: String, Codable {
+public enum VerifyType: String, Codable, Sendable {
     case emailOtp, totp, otp
 }
 
-struct ExistsResponse: Codable {
+struct ExistsResponse: Codable, Sendable {
     let userExists: Bool
 }
 
-struct VerifyRequest: Codable {
+struct VerifyRequest: Codable, Sendable {
     let code: String
 }
 
-struct VerifyResponse: Codable {
+struct VerifyResponse: Codable, Sendable {
     let verified: Bool
 }
 
-struct RequiresTwoFactorAuthResponse: Codable {
+struct RequiresTwoFactorAuthResponse: Codable, Sendable {
     let requiresTwoFactorAuth: [VerifyType]
 
     var requires: VerifyType? {
@@ -29,7 +29,7 @@ struct RequiresTwoFactorAuthResponse: Codable {
     }
 }
 
-struct VerifyAuthTokenResponse: Codable {
+struct VerifyAuthTokenResponse: Codable, Sendable {
     let ok: Bool
     let token: String
 }

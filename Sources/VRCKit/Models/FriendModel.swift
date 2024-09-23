@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Friend: ProfileElementRepresentable, LocationRepresentable {
+public struct Friend: Sendable, ProfileElementRepresentable, LocationRepresentable {
     public let bio: String?
     public var bioLinks: SafeDecodingArray<URL>
     public let avatarImageUrl: URL?
@@ -27,7 +27,7 @@ public struct Friend: ProfileElementRepresentable, LocationRepresentable {
     public let friendKey: String
 }
 
-public struct FriendsLocation: LocationRepresentable {
+public struct FriendsLocation: Sendable, LocationRepresentable {
     public let location: Location
     public let friends: [Friend]
 }

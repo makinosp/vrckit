@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Instance: Identifiable, Hashable, Decodable {
+public struct Instance: Sendable, Identifiable, Hashable, Decodable {
     public let active: Bool
     public let capacity: Int
     public let full: Bool
@@ -26,21 +26,21 @@ public struct Instance: Identifiable, Hashable, Decodable {
     public let userCount: Int
     public let world: World
 
-    public struct Platforms: Hashable, Codable {
+    public struct Platforms: Sendable, Hashable, Codable {
         public let android: Int
         public let ios: Int
         public let standalonewindows: Int
     }
 
-    public enum GroupAccessType: String, Codable {
+    public enum GroupAccessType: String, Sendable, Codable {
         case `public`, plus
     }
 
-    public enum Region: String, Codable {
+    public enum Region: String, Sendable, Codable {
         case us, use, eu, jp, unknown
     }
 
-    public enum InstanceType: String, Codable {
+    public enum InstanceType: String, Sendable, Codable {
         case `public`, hidden, friends, `private`, group
     }
 }

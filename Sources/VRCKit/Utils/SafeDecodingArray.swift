@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct SafeDecodingArray<Element: Codable & Hashable> {
+public struct SafeDecodingArray<Element: Codable & Hashable & Sendable>: Sendable {
     public let elements: [Element]
 }
 

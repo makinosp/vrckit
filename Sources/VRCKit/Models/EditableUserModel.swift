@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct EditableUserInfo: Codable, Hashable {
+public struct EditableUserInfo: Codable, Sendable, Hashable {
     public var bio: String
     public var bioLinks: [URL]
     public var status: UserStatus

@@ -10,7 +10,7 @@ import Foundation
 import FoundationNetworking
 #endif
 
-public final class CookieManager {
+public final actor CookieManager {
     private var domainURL: String?
 
     init(domainURL: String) {

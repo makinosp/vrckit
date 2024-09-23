@@ -5,18 +5,23 @@
 //  Created by makinosp on 2024/02/18.
 //
 
-public class UserService: APIService, UserServiceProtocol {
-    let path = "users"
+public final class UserService: APIService, UserServiceProtocol {
+    let client: APIClient
+    private let path = "users"
+
+    init(client: APIClient) {
+        self.client = client
+    }
 
     /// Fetch a user
     public func fetchUser(userId: String) async throws -> UserDetail {
         let response = try await client.request(path: "\(path)/\(userId)", method: .get)
-        return try Serializer.shared.decode(response.data)
+        return try await Serializer.shared.decode(response.data)
     }
 
     /// Update user
     public func updateUser(id: String, editedInfo: EditableUserInfo) async throws {
-        let requestData = try Serializer.shared.encode(editedInfo)
+        let requestData = try await Serializer.shared.encode(editedInfo)
         _ = try await client.request(
             path: "\(path)/\(id)",
             method: .put,

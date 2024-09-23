@@ -5,10 +5,16 @@
 //  Created by makinosp on 2024/07/14.
 //
 
-public final class UserPreviewService: UserService {
-    override public func fetchUser(userId: String) async throws -> UserDetail {
+public final actor UserPreviewService: APIService, UserServiceProtocol {
+    let client: APIClient
+
+    init(client: APIClient) {
+        self.client = client
+    }
+
+    public func fetchUser(userId: String) async throws -> UserDetail {
         PreviewDataProvider.shared.userDetails.first { $0.id == userId }!
     }
 
-    override public func updateUser(id: String, editedInfo: EditableUserInfo) async throws {}
+    public func updateUser(id: String, editedInfo: EditableUserInfo) async throws {}
 }

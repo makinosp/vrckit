@@ -5,7 +5,7 @@
 //  Created by makinosp on 2024/07/20.
 //
 
-public enum UserStatus: String, Codable, CaseIterable {
+public enum UserStatus: String, Codable, Sendable, CaseIterable {
     case joinMe = "join me"
     case active
     case askMe = "ask me"

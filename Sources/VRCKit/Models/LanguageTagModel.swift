@@ -5,7 +5,7 @@
 //  Created by makinosp on 2024/08/22.
 //
 
-public enum LanguageTag: String, Hashable, Codable, CaseIterable {
+public enum LanguageTag: String, Hashable, Codable, Sendable, CaseIterable {
     case english = "language_eng"
     case korean = "language_kor"
     case russian = "language_rus"
