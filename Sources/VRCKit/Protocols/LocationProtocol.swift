@@ -6,7 +6,7 @@
 //
 
 /// Represents a type that has a location string.
-public protocol LocationRepresentable {
+public protocol LocationRepresentable: Sendable {
     var location: Location { get }
     var isVisible: Bool { get }
 }

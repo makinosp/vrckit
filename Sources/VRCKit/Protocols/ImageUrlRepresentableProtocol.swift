@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol ImageUrlRepresentable {
+public protocol ImageUrlRepresentable: Sendable {
     func imageUrl(_ resolution: ImageResolution) -> URL?
 }
 

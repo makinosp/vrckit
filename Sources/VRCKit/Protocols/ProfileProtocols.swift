@@ -9,7 +9,7 @@ import Foundation
 
 /// A protocol representing common properties for user profile elements.
 /// This protocol can be adopted by structures such as User, Friend, and UserDetail.
-public protocol ProfileElementRepresentable: Hashable, Identifiable, ImageUrlRepresentable {
+public protocol ProfileElementRepresentable: Sendable, Hashable, Identifiable, ImageUrlRepresentable {
     var bio: String? { get }
     var bioLinks: SafeDecodingArray<URL> { get }
     var avatarImageUrl: URL? { get }
