@@ -7,8 +7,14 @@
 
 import Foundation
 
-public final class FavoritePreviewService: FavoriteService {
-    override public func listFavoriteGroups() async throws -> [FavoriteGroup] {
+public final actor FavoritePreviewService: APIService, FavoriteServiceProtocol {
+    let client: APIClient
+
+    public init(client: APIClient) {
+        self.client = client
+    }
+
+    public func listFavoriteGroups() async throws -> [FavoriteGroup] {
         [
             FavoriteGroup(
                 id: "fvgrp_\(UUID().uuidString)",
@@ -21,14 +27,14 @@ public final class FavoritePreviewService: FavoriteService {
         ]
     }
 
-    override public func listFavorites(
+    public func listFavorites(
         n: Int = 60,
         type: FavoriteType,
         tag: String? = nil
     ) async throws -> [Favorite] {
         switch type {
         case .friend:
-            PreviewDataProvider.shared.onlineFriends.prefix(5).map { friend in
+            await PreviewDataProvider.shared.onlineFriends.prefix(5).map { friend in
                 Favorite(id: UUID().uuidString, favoriteId: friend.id, tags: ["group_1"], type: .friend)
             }
         default:
@@ -36,7 +42,11 @@ public final class FavoritePreviewService: FavoriteService {
         }
     }
 
-    override public func addFavorite(
+    public func fetchFavoriteGroupDetails(favoriteGroups: [FavoriteGroup]) async throws -> [FavoriteDetail] {
+        []
+    }
+
+    public func addFavorite(
         type: FavoriteType,
         favoriteId: String,
         tag: String
@@ -44,7 +54,7 @@ public final class FavoritePreviewService: FavoriteService {
         Favorite(id: UUID().uuidString, favoriteId: favoriteId, tags: [tag], type: type)
     }
 
-    override public func removeFavorite(
+    public func removeFavorite(
         favoriteId: String
     ) async throws -> SuccessResponse {
         SuccessResponse(success: ResponseMessage(message: "OK", statusCode: 200))

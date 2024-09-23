@@ -10,7 +10,7 @@ import Foundation
 import FoundationNetworking
 #endif
 
-public final class APIClient {
+public final actor APIClient {
     typealias HTTPResponse = (data: Data, response: HTTPURLResponse)
 
     private var username: String?
@@ -90,7 +90,7 @@ public final class APIClient {
         }
 
         // Add cookies to the request headers.
-        request.allHTTPHeaderFields = cookieManager.httpField
+        request.allHTTPHeaderFields = await cookieManager.httpField
 
         // Add HTTP body and content type if body is provided.
         if let body = body {
@@ -107,21 +107,21 @@ public final class APIClient {
 
     #if canImport(FoundationNetworking)
     private func requestWithFoundationNetworking(_ request: URLRequest) async throws -> HTTPResponse {
-        var requestError: Error?
-        let httpResponse = await withCheckedContinuation { continuation in
+        typealias Continuation = CheckedContinuation<HTTPResponse, Error>
+        return try await withCheckedThrowingContinuation { (continuation: Continuation) in
             URLSession.shared.dataTask(with: request) { data, urlResponse, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                    return
+                }
                 guard let data = data, let reponse = urlResponse as? HTTPURLResponse else {
-                    requestError = error
+                    continuation.resume(throwing: VRCKitError.invalidResponse)
                     return
                 }
                 continuation.resume(returning: (data, reponse))
             }
             .resume()
         }
-        if let requestError = requestError {
-            throw requestError
-        }
-        return httpResponse
     }
 
     #else

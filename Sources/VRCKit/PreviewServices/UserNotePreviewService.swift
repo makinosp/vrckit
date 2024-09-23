@@ -7,8 +7,14 @@
 
 import Foundation
 
-public final class UserNotePreviewService: UserNoteService {
-    override public func updateUserNote(
+public final actor UserNotePreviewService: APIService, UserNoteServiceProtocol {
+    let client: APIClient
+
+    public init(client: APIClient) {
+        self.client = client
+    }
+
+    public func updateUserNote(
         targetUserId: String,
         note: String
     ) async throws -> UserNoteResponse {
@@ -20,4 +26,6 @@ public final class UserNotePreviewService: UserNoteService {
             createdAt: Date()
         )
     }
+
+    public func clearUserNote(targetUserId: String) async throws {}
 }

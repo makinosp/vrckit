@@ -5,7 +5,7 @@
 //  Created by makinosp on 2024/09/02.
 //
 
-public enum ImageResolution: Int, CustomStringConvertible {
+public enum ImageResolution: Int, Sendable, CustomStringConvertible {
     case x256 = 256
     case x512 = 512
     case x1024 = 1024

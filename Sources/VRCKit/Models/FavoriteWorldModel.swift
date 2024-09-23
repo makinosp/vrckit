@@ -9,7 +9,7 @@ import Foundation
 
 struct AnyCodable: Codable {}
 
-public struct FavoriteWorldWrapper {
+public struct FavoriteWorldWrapper: Sendable {
     public let worlds: [World]
 }
 

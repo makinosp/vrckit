@@ -7,8 +7,13 @@
 
 import Foundation
 
-public class FriendService: APIService, FriendServiceProtocol {
+public final actor FriendService: APIService, FriendServiceProtocol {
+    let client: APIClient
     private let path = "auth/user/friends"
+
+    public init(client: APIClient) {
+        self.client = client
+    }
 
     /// List information about friends.
     public func fetchFriends(offset: Int, n: Int = 60, offline: Bool) async throws -> [Friend] {
@@ -18,7 +23,7 @@ public class FriendService: APIService, FriendServiceProtocol {
             URLQueryItem(name: "offline", value: offline.description)
         ]
         let response = try await client.request(path: path, method: .get, queryItems: queryItems)
-        return try Serializer.shared.decode(response.data)
+        return try await Serializer.shared.decode(response.data)
     }
 
     /// A helper function that splits a large API request tasks to fetch friend data concurrently,
@@ -51,13 +56,5 @@ public class FriendService: APIService, FriendServiceProtocol {
 
     public func unfriend(id: String) async throws {
         _ = try await client.request(path: "\(path)/\(id)", method: .delete)
-    }
-
-    public func friendsGroupedByLocation(_ friends: [Friend]) -> [FriendsLocation] {
-        Dictionary(grouping: friends, by: \.location)
-            .sorted { $0.value.count > $1.value.count }
-            .map { dictionary in
-                FriendsLocation(location: dictionary.key, friends: dictionary.value)
-            }
     }
 }

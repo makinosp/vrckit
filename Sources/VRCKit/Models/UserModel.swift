@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct User: ProfileDetailRepresentable {
+public struct User: Sendable, ProfileDetailRepresentable {
     public let activeFriends: [String]
     public let allowAvatarCopying: Bool
     public let bio: String?
@@ -39,12 +39,12 @@ public struct User: ProfileDetailRepresentable {
     public let userLanguageCode: String?
     public let presence: Presence
 
-    public struct DisplayName: Codable, Hashable {
+    public struct DisplayName: Codable, Sendable, Hashable {
         public let displayName: String
         public let updatedAt: Date
     }
 
-    public enum State: String, Codable {
+    public enum State: String, Codable, Sendable {
         /// User is online in VRChat
         case online
         /// User is online, but not in VRChat
@@ -53,7 +53,7 @@ public struct User: ProfileDetailRepresentable {
         case offline
     }
 
-    public struct Presence: Codable, Hashable {
+    public struct Presence: Codable, Hashable, Sendable {
         public let groups: [String]
         public let id: String
         public let instance: String

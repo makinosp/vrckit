@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/github/license/makinosp/vrckit.svg)](https://img.shields.io/github/license/makinosp/vrckit.svg)
 [![Release](https://img.shields.io/github/release/makinosp/vrckit.svg)](https://img.shields.io/github/release/makinosp/vrckit.svg)
-![Swift](https://img.shields.io/badge/Swift%205.9+-F05138?logo=Swift&logoColor=white)
+![Swift](https://img.shields.io/badge/Swift%206.0-F05138?logo=Swift&logoColor=white)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5a8b6e5463a044e0b2ee948367df127c)](https://app.codacy.com/gh/makinosp/vrckit/dashboard)
 
 A Swift client to interact with the [VRChat API](https://vrchatapi.github.io/).

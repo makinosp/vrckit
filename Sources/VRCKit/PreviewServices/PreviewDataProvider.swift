@@ -7,7 +7,7 @@
 
 import Foundation
 
-public final class PreviewDataProvider {
+public final class PreviewDataProvider: Sendable {
     typealias FriendSet = (friend: Friend, userDetail: UserDetail)
     public static let shared = PreviewDataProvider()
     private let previewUserId = UUID()
@@ -139,6 +139,10 @@ public final class PreviewDataProvider {
             location: location,
             friendKey: ""
         )
+    }
+
+    public static func generateFriend() -> Friend {
+        generateFriend(id: UUID(), location: .offline, status: .offline)
     }
 
     public static func generateUserDetail(

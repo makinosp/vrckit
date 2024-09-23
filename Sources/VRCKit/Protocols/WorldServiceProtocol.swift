@@ -5,7 +5,7 @@
 //  Created by kiripoipoi on 2024/09/07.
 //
 
-public protocol WorldServiceProtocol {
+public protocol WorldServiceProtocol: Sendable {
     func fetchWorld(worldId: String) async throws -> World
     func fetchFavoritedWorlds() async throws -> [World]
 }

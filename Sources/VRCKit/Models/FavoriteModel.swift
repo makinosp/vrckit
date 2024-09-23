@@ -5,18 +5,18 @@
 //  Created by makinosp on 2024/02/12.
 //
 
-public enum FavoriteType: String, Codable {
+public enum FavoriteType: String, Codable, Sendable {
     case world, avatar, friend
 }
 
-public struct Favorite: Codable, Identifiable {
+public struct Favorite: Codable, Sendable, Identifiable {
     public let id: String
     public let favoriteId: String
     public let tags: [String]
     public let type: FavoriteType
 }
 
-public struct FavoriteDetail: Identifiable {
+public struct FavoriteDetail: Sendable, Identifiable {
     public let id: String
     public let favorites: [Favorite]
 
@@ -25,7 +25,7 @@ public struct FavoriteDetail: Identifiable {
     }
 }
 
-public struct FavoriteGroup: Codable, Identifiable, Hashable {
+public struct FavoriteGroup: Codable, Sendable, Identifiable, Hashable {
     public let id: String
     public let displayName: String
     public let name: String
