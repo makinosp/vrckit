@@ -107,21 +107,21 @@ public final actor APIClient {
 
     #if canImport(FoundationNetworking)
     private func requestWithFoundationNetworking(_ request: URLRequest) async throws -> HTTPResponse {
-        var requestError: Error?
-        let httpResponse = await withCheckedContinuation { continuation in
+        typealias Continuation = CheckedContinuation<HTTPResponse, Error>
+        return try await withCheckedThrowingContinuation { (continuation: Continuation) in
             URLSession.shared.dataTask(with: request) { data, urlResponse, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                    return
+                }
                 guard let data = data, let reponse = urlResponse as? HTTPURLResponse else {
-                    requestError = error
+                    continuation.resume(throwing: VRCKitError.invalidResponse)
                     return
                 }
                 continuation.resume(returning: (data, reponse))
             }
             .resume()
         }
-        if let requestError = requestError {
-            throw requestError
-        }
-        return httpResponse
     }
 
     #else
