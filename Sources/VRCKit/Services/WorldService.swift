@@ -5,6 +5,8 @@
 //  Created by kiripoipoi on 2024/09/07.
 //
 
+import Foundation
+
 public final actor WorldService: APIService, WorldServiceProtocol {
     let client: APIClient
     private let path = "worlds"
