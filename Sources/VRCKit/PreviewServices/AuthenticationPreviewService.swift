@@ -15,7 +15,7 @@ public final actor AuthenticationPreviewService: APIService, AuthenticationServi
     public func isExists(userId: String) async throws -> Bool { true }
 
     public func loginUserInfo() async throws -> UserOrRequires {
-        await PreviewDataProvider.shared.previewUser
+        PreviewDataProvider.shared.previewUser
     }
 
     public func verify2FA(verifyType: VerifyType, code: String) async throws -> Bool { true }

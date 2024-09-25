@@ -34,7 +34,7 @@ public final actor FavoritePreviewService: APIService, FavoriteServiceProtocol {
     ) async throws -> [Favorite] {
         switch type {
         case .friend:
-            await PreviewDataProvider.shared.onlineFriends.prefix(5).map { friend in
+            PreviewDataProvider.shared.onlineFriends.prefix(5).map { friend in
                 Favorite(id: UUID().uuidString, favoriteId: friend.id, tags: ["group_1"], type: .friend)
             }
         default:
