@@ -77,9 +77,14 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
         return try await Serializer.shared.decode(response.data)
     }
 
+    /// Asynchronously remove favorite.
+    /// - Parameter favoriteId: The ID of the favorite to remove.
+    /// - Returns: A `SuccessResponse` objects.
+    /// - Throws: An error if the network request or decoding of the response fails.
     public func removeFavorite(
         favoriteId: String
     ) async throws -> SuccessResponse {
+        let path = [path, favoriteId].joined(separator: "/")
         let response = try await client.request(path: path, method: .delete)
         return try await Serializer.shared.decode(response.data)
     }
