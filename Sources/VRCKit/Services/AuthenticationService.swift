@@ -11,11 +11,14 @@ public final actor AuthenticationService: APIService, AuthenticationServiceProto
     let client: APIClient
     private let authPath = "auth"
 
+    // Initializes the AuthenticationService with an APIClient instance
     public init(client: APIClient) {
         self.client = client
     }
 
-    /// Check User Exists
+    /// Check if a user exists by their user ID.
+    /// - Parameter userId: The ID of the user to check.
+    /// - Returns: A boolean indicating if the user exists.
     public func isExists(userId: String) async throws -> Bool {
         let path = "\(authPath)/exists"
         let queryItems = [URLQueryItem(name: "username", value: userId.description)]
@@ -24,7 +27,8 @@ public final actor AuthenticationService: APIService, AuthenticationServiceProto
         return result.userExists
     }
 
-    /// Login and/or Get Current User Info
+    /// Logs in and/or fetches the current user's information.
+    /// - Returns: A `User` object or a `RequiresTwoFactorAuthResponse` if 2FA is required.
     public func loginUserInfo() async throws -> UserOrRequires {
         let path = "\(authPath)/user"
         let response = try await client.request(path: path, method: .get, basic: true)
@@ -40,7 +44,11 @@ public final actor AuthenticationService: APIService, AuthenticationServiceProto
         }
     }
 
-    /// Verify 2FA With TOTP or Email OTP
+    /// Verifies 2-factor authentication using either TOTP or Email OTP.
+    /// - Parameters:
+    ///   - verifyType: The type of verification (TOTP or Email OTP).
+    ///   - code: The 6-digit verification code.
+    /// - Returns: A boolean indicating if verification was successful.
     public func verify2FA(verifyType: VerifyType, code: String) async throws -> Bool {
         guard code.count == 6 else { throw VRCKitError.invalidRequest("Code must be 6 digits") }
         let path = "\(authPath)/twofactorauth/\(verifyType.rawValue.lowercased())/verify"
@@ -54,14 +62,15 @@ public final actor AuthenticationService: APIService, AuthenticationServiceProto
         return result.verified
     }
 
-    /// Verify Auth Token
+    /// Verifies the user's authentication token.
+    /// - Returns: A boolean indicating if the token is valid.
     public func verifyAuthToken() async throws -> Bool {
         let response = try await client.request(path: authPath, method: .get)
         let result: VerifyAuthTokenResponse = try await Serializer.shared.decode(response.data)
         return result.ok
     }
 
-    /// Logout
+    /// Logs out the user and deletes cookies.
     public func logout() async throws {
         _ = try await client.request(path: "logout", method: .put)
         await client.cookieManager.deleteCookies()
