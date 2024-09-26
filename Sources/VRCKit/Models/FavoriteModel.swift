@@ -31,11 +31,20 @@ public struct FavoriteGroup: Codable, Sendable, Identifiable, Hashable {
     public let name: String
     public let tags: [String]
     public let type: FavoriteType
-    public let visibility: String
+    public let visibility: Visibility
+
+    public enum Visibility: String, Codable, Sendable {
+        case `private`, friends, `public`
+    }
 }
 
-struct RequestToAddFavorite: Codable {
+struct RequestToAddFavorite: Codable, Sendable {
     let type: FavoriteType
     let favoriteId: String
     let tags: [String]
+}
+
+struct RequestToUpdateFavoriteGroup: Codable, Sendable {
+    let displayName: String? = nil
+    let visibility: FavoriteGroup.Visibility? = nil
 }

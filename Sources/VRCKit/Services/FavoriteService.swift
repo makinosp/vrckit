@@ -91,6 +91,14 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
         return try await Serializer.shared.decode(response.data)
     }
 
+    public func updateFavoriteGroup(
+        type: FavoriteType,
+        favoriteGroupName: String,
+        userId: String
+    ) async throws {
+        let requestData = RequestToUpdateFavoriteGroup()
+    }
+
     /// Asynchronously remove favorite.
     /// - Parameter favoriteId: The ID of the favorite to remove.
     /// - Returns: A `SuccessResponse` objects.
