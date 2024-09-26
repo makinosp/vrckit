@@ -12,6 +12,9 @@ public protocol FriendServiceProtocol: Sendable {
 }
 
 public extension FriendServiceProtocol {
+    /// Groups friends by their location and returns a sorted list of FriendsLocation objects.
+    /// - Parameter friends: An array of `Friend`` objects to be grouped by location.
+    /// - Returns: A list of `FriendsLocation` objects, sorted by the number of friends in each location, in descending order.
     func friendsGroupedByLocation(_ friends: [Friend]) async -> [FriendsLocation] {
         Dictionary(grouping: friends, by: \.location)
             .sorted { $0.value.count > $1.value.count }
