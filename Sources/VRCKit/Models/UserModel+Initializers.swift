@@ -5,7 +5,7 @@
 //  Created by makinosp on 2024/09/27.
 //
 
-extension User {
+public extension User {
     init(user: User, editedUserInfo: EditableUserInfo) {
         activeFriends = user.activeFriends
         allowAvatarCopying = user.allowAvatarCopying
