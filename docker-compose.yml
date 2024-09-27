@@ -1,6 +1,6 @@
 services:
   build:
-    image: swift:5.10.1
+    image: swift:6.0
     command: bash -c "swift build -c release"
     volumes:
       - ${PWD}:${PWD}

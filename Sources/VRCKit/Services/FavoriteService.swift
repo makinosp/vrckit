@@ -11,19 +11,25 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
     let client: APIClient
     private let path = "favorites"
 
+    // Initializes the AuthenticationService with an APIClient instance
     public init(client: APIClient) {
         self.client = client
     }
 
     /// Asynchronously retrieves a list of favorite groups from the server.
     /// - Returns: An array of `FavoriteGroup` objects.
-    /// - Throws: An error if the network request or decoding of the response fails.
     public func listFavoriteGroups() async throws -> [FavoriteGroup] {
         let path = "favorite/groups"
         let response = try await client.request(path: path, method: .get)
         return try await Serializer.shared.decode(response.data)
     }
 
+    /// Lists a user's favorites with the specified parameters.
+    /// - Parameters:
+    ///   - n: The number of favorites to retrieve. Default is `60``.
+    ///   - type: The type of favorite (e.g., friend, world).
+    ///   - tag: An optional tag to filter favorites.
+    /// - Returns: An array of `Favorite` objects.
     public func listFavorites(
         n: Int = 60,
         type: FavoriteType,
@@ -40,7 +46,9 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
         return try await Serializer.shared.decode(response.data)
     }
 
-    /// Fetch a list of favorite IDs for each favorite group
+    /// Fetches details of favorite groups asynchronously.
+    /// - Parameter favoriteGroups: An array of `FavoriteGroup` objects.
+    /// - Returns: An array of `FavoriteDetail` objects containing detailed information about the favorite groups.
     public func fetchFavoriteGroupDetails(
         favoriteGroups: [FavoriteGroup]
     ) async throws -> [FavoriteDetail] {
@@ -65,6 +73,12 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
         return results
     }
 
+    /// Adds a new favorite to a specific group.
+    /// - Parameters:
+    ///   - type: The type of favorite (e.g., friend, world).
+    ///   - favoriteId: The ID of the item to favorite.
+    ///   - tag: The tag to associate with the favorite.
+    /// - Returns: The newly added `Favorite` object.
     public func addFavorite(
         type: FavoriteType,
         favoriteId: String,
@@ -77,9 +91,13 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
         return try await Serializer.shared.decode(response.data)
     }
 
+    /// Asynchronously remove favorite.
+    /// - Parameter favoriteId: The ID of the favorite to remove.
+    /// - Returns: A `SuccessResponse` objects.
     public func removeFavorite(
         favoriteId: String
     ) async throws -> SuccessResponse {
+        let path = [path, favoriteId].joined(separator: "/")
         let response = try await client.request(path: path, method: .delete)
         return try await Serializer.shared.decode(response.data)
     }
