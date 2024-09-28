@@ -6,7 +6,9 @@
 //
 
 import Foundation
+import MemberwiseInit
 
+@MemberwiseInit(.public)
 public struct World: Codable, Sendable, Identifiable, Hashable {
     public let id: String
     public let name: String
@@ -30,11 +32,18 @@ public struct World: Codable, Sendable, Identifiable, Hashable {
     public let visits: Int
     public let popularity: Int
     public let heat: Int
-    public let favoriteGroup: String?
     public let version: Int?
 
     public enum ReleaseStatus: String, Codable, Sendable {
         case `public`, `private`, hidden, all
+    }
+}
+
+public extension World {
+    var url: URL? {
+        var urlComponents = URLComponents(string: "\(Const.homeBaseUrl)/launch")
+        urlComponents?.queryItems = [URLQueryItem(name: "worldId", value: id)]
+        return urlComponents?.url
     }
 }
 

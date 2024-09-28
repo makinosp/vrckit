@@ -8,7 +8,7 @@
 import Foundation
 
 public final actor FriendService: APIService, FriendServiceProtocol {
-    let client: APIClient
+    public let client: APIClient
     private let path = "auth/user/friends"
 
     public init(client: APIClient) {

@@ -6,7 +6,7 @@
 //
 
 public final actor UserService: APIService, UserServiceProtocol {
-    let client: APIClient
+    public let client: APIClient
     private let path = "users"
 
     public init(client: APIClient) {

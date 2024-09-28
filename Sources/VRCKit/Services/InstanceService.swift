@@ -6,7 +6,7 @@
 //
 
 public final actor InstanceService: APIService, InstanceServiceProtocol {
-    let client: APIClient
+    public let client: APIClient
     private let path = "instances"
 
     public init(client: APIClient) {

@@ -5,10 +5,14 @@
 //  Created by makinosp on 2024/02/12.
 //
 
+import Foundation
+import MemberwiseInit
+
 public enum FavoriteType: String, Codable, Sendable {
     case world, avatar, friend
 }
 
+@MemberwiseInit(.public)
 public struct Favorite: Codable, Sendable, Identifiable {
     public let id: String
     public let favoriteId: String
@@ -25,17 +29,27 @@ public struct FavoriteDetail: Sendable, Identifiable {
     }
 }
 
+@MemberwiseInit(.public)
 public struct FavoriteGroup: Codable, Sendable, Identifiable, Hashable {
     public let id: String
     public let displayName: String
     public let name: String
     public let tags: [String]
     public let type: FavoriteType
-    public let visibility: String
+    public let visibility: Visibility
+
+    public enum Visibility: String, Codable, Sendable {
+        case `private`, friends, `public`
+    }
 }
 
-struct RequestToAddFavorite: Codable {
+struct RequestToAddFavorite: Codable, Sendable {
     let type: FavoriteType
     let favoriteId: String
     let tags: [String]
+}
+
+struct RequestToUpdateFavoriteGroup: Codable, Sendable {
+    let displayName: String? = nil
+    let visibility: FavoriteGroup.Visibility? = nil
 }

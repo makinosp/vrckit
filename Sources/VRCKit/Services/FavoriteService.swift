@@ -8,7 +8,7 @@
 import Foundation
 
 public final actor FavoriteService: APIService, FavoriteServiceProtocol {
-    let client: APIClient
+    public let client: APIClient
     private let path = "favorites"
 
     // Initializes the AuthenticationService with an APIClient instance
@@ -89,6 +89,14 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
         )
         let response = try await client.request(path: path, method: .post, body: requestData)
         return try await Serializer.shared.decode(response.data)
+    }
+
+    public func updateFavoriteGroup(
+        type: FavoriteType,
+        favoriteGroupName: String,
+        userId: String
+    ) async throws {
+        let requestData = RequestToUpdateFavoriteGroup()
     }
 
     /// Asynchronously remove favorite.

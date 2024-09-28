@@ -6,7 +6,7 @@
 //
 
 public final actor UserNoteService: APIService, UserNoteServiceProtocol {
-    let client: APIClient
+    public let client: APIClient
     private let path = "userNotes"
 
     // Initializes the AuthenticationService with an APIClient instance
