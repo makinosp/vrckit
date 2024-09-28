@@ -40,6 +40,14 @@ public struct World: Codable, Sendable, Identifiable, Hashable {
     }
 }
 
+public extension World {
+    var url: URL? {
+        var urlComponents = URLComponents(string: "\(Const.homeBaseUrl)/launch")
+        urlComponents?.queryItems = [URLQueryItem(name: "worldId", value: id)]
+        return urlComponents?.url
+    }
+}
+
 extension World: ImageUrlRepresentable {
     public func imageUrl(_ resolution: ImageResolution) -> URL? {
         guard let url = thumbnailImageUrl else { return nil }
