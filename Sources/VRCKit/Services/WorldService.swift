@@ -8,7 +8,7 @@
 import Foundation
 
 public final actor WorldService: APIService, WorldServiceProtocol {
-    let client: APIClient
+    public let client: APIClient
     private let path = "worlds"
 
     public init(client: APIClient) {
@@ -20,7 +20,7 @@ public final actor WorldService: APIService, WorldServiceProtocol {
         return try await Serializer.shared.decode(response.data)
     }
 
-    public func fetchFavoritedWorlds(n: Int = 100) async throws -> [World] {
+    public func fetchFavoritedWorlds(n: Int = 100) async throws -> [FavoriteWorld] {
         let queryItems = [URLQueryItem(name: "n", value: n.description)]
         let response = try await client.request(path: "\(path)/favorites", method: .get, queryItems: queryItems)
         let favoriteWorldWrapper: FavoriteWorldWrapper = try await Serializer.shared.decode(response.data)

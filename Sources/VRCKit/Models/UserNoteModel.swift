@@ -6,12 +6,14 @@
 //
 
 import Foundation
+import MemberwiseInit
 
 struct UserNoteRequest: Codable, Sendable {
     var targetUserId: String
     var note: String
 }
 
+@MemberwiseInit(.public)
 public struct UserNoteResponse: Codable, Sendable, Identifiable {
     public let id: String
     public let targetUserId: String

@@ -6,7 +6,9 @@
 //
 
 import Foundation
+import MemberwiseInit
 
+@MemberwiseInit(.public)
 public struct Instance: Sendable, Identifiable, Hashable, Decodable {
     public let active: Bool
     public let capacity: Int
@@ -26,6 +28,7 @@ public struct Instance: Sendable, Identifiable, Hashable, Decodable {
     public let userCount: Int
     public let world: World
 
+    @MemberwiseInit(.public)
     public struct Platforms: Sendable, Hashable, Codable {
         public let android: Int
         public let ios: Int

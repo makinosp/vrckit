@@ -8,7 +8,7 @@
 import Foundation
 
 public final actor AuthenticationService: APIService, AuthenticationServiceProtocol {
-    let client: APIClient
+    public let client: APIClient
     private let authPath = "auth"
 
     // Initializes the AuthenticationService with an APIClient instance

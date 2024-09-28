@@ -8,7 +8,7 @@
 import Foundation
 
 public final actor FavoriteService: APIService, FavoriteServiceProtocol {
-    let client: APIClient
+    public let client: APIClient
     private let path = "favorites"
 
     // Initializes the AuthenticationService with an APIClient instance

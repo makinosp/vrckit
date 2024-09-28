@@ -5,7 +5,7 @@
 //  Created by makinosp on 2024/07/14.
 //
 
-protocol APIService {
+public protocol APIService {
     var client: APIClient { get }
     init(client: APIClient)
 }

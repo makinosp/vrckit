@@ -6,7 +6,9 @@
 //
 
 import Foundation
+import MemberwiseInit
 
+@MemberwiseInit(.public)
 public struct User: Sendable, ProfileDetailRepresentable {
     public let activeFriends: [String]
     public let allowAvatarCopying: Bool
@@ -75,7 +77,7 @@ public extension User {
     }
 }
 
-extension User.Presence {
+public extension User.Presence {
     init() {
         groups = []
         id = UUID().uuidString
