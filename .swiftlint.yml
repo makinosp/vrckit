@@ -68,3 +68,4 @@ analyzer_rules:
 
 excluded:
   - .build
+  - Package.resolved
