@@ -18,6 +18,9 @@ let package = Package(
             targets: ["VRCKit"]
         )
     ],
+    dependencies: [
+        .package(url: "https://github.com/gohanlon/swift-memberwise-init-macro", from: "0.5.0")
+    ],
     targets: [
         .target(
             name: "VRCKit",
@@ -29,3 +32,7 @@ let package = Package(
         )
     ]
 )
+
+package.targets.forEach { target in
+    target.dependencies.append(.product(name: "MemberwiseInit", package: "swift-memberwise-init-macro"))
+}
