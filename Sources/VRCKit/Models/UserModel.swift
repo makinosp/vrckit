@@ -77,8 +77,8 @@ public extension User {
     }
 }
 
-extension User.Presence {
-    public init() {
+public extension User.Presence {
+    init() {
         groups = []
         id = UUID().uuidString
         instance = ""

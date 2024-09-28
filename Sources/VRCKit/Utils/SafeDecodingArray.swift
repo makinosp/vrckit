@@ -11,8 +11,8 @@ public struct SafeDecodingArray<Element: Codable & Hashable & Sendable>: Sendabl
     public let elements: [Element]
 }
 
-extension SafeDecodingArray {
-    public init() {
+public extension SafeDecodingArray {
+    init() {
         elements = []
     }
 }
