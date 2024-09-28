@@ -6,7 +6,9 @@
 //
 
 import Foundation
+import MemberwiseInit
 
+@MemberwiseInit(.public)
 public struct World: Codable, Sendable, Identifiable, Hashable {
     public let id: String
     public let name: String

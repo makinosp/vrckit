@@ -6,7 +6,9 @@
 //
 
 import Foundation
+import MemberwiseInit
 
+@MemberwiseInit(.public)
 public struct Friend: Sendable, ProfileElementRepresentable, LocationRepresentable {
     public let bio: String?
     public var bioLinks: SafeDecodingArray<URL>

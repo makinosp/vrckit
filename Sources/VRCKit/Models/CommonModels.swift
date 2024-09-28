@@ -5,15 +5,20 @@
 //  Created by makinosp on 2024/08/03.
 //
 
+import MemberwiseInit
+
+@MemberwiseInit(.public)
 public struct ResponseMessage: Codable, Sendable {
-    let message: String
-    let statusCode: Int
+    public let message: String
+    public let statusCode: Int
 }
 
+@MemberwiseInit(.public)
 public struct SuccessResponse: Codable, Sendable {
-    let success: ResponseMessage
+    public let success: ResponseMessage
 }
 
+@MemberwiseInit(.public)
 public struct ErrorResponse: Codable, Sendable, Error {
-    let error: ResponseMessage
+    public let error: ResponseMessage
 }

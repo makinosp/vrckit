@@ -12,7 +12,7 @@ public struct SafeDecodingArray<Element: Codable & Hashable & Sendable>: Sendabl
 }
 
 extension SafeDecodingArray {
-    init() {
+    public init() {
         elements = []
     }
 }

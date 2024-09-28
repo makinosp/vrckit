@@ -8,7 +8,7 @@
 import Foundation
 
 public final actor WorldService: APIService, WorldServiceProtocol {
-    let client: APIClient
+    public let client: APIClient
     private let path = "worlds"
 
     public init(client: APIClient) {
