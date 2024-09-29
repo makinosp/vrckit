@@ -48,6 +48,25 @@ public extension World {
     }
 }
 
+public extension World {
+    enum Platform: Hashable {
+        case android, crossPlatform, windows, none
+    }
+
+    var platform: Platform {
+        let platforms = Set(unityPackages.map(\.platform))
+        return if platforms.isSuperset(of: [.standalonewindows, .android]) {
+            .crossPlatform
+        } else if platforms.contains(.standalonewindows) {
+            .windows
+        } else if platforms.contains(.android) {
+            .android
+        } else {
+            .none
+        }
+    }
+}
+
 extension World: ImageUrlRepresentable {
     public func imageUrl(_ resolution: ImageResolution) -> URL? {
         guard let url = thumbnailImageUrl else { return nil }
