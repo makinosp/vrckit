@@ -31,7 +31,8 @@ public extension World {
             visits: world.visits,
             popularity: world.popularity,
             heat: world.heat,
-            version: world.version
+            version: world.version,
+            unityPackages: world.unityPackages
         )
     }
 }

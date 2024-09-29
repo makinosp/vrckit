@@ -40,6 +40,7 @@ public struct FavoriteWorld: Codable, Sendable, Identifiable, Hashable {
     public let heat: Int
     public let favoriteGroup: String
     public let version: Int?
+    public let unityPackages: [UnityPackage]
 }
 
 extension FavoriteWorldWrapper: Decodable {
