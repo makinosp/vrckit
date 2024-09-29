@@ -50,6 +50,6 @@ struct RequestToAddFavorite: Codable, Sendable {
 }
 
 struct RequestToUpdateFavoriteGroup: Codable, Sendable {
-    let displayName: String? = nil
-    let visibility: FavoriteGroup.Visibility? = nil
+    let displayName: String?
+    let visibility: FavoriteGroup.Visibility?
 }

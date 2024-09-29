@@ -96,7 +96,7 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
         favoriteGroupName: String,
         userId: String
     ) async throws {
-        let requestData = RequestToUpdateFavoriteGroup()
+        let _ = RequestToUpdateFavoriteGroup(displayName: favoriteGroupName, visibility: nil)
     }
 
     /// Asynchronously remove favorite.
