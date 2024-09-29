@@ -7,7 +7,7 @@
 
 public extension World {
     /// Initializer from `FavoriteWorld` model. 
-    init(world: FavoriteWorld) {
+    init(world: FavoriteWorld, occupants: Int, privateOccupants: Int, publicOccupants: Int) {
         self.init(
             id: world.id,
             name: world.name,
@@ -32,7 +32,10 @@ public extension World {
             popularity: world.popularity,
             heat: world.heat,
             version: world.version,
-            unityPackages: world.unityPackages
+            unityPackages: world.unityPackages,
+            occupants: occupants,
+            privateOccupants: privateOccupants,
+            publicOccupants: publicOccupants
         )
     }
 }
