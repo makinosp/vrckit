@@ -34,9 +34,9 @@ public struct World: Codable, Sendable, Identifiable, Hashable {
     public let heat: Int
     public let version: Int?
     public let unityPackages: [UnityPackage]
-    public let occupants: Int
-    public let privateOccupants: Int
-    public let publicOccupants: Int
+    public let occupants: Int?
+    public let privateOccupants: Int?
+    public let publicOccupants: Int?
 
     public enum ReleaseStatus: String, Codable, Sendable {
         case `public`, `private`, hidden, all
