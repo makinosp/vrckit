@@ -33,6 +33,10 @@ public struct World: Codable, Sendable, Identifiable, Hashable {
     public let popularity: Int
     public let heat: Int
     public let version: Int?
+    public let unityPackages: [UnityPackage]
+    public let occupants: Int?
+    public let privateOccupants: Int?
+    public let publicOccupants: Int?
 
     public enum ReleaseStatus: String, Codable, Sendable {
         case `public`, `private`, hidden, all
@@ -44,6 +48,25 @@ public extension World {
         var urlComponents = URLComponents(string: "\(Const.homeBaseUrl)/launch")
         urlComponents?.queryItems = [URLQueryItem(name: "worldId", value: id)]
         return urlComponents?.url
+    }
+}
+
+public extension World {
+    enum Platform: Hashable {
+        case android, crossPlatform, windows, none
+    }
+
+    var platform: Platform {
+        let platforms = Set(unityPackages.map(\.platform))
+        return if platforms.isSuperset(of: [.standalonewindows, .android]) {
+            .crossPlatform
+        } else if platforms.contains(.standalonewindows) {
+            .windows
+        } else if platforms.contains(.android) {
+            .android
+        } else {
+            .none
+        }
     }
 }
 

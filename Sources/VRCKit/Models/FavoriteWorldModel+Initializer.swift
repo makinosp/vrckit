@@ -32,7 +32,8 @@ public extension FavoriteWorld {
             popularity: world.popularity,
             heat: world.heat,
             favoriteGroup: favoriteGroup,
-            version: world.version
+            version: world.version,
+            unityPackages: world.unityPackages
         )
     }
 }

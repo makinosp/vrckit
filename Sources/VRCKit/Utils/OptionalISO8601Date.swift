@@ -8,7 +8,7 @@
 import Foundation
 
 public struct OptionalISO8601Date: Sendable {
-    private let date: Date?
+    public let date: Date?
     private let formatter = DateFormatter.iso8601Full
 }
 
