@@ -31,8 +31,8 @@ public struct FavoriteWorld: Codable, Sendable, Identifiable, Hashable {
     public let organization: String
     public let previewYoutubeId: String?
     public let favorites: Int?
-    public let createdAt: Date
-    public let updatedAt: Date
+    public let createdAt: OptionalISO8601Date
+    public let updatedAt: OptionalISO8601Date
     public let publicationDate: OptionalISO8601Date
     public let labsPublicationDate: OptionalISO8601Date
     public let visits: Int
