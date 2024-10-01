@@ -21,17 +21,11 @@ extension SafeDecoding: Decodable where T: Decodable {
     }
 }
 
-extension SafeDecoding: Encodable where T: Encodable {
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        try container.encode(wrappedValue)
-    }
-}
-
 extension SafeDecoding: Identifiable where T: Identifiable {
     public var id: T.ID? { wrappedValue?.id }
 }
 
+extension SafeDecoding: Encodable where T: Encodable {}
 extension SafeDecoding: Equatable where T: Equatable {}
 extension SafeDecoding: Hashable where T: Hashable {}
 extension SafeDecoding: Sendable where T: Sendable {}
