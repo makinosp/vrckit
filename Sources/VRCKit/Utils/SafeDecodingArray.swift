@@ -5,27 +5,36 @@
 //  Created by makinosp on 2024/07/28.
 //
 
-import Foundation
+@propertyWrapper
+public struct SafeDecodingArray<T> {
+    public var wrappedValue: [T]
 
-public struct SafeDecodingArray<Element: Codable & Hashable & Sendable>: Sendable {
-    public let elements: [Element]
-}
-
-public extension SafeDecodingArray {
-    init() {
-        elements = []
+    public init(wrappedValue: [T] = []) {
+        self.wrappedValue = wrappedValue
     }
 }
 
-extension SafeDecodingArray: Codable {
+extension SafeDecodingArray: Decodable where T: Decodable {
+    private struct AnyDecodable: Decodable {}
     public init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        elements = (try? container.decode([Element].self)) ?? []
+        wrappedValue = []
+        var container = try decoder.unkeyedContainer()
+        while !container.isAtEnd {
+            if let value = try? container.decode(T.self) {
+                wrappedValue.append(value)
+            } else {
+                _ = try container.decode(AnyDecodable.self)
+            }
+        }
     }
 }
 
-extension SafeDecodingArray: Hashable {
-    public static func == (lhs: SafeDecodingArray<Element>, rhs: SafeDecodingArray<Element>) -> Bool {
-        lhs.elements.hashValue == rhs.elements.hashValue
+extension SafeDecodingArray: Hashable where T: Hashable {
+    public static func == (lhs: SafeDecodingArray<T>, rhs: SafeDecodingArray<T>) -> Bool {
+        lhs.wrappedValue.hashValue == rhs.wrappedValue.hashValue
     }
 }
+
+extension SafeDecodingArray: Encodable where T: Encodable {}
+extension SafeDecodingArray: Equatable where T: Equatable {}
+extension SafeDecodingArray: Sendable where T: Sendable {}
