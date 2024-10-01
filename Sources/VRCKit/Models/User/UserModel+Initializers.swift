@@ -10,7 +10,7 @@ public extension User {
         activeFriends = user.activeFriends
         allowAvatarCopying = user.allowAvatarCopying
         bio = editedUserInfo.bio
-        bioLinks = SafeDecodingArray(elements: editedUserInfo.bioLinks)
+        bioLinks = SafeDecodingArray(wrappedValue: editedUserInfo.bioLinks)
         currentAvatar = user.currentAvatar
         avatarImageUrl = user.avatarImageUrl
         avatarThumbnailUrl = user.avatarThumbnailUrl
