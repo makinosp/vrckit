@@ -9,7 +9,6 @@ import Foundation
 
 public final actor FavoriteService: APIService, FavoriteServiceProtocol {
     public let client: APIClient
-    private let path = "favorites"
 
     // Initializes the AuthenticationService with an APIClient instance
     public init(client: APIClient) {
@@ -35,6 +34,7 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
         type: FavoriteType,
         tag: String? = nil
     ) async throws -> [Favorite] {
+        let path = "favorites"
         var queryItems = [
             URLQueryItem(name: "n", value: n.description),
             URLQueryItem(name: "type", value: type.rawValue)
@@ -84,6 +84,7 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
         favoriteId: String,
         tag: String
     ) async throws -> Favorite {
+        let path = "favorites"
         let requestData = try await Serializer.shared.encode(
             RequestToAddFavorite(type: type, favoriteId: favoriteId, tags: [tag])
         )
@@ -114,7 +115,7 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
     public func removeFavorite(
         favoriteId: String
     ) async throws -> SuccessResponse {
-        let path = [path, favoriteId].joined(separator: "/")
+        let path = "favorites/\(favoriteId)"
         let response = try await client.request(path: path, method: .delete)
         return try await Serializer.shared.decode(response.data)
     }
