@@ -52,4 +52,5 @@ struct RequestToAddFavorite: Codable, Sendable {
 struct RequestToUpdateFavoriteGroup: Codable, Sendable {
     let displayName: String?
     let visibility: FavoriteGroup.Visibility?
+    let tags: [String]
 }

@@ -93,10 +93,19 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
 
     public func updateFavoriteGroup(
         type: FavoriteType,
+        favoriteGroupType: FavoriteType,
         favoriteGroupName: String,
-        userId: String
-    ) async throws {
-        _ = RequestToUpdateFavoriteGroup(displayName: favoriteGroupName, visibility: nil)
+        visibility: FavoriteGroup.Visibility,
+        userId: String,
+        tag: String
+    ) async throws -> SuccessResponse  {
+        let paths = ["favorite", "groups", favoriteGroupType.rawValue, favoriteGroupName, userId]
+        let path = paths.joined(separator: "/")
+        let requestData = try await Serializer.shared.encode(
+            RequestToUpdateFavoriteGroup(displayName: favoriteGroupName, visibility: visibility, tags: [tag])
+        )
+        let response = try await client.request(path: path, method: .put, body: requestData)
+        return try await Serializer.shared.decode(response.data)
     }
 
     /// Asynchronously remove favorite.
