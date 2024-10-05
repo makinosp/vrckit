@@ -5,13 +5,11 @@
 //  Created by makinosp on 2024/09/30.
 //
 
-@propertyWrapper
-public struct SafeDecoding<T> {
-    public var wrappedValue: T?
+import MemberwiseInit
 
-    public init(wrappedValue: T? = nil) {
-        self.wrappedValue = wrappedValue
-    }
+@propertyWrapper @MemberwiseInit(.public)
+public struct SafeDecoding<T> {
+    @Init(default: nil) public var wrappedValue: T?
 }
 
 extension SafeDecoding: Decodable where T: Decodable {
