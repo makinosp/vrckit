@@ -8,7 +8,7 @@
 import Foundation
 import MemberwiseInit
 
-public enum FavoriteType: String, Codable, Sendable {
+public enum FavoriteType: String, Codable, Sendable, CaseIterable {
     case world, avatar, friend
 }
 
