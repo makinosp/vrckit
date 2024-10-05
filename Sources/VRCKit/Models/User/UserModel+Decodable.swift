@@ -15,15 +15,15 @@ extension User: Decodable {
         bio = try container.decodeIfPresent(String.self, forKey: .bio)
         bioLinks = try container.decodeSafeNullableArray(URL.self, forKey: .bioLinks)
         currentAvatar = try container.decode(String.self, forKey: .currentAvatar)
-        avatarImageUrl = try? container.decodeIfPresent(URL.self, forKey: .avatarImageUrl)
-        avatarThumbnailUrl = try? container.decodeIfPresent(URL.self, forKey: .avatarThumbnailUrl)
+        avatarImageUrl = try? container.decodeIfPresent(URL.self, forKey: .currentAvatarImageUrl)
+        avatarThumbnailUrl = try? container.decodeIfPresent(URL.self, forKey: .currentAvatarThumbnailImageUrl)
         let dateJoinedString = try container.decode(String.self, forKey: .dateJoined)
         dateJoined = DateFormatter.dateStringFormat.date(from: dateJoinedString)
         displayName = try container.decode(String.self, forKey: .displayName)
         friendKey = try container.decode(String.self, forKey: .friendKey)
         friends = try container.decode([String].self, forKey: .friends)
         homeLocation = try container.decode(String.self, forKey: .homeLocation)
-        id = try container.decode(String.self, forKey: .id)
+        id = try container.decode(User.ID.self, forKey: .id)
         isFriend = try container.decode(Bool.self, forKey: .isFriend)
         lastActivity = try container.decode(Date.self, forKey: .lastActivity)
         lastLogin = try container.decode(Date.self, forKey: .lastLogin)
@@ -51,8 +51,8 @@ extension User {
         case bio
         case bioLinks
         case currentAvatar
-        case avatarImageUrl = "currentAvatarImageUrl"
-        case avatarThumbnailUrl = "currentAvatarThumbnailImageUrl"
+        case currentAvatarImageUrl
+        case currentAvatarThumbnailImageUrl
         case dateJoined
         case displayName
         case friendKey
