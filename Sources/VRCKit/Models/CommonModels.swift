@@ -13,6 +13,12 @@ public struct ResponseMessage: Codable, Sendable {
     public let statusCode: Int
 }
 
+public extension ResponseMessage {
+    static var ok: ResponseMessage {
+        ResponseMessage(message: "OK", statusCode: 200)
+    }
+}
+
 @MemberwiseInit(.public)
 public struct SuccessResponse: Codable, Sendable {
     public let success: ResponseMessage

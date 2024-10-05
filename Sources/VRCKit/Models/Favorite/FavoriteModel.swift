@@ -8,8 +8,12 @@
 import Foundation
 import MemberwiseInit
 
-public enum FavoriteType: String, Codable, Sendable {
+public enum FavoriteType: String, Codable, Sendable, CaseIterable {
     case world, avatar, friend
+}
+
+extension FavoriteType: Identifiable {
+    public var id: Int { hashValue }
 }
 
 @MemberwiseInit(.public)
@@ -23,8 +27,10 @@ public struct Favorite: Codable, Sendable, Identifiable {
 public struct FavoriteDetail: Sendable, Identifiable {
     public let id: String
     public let favorites: [Favorite]
+}
 
-    public func allFavoritesAre(_ type: FavoriteType) -> Bool {
+public extension FavoriteDetail {
+    func allFavoritesAre(_ type: FavoriteType) -> Bool {
         favorites.allSatisfy { $0.type == type }
     }
 }
@@ -52,4 +58,5 @@ struct RequestToAddFavorite: Codable, Sendable {
 struct RequestToUpdateFavoriteGroup: Codable, Sendable {
     let displayName: String?
     let visibility: FavoriteGroup.Visibility?
+    let tags: [String]
 }

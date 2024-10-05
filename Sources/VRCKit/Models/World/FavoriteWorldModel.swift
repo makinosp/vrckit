@@ -8,12 +8,6 @@
 import Foundation
 import MemberwiseInit
 
-struct AnyCodable: Codable {}
-
-public struct FavoriteWorldWrapper: Sendable {
-    public let worlds: [FavoriteWorld]
-}
-
 @MemberwiseInit(.public)
 public struct FavoriteWorld: Codable, Sendable, Identifiable, Hashable {
     public let id: String
@@ -31,8 +25,8 @@ public struct FavoriteWorld: Codable, Sendable, Identifiable, Hashable {
     public let organization: String
     public let previewYoutubeId: String?
     public let favorites: Int?
-    public let createdAt: Date
-    public let updatedAt: Date
+    public let createdAt: OptionalISO8601Date
+    public let updatedAt: OptionalISO8601Date
     public let publicationDate: OptionalISO8601Date
     public let labsPublicationDate: OptionalISO8601Date
     public let visits: Int
@@ -41,21 +35,6 @@ public struct FavoriteWorld: Codable, Sendable, Identifiable, Hashable {
     public let favoriteGroup: String
     public let version: Int?
     public let unityPackages: [UnityPackage]
-}
-
-extension FavoriteWorldWrapper: Decodable {
-    public init(from decoder: any Decoder) throws {
-        var container = try decoder.unkeyedContainer()
-        var worlds: [FavoriteWorld] = []
-        while !container.isAtEnd {
-            if let world = try? container.decode(FavoriteWorld.self) {
-                worlds.append(world)
-            } else {
-                _ = try container.decode(AnyCodable.self)
-            }
-        }
-        self.worlds = worlds
-    }
 }
 
 extension FavoriteWorld: ImageUrlRepresentable {

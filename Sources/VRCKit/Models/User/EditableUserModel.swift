@@ -18,7 +18,7 @@ public struct EditableUserInfo: Codable, Sendable, Hashable {
 public extension EditableUserInfo {
     init(detail: any ProfileDetailRepresentable) {
         bio = detail.bio ?? ""
-        bioLinks = detail.bioLinks.elements
+        bioLinks = detail.bioLinks.wrappedValue
         status = detail.status
         statusDescription = detail.statusDescription
         tags = detail.tags

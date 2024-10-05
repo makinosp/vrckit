@@ -31,5 +31,5 @@ extension UserStatus: CustomStringConvertible {
 }
 
 extension UserStatus: Identifiable {
-    public var id: Int { hashValue }
+    public var id: String { rawValue }
 }

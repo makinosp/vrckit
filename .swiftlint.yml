@@ -5,7 +5,8 @@ disabled_rules:
 
 opt_in_rules:
   - array_init
-  - attributes
+  - attributes:
+    attributes_with_arguments_always_on_line_above: false
   - closure_end_indentation
   - closure_spacing
   - collection_alignment
@@ -21,7 +22,7 @@ opt_in_rules:
   - fatal_error_message
   - first_where
   - flatmap_over_map_reduce
-  # - force_unwrapping
+  - force_unwrapping
   - identical_operands
   - implicit_return
   - implicitly_unwrapped_optional

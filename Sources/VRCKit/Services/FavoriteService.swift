@@ -9,7 +9,6 @@ import Foundation
 
 public final actor FavoriteService: APIService, FavoriteServiceProtocol {
     public let client: APIClient
-    private let path = "favorites"
 
     // Initializes the AuthenticationService with an APIClient instance
     public init(client: APIClient) {
@@ -35,6 +34,7 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
         type: FavoriteType,
         tag: String? = nil
     ) async throws -> [Favorite] {
+        let path = "favorites"
         var queryItems = [
             URLQueryItem(name: "n", value: n.description),
             URLQueryItem(name: "type", value: type.rawValue)
@@ -84,6 +84,7 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
         favoriteId: String,
         tag: String
     ) async throws -> Favorite {
+        let path = "favorites"
         let requestData = try await Serializer.shared.encode(
             RequestToAddFavorite(type: type, favoriteId: favoriteId, tags: [tag])
         )
@@ -93,19 +94,25 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
 
     public func updateFavoriteGroup(
         type: FavoriteType,
-        favoriteGroupName: String,
-        userId: String
-    ) async throws {
-        let _ = RequestToUpdateFavoriteGroup(displayName: favoriteGroupName, visibility: nil)
+        displayName: String,
+        visibility: FavoriteGroup.Visibility,
+        userId: String,
+        tag: String
+    ) async throws -> SuccessResponse {
+        let pathParams = ["favorite", "groups", type.rawValue, displayName, userId]
+        let path = pathParams.joined(separator: "/")
+        let requestData = try await Serializer.shared.encode(
+            RequestToUpdateFavoriteGroup(displayName: displayName, visibility: visibility, tags: [tag])
+        )
+        let response = try await client.request(path: path, method: .put, body: requestData)
+        return try await Serializer.shared.decode(response.data)
     }
 
     /// Asynchronously remove favorite.
     /// - Parameter favoriteId: The ID of the favorite to remove.
     /// - Returns: A `SuccessResponse` objects.
-    public func removeFavorite(
-        favoriteId: String
-    ) async throws -> SuccessResponse {
-        let path = [path, favoriteId].joined(separator: "/")
+    public func removeFavorite(favoriteId: String) async throws -> SuccessResponse {
+        let path = "favorites/\(favoriteId)"
         let response = try await client.request(path: path, method: .delete)
         return try await Serializer.shared.decode(response.data)
     }

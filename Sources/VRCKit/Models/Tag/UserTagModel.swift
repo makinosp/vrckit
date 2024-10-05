@@ -5,43 +5,34 @@
 //  Created by makinosp on 2024/08/04.
 //
 
-public struct UserTags: Hashable, Sendable {
-    public var systemTags: [SystemTag]
-    public var languageTags: [LanguageTag]
-    public var unknownTags: [String]
-}
+import MemberwiseInit
 
-public extension UserTags {
-    init() {
-        systemTags = []
-        languageTags = []
-        unknownTags = []
-    }
+@MemberwiseInit(.public)
+public struct UserTags: Hashable, Sendable {
+    @Init(default: []) public var systemTags: [SystemTag]
+    @Init(default: []) public var languageTags: [LanguageTag]
+    @Init(default: []) public var unknownTags: [String]
 }
 
 extension UserTags: Decodable {
     public init(from decoder: Decoder) throws {
-        var systemTags: [SystemTag] = []
-        var languageTags: [LanguageTag] = []
-        var unknownTags: [String] = []
+        var decoded = UserTags()
         var container = try decoder.unkeyedContainer()
         while !container.isAtEnd {
             let systemTag = try? container.decode(SystemTag.self)
             let languageTag = try? container.decode(LanguageTag.self)
             if systemTag == nil, languageTag == nil {
-                unknownTags.append(try container.decode(String.self))
+                decoded.unknownTags.append(try container.decode(String.self))
                 continue
             }
             if let systemTag = systemTag {
-                systemTags.append(systemTag)
+                decoded.systemTags.append(systemTag)
             }
             if let languageTag = languageTag {
-                languageTags.append(languageTag)
+                decoded.languageTags.append(languageTag)
             }
         }
-        self.systemTags = systemTags
-        self.languageTags = languageTags
-        self.unknownTags = unknownTags
+        self = decoded
     }
 }
 

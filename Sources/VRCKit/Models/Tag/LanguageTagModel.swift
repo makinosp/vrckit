@@ -49,5 +49,5 @@ public enum LanguageTag: String, Hashable, Codable, Sendable, CaseIterable {
 }
 
 extension LanguageTag: Identifiable {
-    public var id: Int { hashValue }
+    public var id: String { rawValue }
 }
