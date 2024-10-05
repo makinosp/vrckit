@@ -12,10 +12,10 @@ extension Friend: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         bio = try container.decodeIfPresent(String.self, forKey: .bio)
         bioLinks = try container.decodeSafeNullableArray(URL.self, forKey: .bioLinks)
-        avatarImageUrl = try container.decodeIfPresent(URL.self, forKey: .avatarImageUrl)
-        avatarThumbnailUrl = try container.decodeIfPresent(URL.self, forKey: .avatarThumbnailUrl)
+        avatarImageUrl = try container.decodeIfPresent(URL.self, forKey: .currentAvatarImageUrl)
+        avatarThumbnailUrl = try container.decodeIfPresent(URL.self, forKey: .currentAvatarThumbnailImageUrl)
         displayName = try container.decode(String.self, forKey: .displayName)
-        id = try container.decode(String.self, forKey: .id)
+        id = try container.decode(Friend.ID.self, forKey: .id)
         isFriend = try container.decode(Bool.self, forKey: .isFriend)
         lastLogin = try container.decode(Date.self, forKey: .lastLogin)
         lastPlatform = try container.decode(String.self, forKey: .lastPlatform)
@@ -34,8 +34,8 @@ extension Friend {
     private enum CodingKeys: String, CodingKey {
         case bio
         case bioLinks
-        case avatarImageUrl = "currentAvatarImageUrl"
-        case avatarThumbnailUrl = "currentAvatarThumbnailImageUrl"
+        case currentAvatarImageUrl
+        case currentAvatarThumbnailImageUrl
         case displayName
         case id
         case isFriend
