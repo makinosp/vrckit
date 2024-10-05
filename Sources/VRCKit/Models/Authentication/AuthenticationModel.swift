@@ -23,7 +23,9 @@ struct VerifyResponse: Codable, Sendable {
 
 struct RequiresTwoFactorAuthResponse: Codable, Sendable {
     let requiresTwoFactorAuth: [VerifyType]
+}
 
+extension RequiresTwoFactorAuthResponse {
     var requires: VerifyType? {
         requiresTwoFactorAuth.first { [.totp, .emailOtp].contains($0) }
     }
