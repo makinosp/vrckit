@@ -9,12 +9,9 @@ import MemberwiseInit
 
 @MemberwiseInit(.public)
 public struct UserTags: Hashable, Sendable {
-    @Init(default: [])
-    public var systemTags: [SystemTag]
-    @Init(default: [])
-    public var languageTags: [LanguageTag]
-    @Init(default: [])
-    public var unknownTags: [String]
+    @Init(default: []) public var systemTags: [SystemTag]
+    @Init(default: []) public var languageTags: [LanguageTag]
+    @Init(default: []) public var unknownTags: [String]
 }
 
 extension UserTags: Decodable {
