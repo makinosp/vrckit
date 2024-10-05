@@ -27,7 +27,7 @@ public struct UnityPackage: Sendable, Identifiable, Hashable {
 extension UnityPackage: Codable {
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decode(String.self, forKey: .id)
+        id = try container.decode(UnityPackage.ID.self, forKey: .id)
         _assetUrl = try container.decode(SafeDecoding<URL>.self, forKey: .assetUrl)
         assetVersion = try container.decode(Int.self, forKey: .assetVersion)
         createdAt = try container.decodeIfPresent(OptionalISO8601Date.self, forKey: .createdAt) ?? OptionalISO8601Date()

@@ -15,7 +15,7 @@ extension UserDetail: Decodable {
         avatarImageUrl = try? container.decodeIfPresent(URL.self, forKey: .avatarImageUrl)
         avatarThumbnailUrl = try? container.decodeIfPresent(URL.self, forKey: .avatarThumbnailUrl)
         displayName = try container.decode(String.self, forKey: .displayName)
-        id = try container.decode(String.self, forKey: .id)
+        id = try container.decode(UserDetail.ID.self, forKey: .id)
         isFriend = try container.decode(Bool.self, forKey: .isFriend)
         lastLogin = try container.decode(Date.self, forKey: .lastLogin)
         lastPlatform = try container.decode(String.self, forKey: .lastPlatform)

@@ -11,7 +11,7 @@ public enum UserPlatform: String, Codable, Sendable {
 }
 
 extension UserPlatform: Identifiable {
-    public var id: String { self.rawValue }
+    public var id: String { rawValue }
 }
 
 extension UserPlatform: CustomStringConvertible {

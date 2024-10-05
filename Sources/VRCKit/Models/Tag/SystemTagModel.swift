@@ -34,5 +34,5 @@ public enum SystemTag: String, Hashable, Codable, Sendable {
 }
 
 extension SystemTag: Identifiable {
-    public var id: Int { hashValue }
+    public var id: String { rawValue }
 }
