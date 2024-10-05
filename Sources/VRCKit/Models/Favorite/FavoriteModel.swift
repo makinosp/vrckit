@@ -27,8 +27,10 @@ public struct Favorite: Codable, Sendable, Identifiable {
 public struct FavoriteDetail: Sendable, Identifiable {
     public let id: String
     public let favorites: [Favorite]
+}
 
-    public func allFavoritesAre(_ type: FavoriteType) -> Bool {
+public extension FavoriteDetail {
+    func allFavoritesAre(_ type: FavoriteType) -> Bool {
         favorites.allSatisfy { $0.type == type }
     }
 }
