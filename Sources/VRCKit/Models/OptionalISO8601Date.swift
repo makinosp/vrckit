@@ -6,16 +6,12 @@
 //
 
 import Foundation
+import MemberwiseInit
 
+@MemberwiseInit(.public)
 public struct OptionalISO8601Date: Sendable {
-    public let date: Date?
+    @Init(default: nil) public let date: Date?
     private let formatter = DateFormatter.iso8601Full
-}
-
-public extension OptionalISO8601Date {
-    init() {
-        date = nil
-    }
 }
 
 extension OptionalISO8601Date: Decodable {
@@ -39,7 +35,7 @@ extension OptionalISO8601Date: Decodable {
 extension OptionalISO8601Date: Encodable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
-        if let date = self.date {
+        if let date = date {
             let dateString = formatter.string(from: date)
             try container.encode(dateString)
         } else {
