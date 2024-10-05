@@ -12,6 +12,10 @@ public enum FavoriteType: String, Codable, Sendable, CaseIterable {
     case world, avatar, friend
 }
 
+extension FavoriteType: Identifiable {
+    public var id: Int { hashValue }
+}
+
 @MemberwiseInit(.public)
 public struct Favorite: Codable, Sendable, Identifiable {
     public let id: String
