@@ -99,8 +99,8 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
         userId: String,
         tag: String
     ) async throws -> SuccessResponse {
-        let paths = ["favorite", "groups", type.rawValue, displayName, userId]
-        let path = paths.joined(separator: "/")
+        let pathParams = ["favorite", "groups", type.rawValue, displayName, userId]
+        let path = pathParams.joined(separator: "/")
         let requestData = try await Serializer.shared.encode(
             RequestToUpdateFavoriteGroup(displayName: displayName, visibility: visibility, tags: [tag])
         )
@@ -111,9 +111,7 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
     /// Asynchronously remove favorite.
     /// - Parameter favoriteId: The ID of the favorite to remove.
     /// - Returns: A `SuccessResponse` objects.
-    public func removeFavorite(
-        favoriteId: String
-    ) async throws -> SuccessResponse {
+    public func removeFavorite(favoriteId: String) async throws -> SuccessResponse {
         let path = "favorites/\(favoriteId)"
         let response = try await client.request(path: path, method: .delete)
         return try await Serializer.shared.decode(response.data)
