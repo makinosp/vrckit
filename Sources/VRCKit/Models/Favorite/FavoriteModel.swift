@@ -55,8 +55,9 @@ struct RequestToAddFavorite: Codable, Sendable {
     let tags: [String]
 }
 
+@MemberwiseInit
 struct RequestToUpdateFavoriteGroup: Codable, Sendable {
     let displayName: String?
     let visibility: FavoriteGroup.Visibility?
-    let tags: [String]
+    @Init(default: []) let tags: [String]
 }
