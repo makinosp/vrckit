@@ -5,7 +5,6 @@
 //  Created by makinosp on 2024/02/12.
 //
 
-import Foundation
 import MemberwiseInit
 
 public enum FavoriteType: String, Codable, Sendable, CaseIterable {
@@ -40,6 +39,7 @@ public struct FavoriteGroup: Codable, Sendable, Identifiable, Hashable {
     public let id: String
     public let displayName: String
     public let name: String
+    public let ownerId: String
     public let tags: [String]
     public let type: FavoriteType
     public let visibility: Visibility
