@@ -6,10 +6,9 @@
 //
 
 public protocol FavoriteServiceProtocol: Sendable {
-    typealias FavoriteGroupParams = (type: FavoriteType, name: String, userId: String)
     func listFavoriteGroups() async throws -> [FavoriteGroup]
     func listFavorites(n: Int, type: FavoriteType, tag: String?) async throws -> [Favorite]
-    func fetchFavoriteGroupDetails(favoriteGroups: [FavoriteGroup]) async throws -> [FavoriteDetail]
+    func fetchFavoriteList(favoriteGroups: [FavoriteGroup]) async throws -> [FavoriteList]
     func addFavorite(type: FavoriteType, favoriteId: String, tag: String) async throws -> Favorite
     func updateFavoriteGroup(
         params: FavoriteGroupParams,

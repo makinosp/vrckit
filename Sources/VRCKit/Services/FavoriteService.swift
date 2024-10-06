@@ -49,11 +49,9 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
     /// Fetches details of favorite groups asynchronously.
     /// - Parameter favoriteGroups: An array of `FavoriteGroup` objects.
     /// - Returns: An array of `FavoriteDetail` objects containing detailed information about the favorite groups.
-    public func fetchFavoriteGroupDetails(
-        favoriteGroups: [FavoriteGroup]
-    ) async throws -> [FavoriteDetail] {
-        var results: [FavoriteDetail] = []
-        try await withThrowingTaskGroup(of: FavoriteDetail.self) { taskGroup in
+    public func fetchFavoriteList(favoriteGroups: [FavoriteGroup]) async throws -> [FavoriteList] {
+        var results: [FavoriteList] = []
+        try await withThrowingTaskGroup(of: FavoriteList.self) { taskGroup in
             for favoriteGroup in favoriteGroups.filter({ $0.type == .friend }) {
                 taskGroup.addTask { [weak self] in
                     guard let self = self else {
@@ -63,7 +61,7 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
                         type: .friend,
                         tag: favoriteGroup.name
                     )
-                    return FavoriteDetail(id: favoriteGroup.id, favorites: favorites)
+                    return FavoriteList(id: favoriteGroup.id, favorites: favorites)
                 }
             }
             for try await favoriteGroupDetail in taskGroup {
