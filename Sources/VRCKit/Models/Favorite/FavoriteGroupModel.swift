@@ -31,7 +31,7 @@ struct RequestToUpdateFavoriteGroup: Codable, Sendable {
 
 @MemberwiseInit(.public)
 public struct FavoriteGroupParams: Sendable {
-    let type: FavoriteType
-    let name: String
-    let userId: String
+    public let type: FavoriteType
+    public let name: String
+    public let userId: String
 }
