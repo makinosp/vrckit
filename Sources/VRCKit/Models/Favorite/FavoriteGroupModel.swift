@@ -22,6 +22,21 @@ public struct FavoriteGroup: Codable, Sendable, Identifiable, Hashable {
     }
 }
 
+public extension FavoriteGroup {
+    /// Initialize by updatable values
+    init(source: FavoriteGroup, displayName: String, visibility: Visibility) {
+        self.init(
+            id: source.id,
+            displayName: displayName,
+            name: source.name,
+            ownerId: source.ownerId,
+            tags: source.tags,
+            type: source.type,
+            visibility: visibility
+        )
+    }
+}
+
 @MemberwiseInit
 struct RequestToUpdateFavoriteGroup: Codable, Sendable {
     let displayName: String?
