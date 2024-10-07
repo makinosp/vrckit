@@ -98,12 +98,12 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
     ///     - userId: The ID of the user associated with the favorite group.
     ///   - displayName: The new display name to update the favorite group with.
     ///   - visibility: The new visibility setting for the favorite group.
-    /// - Returns: A `SuccessResponse` if the update is successful.
+    /// - Returns: A `FavoriteGroup` if the update is successful.
     public func updateFavoriteGroup(
         source: FavoriteGroup,
         displayName: String,
         visibility: FavoriteGroup.Visibility
-    ) async throws -> SuccessResponse {
+    ) async throws -> FavoriteGroup {
         let pathParams = ["favorite", "group", source.type.rawValue, source.name, source.ownerId]
         let path = pathParams.joined(separator: "/")
         let body = RequestToUpdateFavoriteGroup(displayName: displayName, visibility: visibility)
