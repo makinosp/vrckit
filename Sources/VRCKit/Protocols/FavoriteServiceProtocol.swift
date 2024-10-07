@@ -11,9 +11,9 @@ public protocol FavoriteServiceProtocol: Sendable {
     func fetchFavoriteList(favoriteGroups: [FavoriteGroup]) async throws -> [FavoriteList]
     func addFavorite(type: FavoriteType, favoriteId: String, tag: String) async throws -> Favorite
     func updateFavoriteGroup(
-        params: FavoriteGroupParams,
+        source: FavoriteGroup,
         displayName: String,
         visibility: FavoriteGroup.Visibility
-    ) async throws -> SuccessResponse
+    ) async throws -> FavoriteGroup
     func removeFavorite(favoriteId: String) async throws -> SuccessResponse
 }
