@@ -104,7 +104,7 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
         displayName: String,
         visibility: FavoriteGroup.Visibility
     ) async throws -> SuccessResponse {
-        let pathParams = ["favorite", "groups", source.type.rawValue, source.name, source.ownerId]
+        let pathParams = ["favorite", "group", source.type.rawValue, source.name, source.ownerId]
         let path = pathParams.joined(separator: "/")
         let body = RequestToUpdateFavoriteGroup(displayName: displayName, visibility: visibility)
         let requestData = try await Serializer.shared.encode(body)
