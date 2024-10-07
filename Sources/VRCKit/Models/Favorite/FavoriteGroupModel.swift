@@ -35,3 +35,9 @@ public struct FavoriteGroupParams: Sendable {
     public let name: String
     public let userId: String
 }
+
+public extension FavoriteGroupParams {
+    init(favoriteGroup source: FavoriteGroup) {
+        self.init(type: source.type, name: source.name, userId: source.ownerId)
+    }
+}
