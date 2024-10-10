@@ -14,6 +14,6 @@ public protocol FavoriteServiceProtocol: Sendable {
         source: FavoriteGroup,
         displayName: String,
         visibility: FavoriteGroup.Visibility
-    ) async throws -> FavoriteGroup
+    ) async throws
     func removeFavorite(favoriteId: String) async throws -> SuccessResponse
 }
