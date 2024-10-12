@@ -6,15 +6,12 @@
 //
 
 import Foundation
+import MemberwiseInit
 
+@MemberwiseInit(.public)
 public final actor AuthenticationService: APIService, AuthenticationServiceProtocol {
     public let client: APIClient
     private let authPath = "auth"
-
-    // Initializes the AuthenticationService with an APIClient instance
-    public init(client: APIClient) {
-        self.client = client
-    }
 
     /// Check if a user exists by their user ID.
     /// - Parameter userId: The ID of the user to check.

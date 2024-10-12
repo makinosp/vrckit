@@ -136,7 +136,5 @@ public final actor APIClient {
 }
 
 extension APIClient.Method: CustomStringConvertible {
-    var description: String {
-        self.rawValue.uppercased()
-    }
+    var description: String { rawValue.uppercased() }
 }

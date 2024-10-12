@@ -6,14 +6,11 @@
 //
 
 import Foundation
+import MemberwiseInit
 
+@MemberwiseInit(.public)
 public final actor FavoriteService: APIService, FavoriteServiceProtocol {
     public let client: APIClient
-
-    // Initializes the AuthenticationService with an APIClient instance
-    public init(client: APIClient) {
-        self.client = client
-    }
 
     /// Asynchronously retrieves a list of favorite groups from the server.
     /// - Returns: An array of `FavoriteGroup` objects.

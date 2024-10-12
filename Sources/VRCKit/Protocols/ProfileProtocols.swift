@@ -15,7 +15,7 @@ public protocol ProfileElementRepresentable: Sendable, Hashable, Identifiable, I
     var avatarImageUrl: URL? { get }
     var avatarThumbnailUrl: URL? { get }
     var displayName: String { get }
-    var id: String { get }
+    var id: Self.ID { get }
     var isFriend: Bool { get }
     var lastLogin: Date { get }
     var lastPlatform: String { get }

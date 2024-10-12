@@ -5,14 +5,12 @@
 //  Created by makinosp on 2024/03/17.
 //
 
+import MemberwiseInit
+
+@MemberwiseInit(.public)
 public final actor UserNoteService: APIService, UserNoteServiceProtocol {
     public let client: APIClient
     private let path = "userNotes"
-
-    // Initializes the AuthenticationService with an APIClient instance
-    public init(client: APIClient) {
-        self.client = client
-    }
 
     /// Updates the note for a specific user by sending the note to the API.
     /// - Parameters:

@@ -5,13 +5,12 @@
 //  Created by makinosp on 2024/02/18.
 //
 
+import MemberwiseInit
+
+@MemberwiseInit(.public)
 public final actor InstanceService: APIService, InstanceServiceProtocol {
     public let client: APIClient
     private let path = "instances"
-
-    public init(client: APIClient) {
-        self.client = client
-    }
 
     /// Fetches an instance of a world using the specified world ID and instance ID.
     /// - Parameters:

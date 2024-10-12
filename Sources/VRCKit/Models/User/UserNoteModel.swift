@@ -9,8 +9,8 @@ import Foundation
 import MemberwiseInit
 
 struct UserNoteRequest: Codable, Sendable {
-    var targetUserId: String
-    var note: String
+    let targetUserId: String
+    let note: String
 }
 
 @MemberwiseInit(.public)

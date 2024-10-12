@@ -5,13 +5,12 @@
 //  Created by makinosp on 2024/02/18.
 //
 
+import MemberwiseInit
+
+@MemberwiseInit(.public)
 public final actor UserService: APIService, UserServiceProtocol {
     public let client: APIClient
     private let path = "users"
-
-    public init(client: APIClient) {
-        self.client = client
-    }
 
     /// Fetch a user
     public func fetchUser(userId: String) async throws -> UserDetail {
