@@ -6,14 +6,12 @@
 //
 
 import Foundation
+import MemberwiseInit
 
+@MemberwiseInit(.public)
 public final actor WorldService: APIService, WorldServiceProtocol {
     public let client: APIClient
     private let path = "worlds"
-
-    public init(client: APIClient) {
-        self.client = client
-    }
 
     public func fetchWorld(worldId: String) async throws -> World {
         let response = try await client.request(path: "\(path)/\(worldId)", method: .get)

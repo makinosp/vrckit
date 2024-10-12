@@ -1,5 +1,5 @@
 //
-//  FavoriteModel.swift
+//  FavoriteGroupModel.swift
 //  VRCKit
 //
 //  Created by makinosp on 2024/10/06.
@@ -19,21 +19,6 @@ public struct FavoriteGroup: Codable, Sendable, Identifiable, Hashable {
 
     public enum Visibility: String, Codable, Sendable {
         case `private`, friends, `public`
-    }
-}
-
-public extension FavoriteGroup {
-    /// Initialize by updatable values
-    init(source: FavoriteGroup, displayName: String, visibility: Visibility) {
-        self.init(
-            id: source.id,
-            displayName: displayName,
-            name: source.name,
-            ownerId: source.ownerId,
-            tags: source.tags,
-            type: source.type,
-            visibility: visibility
-        )
     }
 }
 

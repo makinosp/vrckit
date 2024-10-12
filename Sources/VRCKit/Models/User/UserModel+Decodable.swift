@@ -9,7 +9,7 @@ import Foundation
 
 extension User: Decodable {
     public init(from decoder: any Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let container = try decoder.container(keyedBy: UserCodingKeys.self)
         activeFriends = try container.decode([String].self, forKey: .activeFriends)
         allowAvatarCopying = try container.decode(Bool.self, forKey: .allowAvatarCopying)
         bio = try container.decodeIfPresent(String.self, forKey: .bio)
@@ -41,40 +41,5 @@ extension User: Decodable {
         userLanguage = try container.decodeIfPresent(String.self, forKey: .userLanguage)
         userLanguageCode = try container.decodeIfPresent(String.self, forKey: .userLanguageCode)
         presence = try container.decode(Presence.self, forKey: .presence)
-    }
-}
-
-extension User {
-    private enum CodingKeys: String, CodingKey {
-        case activeFriends
-        case allowAvatarCopying
-        case bio
-        case bioLinks
-        case currentAvatar
-        case currentAvatarImageUrl
-        case currentAvatarThumbnailImageUrl
-        case dateJoined
-        case displayName
-        case friendKey
-        case friends
-        case homeLocation
-        case id
-        case isFriend
-        case lastActivity
-        case lastLogin
-        case lastPlatform
-        case offlineFriends
-        case onlineFriends
-        case pastDisplayNames
-        case presence
-        case profilePicOverride
-        case state
-        case status
-        case statusDescription
-        case tags
-        case twoFactorAuthEnabled
-        case userIcon
-        case userLanguage
-        case userLanguageCode
     }
 }

@@ -41,6 +41,7 @@ public struct User: Sendable, ProfileDetailRepresentable {
     public let userLanguageCode: String?
     public let presence: Presence
 
+    @MemberwiseInit(.public)
     public struct DisplayName: Codable, Sendable, Hashable {
         public let displayName: String
         public let updatedAt: Date
@@ -55,6 +56,7 @@ public struct User: Sendable, ProfileDetailRepresentable {
         case offline
     }
 
+    @MemberwiseInit(.public)
     public struct Presence: Codable, Hashable, Sendable {
         public let groups: [String]
         public let id: String
@@ -69,24 +71,11 @@ public struct User: Sendable, ProfileDetailRepresentable {
 }
 
 public extension User {
-    var platform: UserPlatform {
-        presence.platform
-    }
-    var url: URL? {
-        URL(string: [Const.homeBaseUrl, "user", id].joined(separator: "/"))
-    }
+    var platform: UserPlatform { presence.platform }
 }
 
-public extension User.Presence {
-    init() {
-        groups = []
-        id = UUID().uuidString
-        instance = ""
-        instanceType = ""
-        platform = .blank
-        status = .offline
-        travelingToInstance = ""
-        travelingToWorld = ""
-        world = ""
+public extension User {
+    var url: URL? {
+        URL(string: [Const.homeBaseUrl, "user", id].joined(separator: "/"))
     }
 }

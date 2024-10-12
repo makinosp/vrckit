@@ -5,8 +5,6 @@
 //  Created by makinosp on 2024/08/22.
 //
 
-import Foundation
-
 public enum SystemTag: String, Hashable, Codable, Sendable {
     case adminAvatarAccess = "admin_avatar_access"
     case adminCanGrantLicenses = "admin_can_grant_licenses"

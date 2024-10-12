@@ -9,11 +9,11 @@ import Foundation
 
 extension UserDetail: Decodable {
     public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let container = try decoder.container(keyedBy: UserCodingKeys.self)
         bio = try container.decodeIfPresent(String.self, forKey: .bio)
         bioLinks = try container.decodeSafeNullableArray(URL.self, forKey: .bioLinks)
-        avatarImageUrl = try? container.decodeIfPresent(URL.self, forKey: .avatarImageUrl)
-        avatarThumbnailUrl = try? container.decodeIfPresent(URL.self, forKey: .avatarThumbnailUrl)
+        avatarImageUrl = try? container.decodeIfPresent(URL.self, forKey: .currentAvatarImageUrl)
+        avatarThumbnailUrl = try? container.decodeIfPresent(URL.self, forKey: .currentAvatarThumbnailImageUrl)
         displayName = try container.decode(String.self, forKey: .displayName)
         id = try container.decode(UserDetail.ID.self, forKey: .id)
         isFriend = try container.decode(Bool.self, forKey: .isFriend)
@@ -32,31 +32,5 @@ extension UserDetail: Decodable {
         note = try container.decode(String.self, forKey: .note)
         lastActivity = try container.decode(Date.self, forKey: .lastActivity)
         platform = try container.decode(UserPlatform.self, forKey: .platform)
-    }
-}
-
-extension UserDetail {
-    private enum CodingKeys: String, CodingKey {
-        case bio
-        case bioLinks
-        case avatarImageUrl = "currentAvatarImageUrl"
-        case avatarThumbnailUrl = "currentAvatarThumbnailImageUrl"
-        case displayName
-        case id
-        case isFriend
-        case lastLogin
-        case lastPlatform
-        case profilePicOverride
-        case state
-        case status
-        case statusDescription
-        case tags
-        case userIcon
-        case location
-        case friendKey
-        case dateJoined
-        case note
-        case lastActivity
-        case platform
     }
 }

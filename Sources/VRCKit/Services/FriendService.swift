@@ -6,14 +6,12 @@
 //
 
 import Foundation
+import MemberwiseInit
 
+@MemberwiseInit(.public)
 public final actor FriendService: APIService, FriendServiceProtocol {
     public let client: APIClient
     private let path = "auth/user/friends"
-
-    public init(client: APIClient) {
-        self.client = client
-    }
 
     /// List information about friends.
     public func fetchFriends(offset: Int, n: Int = 60, offline: Bool) async throws -> [Friend] {

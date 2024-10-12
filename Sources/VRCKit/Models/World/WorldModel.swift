@@ -70,6 +70,17 @@ public extension World {
     }
 }
 
+extension World.Platform: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .android: "Quest Only"
+        case .crossPlatform: "Cross-Platform"
+        case .windows: "PC Only"
+        case .none: "None"
+        }
+    }
+}
+
 extension World: ImageUrlRepresentable {
     public func imageUrl(_ resolution: ImageResolution) -> URL? {
         guard let url = thumbnailImageUrl else { return nil }

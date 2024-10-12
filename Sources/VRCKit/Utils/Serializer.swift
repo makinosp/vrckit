@@ -9,14 +9,18 @@ import Foundation
 
 final actor Serializer {
     static let shared = Serializer()
-    private var decoder = JSONDecoder()
-    private var encoder = JSONEncoder()
+    private let decoder: JSONDecoder
+    private let encoder: JSONEncoder
 
     /// Initializes the `Util` class, setting up custom encoding and decoding strategies.
     private init() {
+        let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(.iso8601Full)
         decoder.keyDecodingStrategy = .convertFromSnakeCase
+        self.decoder = decoder
+        let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .formatted(.iso8601Full)
+        self.encoder = encoder
     }
 
     /// Decodes JSON data into a specified `Decodable` type.
@@ -24,7 +28,7 @@ final actor Serializer {
     /// - Throws: `VRCKitError.apiError` if the decoded data contains an API error.
     /// - Throws: `DecodingError` if the decoding process fails.
     /// - Returns: The decoded object of type `T`.
-    func decode<T: Decodable>(_ data: Data) throws -> T {
+    func decode<T>(_ data: Data) throws -> T where T: Decodable {
         do {
             return try decoder.decode(T.self, from: data)
         } catch let error as DecodingError {

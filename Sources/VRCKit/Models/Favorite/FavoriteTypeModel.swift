@@ -10,5 +10,5 @@ public enum FavoriteType: String, Codable, Sendable, CaseIterable {
 }
 
 extension FavoriteType: Identifiable {
-    public var id: Int { hashValue }
+    public var id: String { rawValue }
 }

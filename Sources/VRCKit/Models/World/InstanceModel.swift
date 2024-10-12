@@ -102,6 +102,17 @@ extension Instance.GroupAccessType {
     }
 }
 
+extension Instance.Region: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .eu: "EU"
+        case .jp: "Japan"
+        case .use: "US East"
+        default: "US West"
+        }
+    }
+}
+
 extension Instance.InstanceType: CustomStringConvertible {
     public var description: String { rawValue }
 }
