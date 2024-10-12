@@ -71,7 +71,7 @@ public extension World {
 }
 
 extension World.Platform: CustomStringConvertible {
-    var description: String {
+    public var description: String {
         switch self {
         case .android: "Quest Only"
         case .crossPlatform: "Cross-Platform"
