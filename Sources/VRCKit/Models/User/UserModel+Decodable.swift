@@ -30,7 +30,7 @@ extension User: Decodable {
         lastPlatform = try container.decode(String.self, forKey: .lastPlatform)
         offlineFriends = try container.decode([String].self, forKey: .offlineFriends)
         onlineFriends = try container.decode([String].self, forKey: .onlineFriends)
-        pastDisplayNames = try container.decode([User.DisplayName].self, forKey: .pastDisplayNames)
+        pastDisplayNames = try container.decode([DisplayName].self, forKey: .pastDisplayNames)
         profilePicOverride = try? container.decodeIfPresent(URL.self, forKey: .profilePicOverride)
         state = try container.decode(User.State.self, forKey: .state)
         status = try container.decode(UserStatus.self, forKey: .status)
