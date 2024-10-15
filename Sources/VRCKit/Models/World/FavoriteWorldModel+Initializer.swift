@@ -7,7 +7,7 @@
 
 public extension FavoriteWorld {
     /// Initialize from `World` mode.
-    init(world: World, favoriteGroup: String) {
+    init(world: World, favoriteId: String, favoriteGroup: String) {
         self.init(
             id: world.id,
             name: world.name,
@@ -32,6 +32,7 @@ public extension FavoriteWorld {
             popularity: world.popularity,
             heat: world.heat,
             favoriteGroup: favoriteGroup,
+            favoriteId: favoriteId,
             version: world.version,
             unityPackages: world.unityPackages
         )

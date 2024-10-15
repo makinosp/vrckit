@@ -33,6 +33,7 @@ public struct FavoriteWorld: Codable, Sendable, Identifiable, Hashable {
     public let popularity: Int
     public let heat: Int
     public let favoriteGroup: String
+    public let favoriteId: String
     public let version: Int?
     public let unityPackages: [UnityPackage]
 }
