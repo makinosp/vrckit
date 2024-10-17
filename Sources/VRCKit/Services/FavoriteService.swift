@@ -20,6 +20,24 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
         return try await Serializer.shared.decode(response.data)
     }
 
+    /// Lists a user's all favorites with the specified parameters.
+    /// - Parameter type: The type of favorite (e.g., friend, world).
+    /// - Returns: An array of `Favorite` objects.
+    public func listFavorites(type: FavoriteType) async throws -> [Favorite] {
+        try await withThrowingTaskGroup(of: [Favorite].self) { taskGroup in
+            for offset in [0, 100, 200, 300] {
+                taskGroup.addTask { [unowned self] in
+                    try await self.listFavorites(n: 100, offset: offset, type: type)
+                }
+            }
+            var results: [Favorite] = []
+            for try await favorites in taskGroup {
+                results.append(contentsOf: favorites)
+            }
+            return results
+        }
+    }
+
     /// Lists a user's favorites with the specified parameters.
     /// - Parameters:
     ///   - n: The number of favorites to retrieve. Default is `60``.
