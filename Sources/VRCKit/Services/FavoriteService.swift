@@ -44,14 +44,16 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
     ///   - type: The type of favorite (e.g., friend, world).
     ///   - tag: An optional tag to filter favorites.
     /// - Returns: An array of `Favorite` objects.
-    public func listFavorites(
-        n: Int = 60,
+    private func listFavorites(
+        n: Int = 100,
+        offset: Int = 0,
         type: FavoriteType,
         tag: String? = nil
     ) async throws -> [Favorite] {
         let path = "favorites"
         var queryItems = [
             URLQueryItem(name: "n", value: n.description),
+            URLQueryItem(name: "offset", value: offset.description),
             URLQueryItem(name: "type", value: type.rawValue)
         ]
         if let tag = tag {
@@ -62,28 +64,26 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
     }
 
     /// Fetches details of favorite groups asynchronously.
-    /// - Parameter favoriteGroups: An array of `FavoriteGroup` objects.
+    /// - Parameters:
+    ///   - favoriteGroups: An array of `FavoriteGroup` objects.
+    ///   - type: The type of favorite (e.g., friend, world).
     /// - Returns: An array of `FavoriteDetail` objects containing detailed information about the favorite groups.
-    public func fetchFavoriteList(favoriteGroups: [FavoriteGroup]) async throws -> [FavoriteList] {
-        var results: [FavoriteList] = []
+    public func fetchFavoriteList(favoriteGroups: [FavoriteGroup], type: FavoriteType) async throws -> [FavoriteList] {
         try await withThrowingTaskGroup(of: FavoriteList.self) { taskGroup in
-            for favoriteGroup in favoriteGroups.filter({ $0.type == .friend }) {
-                taskGroup.addTask { [weak self] in
-                    guard let self = self else {
-                        throw VRCKitError.unexpected
-                    }
-                    let favorites = try await self.listFavorites(
-                        type: .friend,
-                        tag: favoriteGroup.name
+            for favoriteGroup in favoriteGroups.filter({ $0.type == type }) {
+                taskGroup.addTask { [unowned self] in
+                    FavoriteList(
+                        id: favoriteGroup.id,
+                        favorites: try await listFavorites(type: type, tag: favoriteGroup.name)
                     )
-                    return FavoriteList(id: favoriteGroup.id, favorites: favorites)
                 }
             }
+            var results: [FavoriteList] = []
             for try await favoriteGroupDetail in taskGroup {
                 results.append(favoriteGroupDetail)
             }
+            return results
         }
-        return results
     }
 
     /// Adds a new favorite to a specific group.
