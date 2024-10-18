@@ -23,7 +23,7 @@ public final actor WorldService: APIService, WorldServiceProtocol {
 
     public func fetchFavoritedWorlds() async throws -> [FavoriteWorld] {
         try await withThrowingTaskGroup(of: FavoriteWorldsWithOffset.self) { taskGroup in
-            for offset in Array(stride(from: 0, to: maxCount, by: limit)) {
+            for offset in stride(from: .zero, to: maxCount, by: limit) {
                 taskGroup.addTask { [weak self] in
                     guard let self = self else { return (offset, []) }
                     let worlds = try await fetchFavoritedWorlds(n: limit, offset: offset)

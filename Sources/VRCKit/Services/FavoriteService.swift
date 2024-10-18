@@ -11,6 +11,8 @@ import MemberwiseInit
 @MemberwiseInit(.public)
 public final actor FavoriteService: APIService, FavoriteServiceProtocol {
     public let client: APIClient
+    private let limit = 100
+    private let maxCount = 400
 
     /// Asynchronously retrieves a list of favorite groups from the server.
     /// - Returns: An array of `FavoriteGroup` objects.
@@ -25,10 +27,10 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
     /// - Returns: An array of `Favorite` objects.
     public func listFavorites(type: FavoriteType) async throws -> [Favorite] {
         try await withThrowingTaskGroup(of: [Favorite].self) { taskGroup in
-            for offset in [0, 100, 200, 300] {
+            for offset in stride(from: .zero, to: maxCount, by: limit) {
                 taskGroup.addTask { [weak self] in
                     guard let self = self else { return [] }
-                    return try await listFavorites(n: 100, offset: offset, type: type)
+                    return try await listFavorites(n: limit, offset: offset, type: type)
                 }
             }
             var results: [Favorite] = []
@@ -73,16 +75,9 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
         try await withThrowingTaskGroup(of: FavoriteList.self) { taskGroup in
             for favoriteGroup in favoriteGroups.filter({ $0.type == type }) {
                 taskGroup.addTask { [weak self] in
-                    guard let self = self else {
-                        return FavoriteList(
-                            id: favoriteGroup.id,
-                            favorites: []
-                        )
-                    }
-                    return FavoriteList(
-                        id: favoriteGroup.id,
-                        favorites: try await listFavorites(type: type, tag: favoriteGroup.name)
-                    )
+                    guard let self = self else { return FavoriteList(id: favoriteGroup.id) }
+                    let favorites = try await listFavorites(type: type, tag: favoriteGroup.name)
+                    return FavoriteList(id: favoriteGroup.id, favorites: favorites)
                 }
             }
             var results: [FavoriteList] = []
