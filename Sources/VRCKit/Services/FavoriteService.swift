@@ -26,8 +26,9 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
     public func listFavorites(type: FavoriteType) async throws -> [Favorite] {
         try await withThrowingTaskGroup(of: [Favorite].self) { taskGroup in
             for offset in [0, 100, 200, 300] {
-                taskGroup.addTask { [unowned self] in
-                    try await listFavorites(n: 100, offset: offset, type: type)
+                taskGroup.addTask { [weak self] in
+                    guard let self = self else { return [] }
+                    return try await listFavorites(n: 100, offset: offset, type: type)
                 }
             }
             var results: [Favorite] = []
@@ -71,8 +72,14 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
     public func fetchFavoriteList(favoriteGroups: [FavoriteGroup], type: FavoriteType) async throws -> [FavoriteList] {
         try await withThrowingTaskGroup(of: FavoriteList.self) { taskGroup in
             for favoriteGroup in favoriteGroups.filter({ $0.type == type }) {
-                taskGroup.addTask { [unowned self] in
-                    FavoriteList(
+                taskGroup.addTask { [weak self] in
+                    guard let self = self else {
+                        return FavoriteList(
+                            id: favoriteGroup.id,
+                            favorites: []
+                        )
+                    }
+                    return FavoriteList(
                         id: favoriteGroup.id,
                         favorites: try await listFavorites(type: type, tag: favoriteGroup.name)
                     )
