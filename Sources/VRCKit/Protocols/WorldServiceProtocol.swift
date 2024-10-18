@@ -7,5 +7,5 @@
 
 public protocol WorldServiceProtocol: Sendable {
     func fetchWorld(worldId: String) async throws -> World
-    func fetchFavoritedWorlds(n: Int) async throws -> [FavoriteWorld]
+    func fetchFavoritedWorlds() async throws -> [FavoriteWorld]
 }

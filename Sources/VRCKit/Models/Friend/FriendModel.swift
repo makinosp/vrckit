@@ -29,6 +29,7 @@ public struct Friend: Sendable, ProfileElementRepresentable, LocationRepresentab
     public let friendKey: String
 }
 
+@MemberwiseInit(.public)
 public struct FriendsLocation: Sendable, LocationRepresentable {
     public let location: Location
     public let friends: [Friend]
