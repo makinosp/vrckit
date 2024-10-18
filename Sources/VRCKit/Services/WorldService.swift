@@ -13,6 +13,8 @@ public final actor WorldService: APIService, WorldServiceProtocol {
     public let client: APIClient
     private let path = "worlds"
     private let limit = 100
+    private let maxCount = 400
+    private typealias FavoriteWorldsWithOffset = (offset: Int, worlds: [FavoriteWorld])
 
     public func fetchWorld(worldId: String) async throws -> World {
         let response = try await client.request(path: "\(path)/\(worldId)", method: .get)
@@ -20,15 +22,19 @@ public final actor WorldService: APIService, WorldServiceProtocol {
     }
 
     public func fetchFavoritedWorlds() async throws -> [FavoriteWorld] {
-        var allFavorites = Set<FavoriteWorld>()
-        var offset = 0
-        while true {
-            let batch = try await fetchFavoritedWorlds(n: limit, offset: offset)
-            allFavorites.formUnion(batch)
-            if batch.count < limit { break }
-            offset += limit
+        try await withThrowingTaskGroup(of: FavoriteWorldsWithOffset.self) { taskGroup in
+            for offset in Array(stride(from: 0, to: maxCount, by: limit)) {
+                taskGroup.addTask { [unowned self] in
+                    let worlds = try await fetchFavoritedWorlds(n: limit, offset: offset)
+                    return (offset, worlds)
+                }
+            }
+            var resultsDict: [FavoriteWorldsWithOffset] = []
+            for try await result in taskGroup { resultsDict.append(result) }
+            return resultsDict
+                .sorted { $0.offset < $1.offset }
+                .flatMap { $0.worlds }
         }
-        return Array(allFavorites)
     }
 
     private func fetchFavoritedWorlds(n: Int, offset: Int) async throws -> [FavoriteWorld] {

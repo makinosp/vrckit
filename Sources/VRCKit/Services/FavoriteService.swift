@@ -27,7 +27,7 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
         try await withThrowingTaskGroup(of: [Favorite].self) { taskGroup in
             for offset in [0, 100, 200, 300] {
                 taskGroup.addTask { [unowned self] in
-                    try await self.listFavorites(n: 100, offset: offset, type: type)
+                    try await listFavorites(n: 100, offset: offset, type: type)
                 }
             }
             var results: [Favorite] = []
