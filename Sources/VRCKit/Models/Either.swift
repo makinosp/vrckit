@@ -5,12 +5,12 @@
 //  Created by makinosp on 2024/10/19.
 //
 
-enum Either<L, R> {
+public enum Either<L, R> {
     case left(L), right(R)
 }
 
 extension Either: Identifiable where L: Identifiable, R: Identifiable {
-    var id: AnyHashable {
+    public var id: AnyHashable {
         switch self {
         case .left(let value): value.id
         case .right(let value): value.id
@@ -19,7 +19,7 @@ extension Either: Identifiable where L: Identifiable, R: Identifiable {
 }
 
 extension Either: Equatable where L: Equatable, R: Equatable {
-    static func == (lhs: Either<L, R>, rhs: Either<L, R>) -> Bool {
+    public static func == (lhs: Either<L, R>, rhs: Either<L, R>) -> Bool {
         switch (lhs, rhs) {
         case (.left(let l1), .left(let l2)): l1 == l2
         case (.right(let r1), .right(let r2)): r1 == r2
@@ -29,7 +29,7 @@ extension Either: Equatable where L: Equatable, R: Equatable {
 }
 
 extension Either: Hashable where L: Hashable, R: Hashable {
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         switch self {
         case .left(let value):
             hasher.combine(0)
