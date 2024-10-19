@@ -32,9 +32,7 @@ public final actor APIClient {
     }
 
     /// Set username and password.
-    /// - Parameters:
-    ///   - username: The username for basic authentication.
-    ///   - password: The password for basic authentication.
+    /// - Parameter credential: The username and password for basic authentication.
     public func setCledentials(_ credential: Credential) {
         self.credential = credential
     }
