@@ -26,18 +26,18 @@ public final actor AuthenticationService: APIService, AuthenticationServiceProto
 
     /// Logs in and/or fetches the current user's information.
     /// - Returns: A `User` object or a `RequiresTwoFactorAuthResponse` if 2FA is required.
-    public func loginUserInfo() async throws -> UserOrRequires {
+    public func loginUserInfo() async throws -> Either<User, VerifyType> {
         let path = "\(authPath)/user"
         let response = try await client.request(path: path, method: .get, basic: true)
         do {
             let user: User = try await Serializer.shared.decode(response.data)
-            return user
+            return .left(user)
         } catch _ as DecodingError {
             let result: RequiresTwoFactorAuthResponse = try await Serializer.shared.decode(response.data)
             guard let requires = result.requires else {
                 throw VRCKitError.unexpected
             }
-            return requires
+            return .right(requires)
         }
     }
 
