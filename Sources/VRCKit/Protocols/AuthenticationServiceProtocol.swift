@@ -5,13 +5,9 @@
 //  Created by makinosp on 2024/07/14.
 //
 
-public protocol UserOrRequires: Sendable {}
-extension User: UserOrRequires {}
-extension VerifyType: UserOrRequires {}
-
 public protocol AuthenticationServiceProtocol: Sendable {
-    func isExists(userId: String) async throws -> Bool
-    func loginUserInfo() async throws -> UserOrRequires
+    func exists(userId: String) async throws -> Bool
+    func loginUserInfo() async throws -> Either<User, VerifyType>
     func verify2FA(verifyType: VerifyType, code: String) async throws -> Bool
     func verifyAuthToken() async throws -> Bool
     func logout() async throws

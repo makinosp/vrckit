@@ -31,6 +31,8 @@ public final actor CookieManager {
         cookies.forEach { HTTPCookieStorage.shared.deleteCookie($0) }
     }
 
+    public var cookieExists: Bool { !cookies.isEmpty }
+
     var httpField: [String: String] {
         HTTPCookie.requestHeaderFields(with: cookies)
     }

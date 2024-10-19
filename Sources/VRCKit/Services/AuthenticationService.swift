@@ -16,7 +16,7 @@ public final actor AuthenticationService: APIService, AuthenticationServiceProto
     /// Check if a user exists by their user ID.
     /// - Parameter userId: The ID of the user to check.
     /// - Returns: A boolean indicating if the user exists.
-    public func isExists(userId: String) async throws -> Bool {
+    public func exists(userId: String) async throws -> Bool {
         let path = "\(authPath)/exists"
         let queryItems = [URLQueryItem(name: "username", value: userId.description)]
         let response = try await client.request(path: path, method: .get, queryItems: queryItems)
@@ -26,18 +26,18 @@ public final actor AuthenticationService: APIService, AuthenticationServiceProto
 
     /// Logs in and/or fetches the current user's information.
     /// - Returns: A `User` object or a `RequiresTwoFactorAuthResponse` if 2FA is required.
-    public func loginUserInfo() async throws -> UserOrRequires {
+    public func loginUserInfo() async throws -> Either<User, VerifyType> {
         let path = "\(authPath)/user"
         let response = try await client.request(path: path, method: .get, basic: true)
         do {
             let user: User = try await Serializer.shared.decode(response.data)
-            return user
+            return .left(user)
         } catch _ as DecodingError {
             let result: RequiresTwoFactorAuthResponse = try await Serializer.shared.decode(response.data)
             guard let requires = result.requires else {
                 throw VRCKitError.unexpected
             }
-            return requires
+            return .right(requires)
         }
     }
 
