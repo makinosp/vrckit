@@ -16,7 +16,7 @@ public final actor AuthenticationService: APIService, AuthenticationServiceProto
     /// Check if a user exists by their user ID.
     /// - Parameter userId: The ID of the user to check.
     /// - Returns: A boolean indicating if the user exists.
-    public func isExists(userId: String) async throws -> Bool {
+    public func exists(userId: String) async throws -> Bool {
         let path = "\(authPath)/exists"
         let queryItems = [URLQueryItem(name: "username", value: userId.description)]
         let response = try await client.request(path: path, method: .get, queryItems: queryItems)

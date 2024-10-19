@@ -10,7 +10,7 @@ extension User: UserOrRequires {}
 extension VerifyType: UserOrRequires {}
 
 public protocol AuthenticationServiceProtocol: Sendable {
-    func isExists(userId: String) async throws -> Bool
+    func exists(userId: String) async throws -> Bool
     func loginUserInfo() async throws -> UserOrRequires
     func verify2FA(verifyType: VerifyType, code: String) async throws -> Bool
     func verifyAuthToken() async throws -> Bool
