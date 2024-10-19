@@ -13,8 +13,7 @@ import FoundationNetworking
 public final actor APIClient {
     typealias HTTPResponse = (data: Data, response: HTTPURLResponse)
 
-    private var username: String?
-    private var password: String?
+    private var credential: Credential?
     private let baseUrl: String
     public let cookieManager: CookieManager
 
@@ -36,9 +35,8 @@ public final actor APIClient {
     /// - Parameters:
     ///   - username: The username for basic authentication.
     ///   - password: The password for basic authentication.
-    public func setCledentials(username: String, password: String) {
-        self.username = username
-        self.password = password
+    public func setCledentials(_ credential: Credential) {
+        self.credential = credential
     }
 
     /// Encodes the given username and password into a Basic Authentication token.
@@ -47,9 +45,8 @@ public final actor APIClient {
     ///   - password: The password associated with the username.
     /// - Returns: A Basic Authentication token string.
     /// - Throws: `VRCKitError.unexpectedError` if the username and password cannot be converted to UTF-8 data.
-    private func encodeAuthorization(_ username: String, _ password: String) throws -> String {
-        let authString = "\(username):\(password)"
-        guard let payload = authString.data(using: .utf8) else {
+    private func encodeAuthorization(_ credential: Credential) throws -> String {
+        guard let payload = credential.authString.data(using: .utf8) else {
             throw VRCKitError.unexpected
         }
         return "Basic \(payload.base64EncodedString())"
@@ -84,8 +81,8 @@ public final actor APIClient {
         request.httpMethod = method.description
 
         // Add authorization header if required.
-        if basic, let username = username, let password = password {
-            let authorizationHeader = try encodeAuthorization(username, password)
+        if basic, let credential = credential {
+            let authorizationHeader = try encodeAuthorization(credential)
             request.addValue(authorizationHeader, forHTTPHeaderField: "Authorization")
         }
 
