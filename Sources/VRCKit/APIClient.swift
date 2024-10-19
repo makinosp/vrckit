@@ -40,9 +40,7 @@ public final actor APIClient {
     }
 
     /// Encodes the given username and password into a Basic Authentication token.
-    /// - Parameters:
-    ///   - username: The username for authentication.
-    ///   - password: The password associated with the username.
+    /// - Parameter credential: The username and password for authentication.
     /// - Returns: A Basic Authentication token string.
     /// - Throws: `VRCKitError.unexpectedError` if the username and password cannot be converted to UTF-8 data.
     private func encodeAuthorization(_ credential: Credential) throws -> String {
