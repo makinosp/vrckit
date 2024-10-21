@@ -39,7 +39,7 @@ public struct Instance: Sendable, Identifiable, Hashable, Decodable {
         case `public`, plus
     }
 
-    public enum Region: String, Sendable, Codable {
+    public enum Region: String, Sendable, Codable, CaseIterable {
         case us, use, eu, jp, unknown
     }
 
