@@ -51,6 +51,26 @@ public struct User: Sendable, ProfileDetailRepresentable {
     }
 }
 
+extension User: Equatable {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.hashValue == rhs.hashValue
+    }
+}
+
+extension User: RawRepresentable {
+    public init?(rawValue: String) {
+        guard let data = rawValue.data(using: .utf8) else { return nil }
+        guard let decoded: User = try? Serializer.shared.decode(data) else { return nil }
+        self = decoded
+    }
+
+    public var rawValue: String {
+        guard let data = try? Serializer.shared.encode(self) else { return "" }
+        guard let encoded = String(data: data, encoding: .utf8) else { return "" }
+        return encoded
+    }
+}
+
 public extension User {
     var platform: UserPlatform { presence.platform }
 }
