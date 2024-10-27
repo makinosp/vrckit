@@ -18,7 +18,7 @@ public final actor WorldService: APIService, WorldServiceProtocol {
 
     public func fetchWorld(worldId: String) async throws -> World {
         let response = try await client.request(path: "\(path)/\(worldId)", method: .get)
-        return try await Serializer.shared.decode(response.data)
+        return try Serializer.shared.decode(response.data)
     }
 
     public func fetchFavoritedWorlds() async throws -> [FavoriteWorld] {
@@ -44,7 +44,7 @@ public final actor WorldService: APIService, WorldServiceProtocol {
             URLQueryItem(name: "offset", value: offset.description)
         ]
         let response = try await client.request(path: "\(path)/favorites", method: .get, queryItems: queryItems)
-        let favoriteWorldWrapper: SafeDecodingArray<FavoriteWorld> = try await Serializer.shared.decode(response.data)
+        let favoriteWorldWrapper: SafeDecodingArray<FavoriteWorld> = try Serializer.shared.decode(response.data)
         return favoriteWorldWrapper.wrappedValue
     }
 }

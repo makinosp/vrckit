@@ -24,7 +24,7 @@ public final actor UserNoteService: APIService, UserNoteServiceProtocol {
         let response = try await request(
             userNote: UserNoteRequest(targetUserId: targetUserId, note: note)
         )
-        return try await Serializer.shared.decode(response.data)
+        return try Serializer.shared.decode(response.data)
     }
 
     /// Clears the note for a specific user by sending an empty note to the API.
@@ -37,7 +37,7 @@ public final actor UserNoteService: APIService, UserNoteServiceProtocol {
     /// - Parameter userNote: The `UserNoteRequest` containing the user ID and note content.
     /// - Returns: The `HTTPResponse` received from the API.
     private func request(userNote: UserNoteRequest) async throws -> APIClient.HTTPResponse {
-        let requestData = try await Serializer.shared.encode(userNote)
+        let requestData = try Serializer.shared.encode(userNote)
         return try await client.request(path: path, method: .post, body: requestData)
     }
 }

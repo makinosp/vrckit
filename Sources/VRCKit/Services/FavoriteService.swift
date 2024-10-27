@@ -19,7 +19,7 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
     public func listFavoriteGroups() async throws -> [FavoriteGroup] {
         let path = "favorite/groups"
         let response = try await client.request(path: path, method: .get)
-        return try await Serializer.shared.decode(response.data)
+        return try Serializer.shared.decode(response.data)
     }
 
     /// Lists a user's all favorites with the specified parameters.
@@ -63,7 +63,7 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
             queryItems.append(URLQueryItem(name: "tag", value: tag.description))
         }
         let response = try await client.request(path: path, method: .get, queryItems: queryItems)
-        return try await Serializer.shared.decode(response.data)
+        return try Serializer.shared.decode(response.data)
     }
 
     /// Fetches details of favorite groups asynchronously.
@@ -100,11 +100,11 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
         tag: String
     ) async throws -> Favorite {
         let path = "favorites"
-        let requestData = try await Serializer.shared.encode(
+        let requestData = try Serializer.shared.encode(
             RequestToAddFavorite(type: type, favoriteId: favoriteId, tags: [tag])
         )
         let response = try await client.request(path: path, method: .post, body: requestData)
-        return try await Serializer.shared.decode(response.data)
+        return try Serializer.shared.decode(response.data)
     }
 
     /// Updates a favorite group with the given parameters, display name, and visibility.
@@ -123,7 +123,7 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
         let pathParams = ["favorite", "group", source.type.rawValue, source.name, source.ownerId]
         let path = pathParams.joined(separator: "/")
         let body = RequestToUpdateFavoriteGroup(displayName: displayName, visibility: visibility)
-        let requestData = try await Serializer.shared.encode(body)
+        let requestData = try Serializer.shared.encode(body)
         _ = try await client.request(path: path, method: .put, body: requestData)
     }
 
@@ -133,6 +133,6 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
     public func removeFavorite(favoriteId: String) async throws -> SuccessResponse {
         let path = "favorites/\(favoriteId)"
         let response = try await client.request(path: path, method: .delete)
-        return try await Serializer.shared.decode(response.data)
+        return try Serializer.shared.decode(response.data)
     }
 }
