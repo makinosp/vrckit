@@ -30,16 +30,16 @@ public struct Instance: Sendable, Identifiable, Hashable, Decodable {
 
     @MemberwiseInit(.public)
     public struct Platforms: Sendable, Hashable, Codable {
-        public let android: Int
-        public let ios: Int
-        public let standalonewindows: Int
+        @Init(default: 0) public let android: Int
+        @Init(default: 0) public let ios: Int
+        @Init(default: 0) public let standalonewindows: Int
     }
 
     public enum GroupAccessType: String, Sendable, Codable {
         case `public`, plus
     }
 
-    public enum Region: String, Sendable, Codable {
+    public enum Region: String, Sendable, Codable, CaseIterable {
         case us, use, eu, jp, unknown
     }
 

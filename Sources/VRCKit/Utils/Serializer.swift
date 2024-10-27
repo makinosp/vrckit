@@ -7,7 +7,7 @@
 
 import Foundation
 
-final actor Serializer {
+final class Serializer: Sendable {
     static let shared = Serializer()
     private let decoder: JSONDecoder
     private let encoder: JSONEncoder
