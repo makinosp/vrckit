@@ -9,19 +9,16 @@ import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
+import MemberwiseInit
 
+@MemberwiseInit
 public final actor CookieManager {
-    private var domainURL: String?
-
-    init(domainURL: String) {
-        self.domainURL = domainURL
-    }
+    @Init(.internal) private var domainURL: String
 
     /// Retrieves the cookies stored for the VRChat API domain.
     /// - Returns: An array of `HTTPCookie` objects.
     public var cookies: [HTTPCookie] {
-        guard let domainURL = domainURL,
-              let url = URL(string: domainURL),
+        guard let url = URL(string: domainURL),
               let cookies = HTTPCookieStorage.shared.cookies(for: url) else { return [] }
         return cookies
     }
