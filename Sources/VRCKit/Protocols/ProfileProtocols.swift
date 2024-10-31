@@ -36,7 +36,7 @@ public protocol ProfileDetailRepresentable: ProfileElementRepresentable {
     var state: User.State { get }
 }
 
-public extension ProfileElementRepresentable: ImageUrlRepresentable {
+public extension ProfileElementRepresentable {
     func imageUrl(_ resolution: ImageResolution) -> URL? {
         guard let url = profilePicOverride ?? avatarThumbnailUrl else { return nil }
         return replaceImageUrl(url: url, resolution: resolution)
