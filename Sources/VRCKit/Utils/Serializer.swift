@@ -35,7 +35,7 @@ final class Serializer: Sendable {
             do {
                 let errorResponse = try decoder.decode(ErrorResponse.self, from: data)
                 if errorResponse.error.statusCode == 401 {
-                    throw VRCKitError.unauthorized
+                    throw VRCKitError.credentialNotSet
                 } else {
                     throw VRCKitError.apiError(errorResponse.error.message)
                 }

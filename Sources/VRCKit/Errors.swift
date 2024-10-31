@@ -21,17 +21,17 @@ public enum VRCKitError: Error, LocalizedError, Equatable {
     /// Represents an error indicating that the client has been deallocated.
     case clientDeallocated
 
+    /// Represents an error indicating that credential not set.
+    case credentialNotSet
+
     /// Represents an error indicating an invalid response was received.
-    case invalidResponse
+    case invalidResponse(_ details: String)
 
     /// Represents an error indicating an invalid request with additional details.
     case invalidRequest(_ details: String)
 
     /// Represents an error indicating an authentication failure.
     case unauthorized
-
-    /// Represents an unexpected error.
-    case unexpected
 
     /// Represents an url error.
     case urlError
@@ -42,10 +42,10 @@ public enum VRCKitError: Error, LocalizedError, Equatable {
         case .apiError: "API Error"
         case .badGateway: "Bad Gateway"
         case .clientDeallocated: "Client Deallocated"
+        case .credentialNotSet: "Credential Error"
         case .invalidResponse: "Invalid Response"
         case .invalidRequest: "Invalid Request"
         case .unauthorized: "Unauthorized"
-        case .unexpected: "Unexpected"
         case .urlError: "URL Error"
         }
     }
@@ -53,10 +53,10 @@ public enum VRCKitError: Error, LocalizedError, Equatable {
     /// Provides a localized failure reason for the error.
     public var failureReason: String? {
         switch self {
-        case .apiError(let details), .invalidRequest(let details):
-            details
-        default:
-            errorDescription
+        case .apiError(let details): details
+        case .invalidRequest(let details): details
+        case .invalidResponse(let details): details
+        default: errorDescription
         }
     }
 }

@@ -35,7 +35,7 @@ public final actor AuthenticationService: APIService, AuthenticationServiceProto
         } catch _ as DecodingError {
             let result: RequiresTwoFactorAuthResponse = try Serializer.shared.decode(response.data)
             guard let requires = result.requires else {
-                throw VRCKitError.unexpected
+                throw VRCKitError.invalidResponse("\(result.requires?.rawValue)")
             }
             return .right(requires)
         }
