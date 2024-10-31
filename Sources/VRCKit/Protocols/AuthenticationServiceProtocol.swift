@@ -6,9 +6,27 @@
 //
 
 public protocol AuthenticationServiceProtocol: Sendable {
+
+    /// Check if a user exists by their user ID.
+    /// - Parameter userId: The ID of the user to check.
+    /// - Returns: A boolean indicating if the user exists.
     func exists(userId: String) async throws -> Bool
+
+    /// Logs in and/or fetches the current user's information.
+    /// - Returns: A `User` object or a `RequiresTwoFactorAuthResponse` if 2FA is required.
     func loginUserInfo() async throws -> Either<User, VerifyType>
+
+    /// Verifies 2-factor authentication using either TOTP or Email OTP.
+    /// - Parameters:
+    ///   - verifyType: The type of verification (TOTP or Email OTP).
+    ///   - code: The 6-digit verification code.
+    /// - Returns: A boolean indicating if verification was successful.
     func verify2FA(verifyType: VerifyType, code: String) async throws -> Bool
+
+    /// Verifies the user's authentication token.
+    /// - Returns: A boolean indicating if the token is valid.
     func verifyAuthToken() async throws -> Bool
+
+    /// Logs out the user and deletes cookies.
     func logout() async throws
 }
