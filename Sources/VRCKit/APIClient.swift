@@ -43,7 +43,7 @@ public final actor APIClient {
     /// - Throws: `VRCKitError.unexpectedError` if the username and password cannot be converted to UTF-8 data.
     private func encodeAuthorization(_ credential: Credential) throws -> String {
         guard let payload = credential.authString.data(using: .utf8) else {
-            throw VRCKitError.unexpected
+            throw VRCKitError.credentialNotSet
         }
         return "Basic \(payload.base64EncodedString())"
     }
@@ -108,7 +108,7 @@ public final actor APIClient {
                     return
                 }
                 guard let data = data, let reponse = urlResponse as? HTTPURLResponse else {
-                    continuation.resume(throwing: VRCKitError.invalidResponse)
+                    continuation.resume(throwing: VRCKitError.invalidResponse(String(describing: data)))
                     return
                 }
                 continuation.resume(returning: (data, reponse))
@@ -121,7 +121,7 @@ public final actor APIClient {
     private func requestWithFoundation(_ request: URLRequest) async throws -> HTTPResponse {
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let response = response as? HTTPURLResponse else {
-            throw VRCKitError.invalidResponse
+            throw VRCKitError.invalidResponse(String(describing: data))
         }
         return (data, response)
     }
