@@ -13,7 +13,6 @@ public final actor FriendService: APIService, FriendServiceProtocol {
     public let client: APIClient
     private let path = "auth/user/friends"
 
-    /// List information about friends.
     public func fetchFriends(offset: Int, n: Int = 60, offline: Bool) async throws -> [Friend] {
         let queryItems = [
             URLQueryItem(name: "offset", value: offset.description),
@@ -24,8 +23,6 @@ public final actor FriendService: APIService, FriendServiceProtocol {
         return try Serializer.shared.decode(response.data)
     }
 
-    /// A helper function that splits a large API request tasks to fetch friend data concurrently,
-    /// and then combines the results.
     public func fetchFriends(count: Int, offline: Bool) async throws -> [Friend] {
         typealias ResultSet = (offset: Int, friends: [Friend])
         var results: [ResultSet] = []
