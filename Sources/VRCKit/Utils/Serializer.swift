@@ -25,8 +25,10 @@ final class Serializer: Sendable {
 
     /// Decodes JSON data into a specified `Decodable` type.
     /// - Parameter data: The JSON data to decode.
-    /// - Throws: `VRCKitError.apiError` if the decoded data contains an API error.
-    /// - Throws: `DecodingError` if the decoding process fails.
+    /// - Throws: 
+    ///   - `VRCKitError.unauthorized` if the decoded data contains an unauthentized error.
+    ///   - `VRCKitError.apiError` if the decoded data contains an API error.
+    ///   - `DecodingError` if the decoding process fails.
     /// - Returns: The decoded object of type `T`.
     func decode<T>(_ data: Data) throws -> T where T: Decodable {
         do {
@@ -35,15 +37,11 @@ final class Serializer: Sendable {
             do {
                 let errorResponse = try decoder.decode(ErrorResponse.self, from: data)
                 if errorResponse.error.statusCode == 401 {
-                    throw VRCKitError.credentialNotSet
+                    throw VRCKitError.unauthorized
                 } else {
                     throw VRCKitError.apiError(errorResponse.error.message)
                 }
             } catch _ as DecodingError {
-                // for debug
-                print(type(of: T.self))
-                print(error)
-                print(String(data: data, encoding: .utf8) ?? "")
                 throw error
             }
         }
