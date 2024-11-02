@@ -38,7 +38,7 @@ public final actor WorldService: APIService, WorldServiceProtocol {
         }
     }
 
-    private func fetchFavoritedWorlds(n: Int, offset: Int) async throws -> [FavoriteWorld] {
+    public func fetchFavoritedWorlds(n: Int, offset: Int) async throws -> [FavoriteWorld] {
         let queryItems = [
             URLQueryItem(name: "n", value: n.description),
             URLQueryItem(name: "offset", value: offset.description)

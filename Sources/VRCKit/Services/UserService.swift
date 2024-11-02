@@ -12,13 +12,11 @@ public final actor UserService: APIService, UserServiceProtocol {
     public let client: APIClient
     private let path = "users"
 
-    /// Fetch a user
     public func fetchUser(userId: String) async throws -> UserDetail {
         let response = try await client.request(path: "\(path)/\(userId)", method: .get)
         return try Serializer.shared.decode(response.data)
     }
 
-    /// Update user
     public func updateUser(id: String, editedInfo: EditableUserInfo) async throws {
         let requestData = try Serializer.shared.encode(editedInfo)
         _ = try await client.request(

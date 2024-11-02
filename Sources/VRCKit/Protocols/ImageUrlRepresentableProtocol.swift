@@ -8,6 +8,13 @@
 import Foundation
 
 public protocol ImageUrlRepresentable: Sendable {
+    /// Replaces the last numeric component in the provided image URL with a specified resolution and returns a new URL.
+    ///
+    /// - Parameters:
+    ///   - url: The original image URL to modify.
+    ///   - resolution: The desired image resolution as an `ImageResolution` value. The original resolution is `.origin`.
+    ///
+    /// - Returns: A new URL with the last numeric component replaced by the specified resolution.
     func imageUrl(_ resolution: ImageResolution) -> URL?
 }
 

@@ -14,17 +14,12 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
     private let limit = 100
     private let maxCount = 400
 
-    /// Asynchronously retrieves a list of favorite groups from the server.
-    /// - Returns: An array of `FavoriteGroup` objects.
     public func listFavoriteGroups() async throws -> [FavoriteGroup] {
         let path = "favorite/groups"
         let response = try await client.request(path: path, method: .get)
         return try Serializer.shared.decode(response.data)
     }
 
-    /// Lists a user's all favorites with the specified parameters.
-    /// - Parameter type: The type of favorite (e.g., friend, world).
-    /// - Returns: An array of `Favorite` objects.
     public func listFavorites(type: FavoriteType) async throws -> [Favorite] {
         try await withThrowingTaskGroup(of: [Favorite].self) { taskGroup in
             for offset in stride(from: .zero, to: maxCount, by: limit) {
@@ -41,13 +36,7 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
         }
     }
 
-    /// Lists a user's favorites with the specified parameters.
-    /// - Parameters:
-    ///   - n: The number of favorites to retrieve. Default is `60``.
-    ///   - type: The type of favorite (e.g., friend, world).
-    ///   - tag: An optional tag to filter favorites.
-    /// - Returns: An array of `Favorite` objects.
-    private func listFavorites(
+    public func listFavorites(
         n: Int = 100,
         offset: Int = 0,
         type: FavoriteType,
@@ -66,11 +55,6 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
         return try Serializer.shared.decode(response.data)
     }
 
-    /// Fetches details of favorite groups asynchronously.
-    /// - Parameters:
-    ///   - favoriteGroups: An array of `FavoriteGroup` objects.
-    ///   - type: The type of favorite (e.g., friend, world).
-    /// - Returns: An array of `FavoriteDetail` objects containing detailed information about the favorite groups.
     public func fetchFavoriteList(favoriteGroups: [FavoriteGroup], type: FavoriteType) async throws -> [FavoriteList] {
         try await withThrowingTaskGroup(of: FavoriteList.self) { taskGroup in
             for favoriteGroup in favoriteGroups.filter({ $0.type == type }) {
@@ -88,12 +72,6 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
         }
     }
 
-    /// Adds a new favorite to a specific group.
-    /// - Parameters:
-    ///   - type: The type of favorite (e.g., friend, world).
-    ///   - favoriteId: The ID of the item to favorite.
-    ///   - tag: The tag to associate with the favorite.
-    /// - Returns: The newly added `Favorite` object.
     public func addFavorite(
         type: FavoriteType,
         favoriteId: String,
@@ -107,14 +85,6 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
         return try Serializer.shared.decode(response.data)
     }
 
-    /// Updates a favorite group with the given parameters, display name, and visibility.
-    /// - Parameters:
-    ///   - params: A tuple containing the favorite group's details:
-    ///     - type: The type of the favorite group, defined by `FavoriteType`.
-    ///     - name: The name of the favorite group.
-    ///     - userId: The ID of the user associated with the favorite group.
-    ///   - displayName: The new display name to update the favorite group with.
-    ///   - visibility: The new visibility setting for the favorite group.
     public func updateFavoriteGroup(
         source: FavoriteGroup,
         displayName: String,
@@ -127,9 +97,6 @@ public final actor FavoriteService: APIService, FavoriteServiceProtocol {
         _ = try await client.request(path: path, method: .put, body: requestData)
     }
 
-    /// Asynchronously remove favorite.
-    /// - Parameter favoriteId: The ID of the favorite to remove.
-    /// - Returns: A `SuccessResponse` objects.
     public func removeFavorite(favoriteId: String) async throws -> SuccessResponse {
         let path = "favorites/\(favoriteId)"
         let response = try await client.request(path: path, method: .delete)
