@@ -13,10 +13,7 @@ public protocol AuthenticationServiceProtocol: Sendable {
     func exists(userId: String) async throws -> Bool
 
     /// Fetches the authenticated user's information or determines if two-factor authentication (2FA) verification is required.
-    ///
     /// - Returns: An `Either<User, VerifyType>` result, which is `.left(User)` if the user is successfully authenticated,
-    ///   or `.right(VerifyType)` if two-factor authentication is needed.
-    ///
     /// - Throws: An error if the request fails or if the response cannot be decoded. If an unexpected decoding issue occurs,
     ///   it throws `VRCKitError.unexpected`.
     func loginUserInfo() async throws -> Either<User, VerifyType>
