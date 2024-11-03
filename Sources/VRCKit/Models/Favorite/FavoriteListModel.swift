@@ -5,6 +5,9 @@
 //  Created by makinosp on 2024/10/06.
 //
 
+import MemberwiseInit
+
+@MemberwiseInit(.public)
 public struct FavoriteList: Sendable, Identifiable {
     public let id: String
     public let favorites: [Favorite]
