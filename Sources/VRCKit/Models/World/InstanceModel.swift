@@ -95,7 +95,7 @@ public extension Instance {
 public extension Instance.Platforms {
     /// Initialize from an array of UserPlatform
     /// - Parameter platforms: An array of UserPlatform
-    init(platforms: [UserPlatform]) {
+    init(_ platforms: [UserPlatform]) {
         self.init(
             android: platforms.contains(.android) ? 1 : 0,
             ios: platforms.contains(.ios) ? 1 : 0,
