@@ -28,7 +28,6 @@ public struct Instance: Sendable, Identifiable, Hashable, Decodable {
     public let userCount: Int
     public let world: World
 
-    @MemberwiseInit(.public)
     public struct Platforms: Sendable, Hashable, Codable {
         @Init(default: 0) public let android: Int
         @Init(default: 0) public let ios: Int
@@ -90,6 +89,18 @@ public extension Instance {
             platforms.ios > 0 ? UserPlatform.ios : nil,
             platforms.standalonewindows > 0 ? UserPlatform.standalonewindows : nil
         ].compactMap { $0 }
+    }
+}
+
+public extension Instance.Platforms {
+    /// Initialize from an array of UserPlatform
+    /// - Parameter platforms: An array of UserPlatform
+    init(_ platforms: [UserPlatform]) {
+        self.init(
+            android: platforms.contains(.android) ? 1 : 0,
+            ios: platforms.contains(.ios) ? 1 : 0,
+            standalonewindows: platforms.contains(.standalonewindows) ? 1 : 0
+        )
     }
 }
 
