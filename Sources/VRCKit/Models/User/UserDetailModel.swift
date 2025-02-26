@@ -10,6 +10,8 @@ import MemberwiseInit
 
 @MemberwiseInit(.public)
 public struct UserDetail: Sendable, ProfileDetailRepresentable, LocationRepresentable {
+    public let ageVerificationStatus: AgeVerificationStatus
+    public let ageVerified: Bool
     public var bio: String?
     public var bioLinks: SafeDecodingArray<URL>
     public let avatarImageUrl: URL?
