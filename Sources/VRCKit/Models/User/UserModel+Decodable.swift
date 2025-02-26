@@ -10,6 +10,8 @@ import Foundation
 extension User: Decodable {
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: UserCodingKeys.self)
+        ageVerificationStatus = try container.decode(AgeVerificationStatus.self, forKey: .ageVerificationStatus)
+        ageVerified = try container.decode(Bool.self, forKey: .ageVerified)
         activeFriends = try container.decode([String].self, forKey: .activeFriends)
         allowAvatarCopying = try container.decode(Bool.self, forKey: .allowAvatarCopying)
         bio = try container.decodeIfPresent(String.self, forKey: .bio)

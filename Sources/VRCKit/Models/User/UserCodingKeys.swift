@@ -6,6 +6,8 @@
 //
 
 public enum UserCodingKeys: String, CodingKey {
+    case ageVerificationStatus
+    case ageVerified
     case bio
     case bioLinks
     case currentAvatarImageUrl
