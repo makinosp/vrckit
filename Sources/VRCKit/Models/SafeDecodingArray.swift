@@ -13,6 +13,7 @@ public struct SafeDecodingArray<T> {
 }
 
 extension SafeDecodingArray: Decodable where T: Decodable {
+    private struct AnyDecodable: Decodable {}
     public init(from decoder: Decoder) throws {
         wrappedValue = []
         var container = try decoder.unkeyedContainer()
@@ -21,7 +22,7 @@ extension SafeDecodingArray: Decodable where T: Decodable {
                 wrappedValue.append(value)
             } else {
                 // Skip the decorder cursor
-                _ = try? container.decode(T.self)
+                _ = try container.decode(AnyDecodable.self)
             }
         }
     }
