@@ -8,6 +8,8 @@
 public extension User {
     init(user: User, editedUserInfo: EditableUserInfo) {
         activeFriends = user.activeFriends
+        ageVerificationStatus = user.ageVerificationStatus
+        ageVerified = user.ageVerified
         allowAvatarCopying = user.allowAvatarCopying
         bio = editedUserInfo.bio
         bioLinks = SafeDecodingArray(wrappedValue: editedUserInfo.bioLinks)

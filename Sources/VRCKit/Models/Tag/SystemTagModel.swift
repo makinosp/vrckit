@@ -31,6 +31,15 @@ public enum SystemTag: String, Hashable, Codable, Sendable {
     case systemWorldAccess = "system_world_access"
 }
 
+extension SystemTag {
+    static let rankTags: Set<Self> = [
+        .systemTrustVeteran,
+        .systemTrustTrusted,
+        .systemTrustKnown,
+        .systemTrustBasic
+    ]
+}
+
 extension SystemTag: Identifiable {
     public var id: String { rawValue }
 }

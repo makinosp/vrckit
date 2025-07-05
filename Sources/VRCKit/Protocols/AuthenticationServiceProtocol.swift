@@ -6,7 +6,6 @@
 //
 
 public protocol AuthenticationServiceProtocol: Sendable {
-
     /// Check if a user exists by their user ID.
     /// - Parameter userId: The ID of the user to check.
     /// - Returns: A boolean indicating if the user exists.

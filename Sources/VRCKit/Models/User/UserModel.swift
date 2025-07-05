@@ -11,6 +11,8 @@ import MemberwiseInit
 @MemberwiseInit(.public)
 public struct User: Sendable, ProfileDetailRepresentable {
     public let activeFriends: [String]
+    public let ageVerificationStatus: AgeVerificationStatus
+    public let ageVerified: Bool
     public let allowAvatarCopying: Bool
     public let bio: String?
     public var bioLinks: SafeDecodingArray<URL>

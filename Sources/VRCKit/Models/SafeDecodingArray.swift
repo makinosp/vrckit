@@ -21,6 +21,7 @@ extension SafeDecodingArray: Decodable where T: Decodable {
             if let value = try? container.decode(T.self) {
                 wrappedValue.append(value)
             } else {
+                // Skip the decorder cursor
                 _ = try container.decode(AnyDecodable.self)
             }
         }
