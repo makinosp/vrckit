@@ -23,7 +23,7 @@ public final actor AuthenticationService: APIService, AuthenticationServiceProto
 
     public func loginUserInfo() async throws -> Either<User, VerifyType> {
         let path = "\(authPath)/user"
-        let response = try await client.request(path: path, method: .get, basic: true)
+        let response = try await client.request(path: path, method: .get, requiresAuthorization: true)
         do {
             let user: User = try Serializer.shared.decode(response.data)
             return .left(user)

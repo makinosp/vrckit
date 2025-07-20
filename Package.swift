@@ -16,15 +16,28 @@ let package = Package(
         .library(
             name: "VRCKit",
             targets: ["VRCKit"]
+        ),
+        .executable(
+            name: "vrc",
+            targets: ["VRCKitCLI"]
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/gohanlon/swift-memberwise-init-macro", from: "0.5.2")
+        .package(url: "https://github.com/gohanlon/swift-memberwise-init-macro", from: "0.5.2"),
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.2.0")
     ],
     targets: [
         .target(
             name: "VRCKit",
-            path: "Sources"
+            path: "Sources/VRCKit"
+        ),
+        .executableTarget(
+            name: "VRCKitCLI",
+            dependencies: [
+                "VRCKit",
+                .product(name: "ArgumentParser", package: "swift-argument-parser")
+            ],
+            path: "Sources/VRCKitCLI"
         ),
         .testTarget(
             name: "VRCKitTests",
@@ -34,5 +47,7 @@ let package = Package(
 )
 
 package.targets.forEach { target in
-    target.dependencies.append(.product(name: "MemberwiseInit", package: "swift-memberwise-init-macro"))
+    if target.name == "VRCKit" {
+        target.dependencies.append(.product(name: "MemberwiseInit", package: "swift-memberwise-init-macro"))
+    }
 }
