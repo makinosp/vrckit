@@ -36,6 +36,15 @@ struct Login: AsyncParsableCommand {
                 print("Display Name: \(user.displayName)")
             case .right(let verifyType):
                 print("Two-factor authentication required: \(verifyType.rawValue)")
+                print("Enter 6 digit code: ", terminator: "")
+                if let code = readLine() {
+                    let verified = try await authService.verify2FA(verifyType: verifyType, code: code)
+                    if verified {
+                        print("Login successful!")
+                    } else {
+                        print("Verification failed.")
+                    }
+                }
             }
         } catch {
             print("Login failed: \(error.localizedDescription)")
