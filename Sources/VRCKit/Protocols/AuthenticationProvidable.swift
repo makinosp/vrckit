@@ -5,7 +5,7 @@
 //  Created by makinosp on 2024/07/14.
 //
 
-public protocol AuthenticationServiceProtocol: Sendable {
+public protocol AuthenticationProvidable: Sendable {
     /// Check if a user exists by their user ID.
     /// - Parameter userId: The ID of the user to check.
     /// - Returns: A boolean indicating if the user exists.

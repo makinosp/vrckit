@@ -1,11 +1,11 @@
 //
-//  FriendServiceProtocol.swift
+//  FriendProvidable.swift
 //  VRCKit
 //
 //  Created by makinosp on 2024/07/14.
 //
 
-public protocol FriendServiceProtocol: Sendable {
+public protocol FriendProvidable: Sendable {
     /// Fetches a list of friends with pagination support.
     /// - Parameters:
     ///   - offset: The offset to start retrieving friends from.
@@ -29,7 +29,7 @@ public protocol FriendServiceProtocol: Sendable {
     func unfriend(id: String) async throws
 }
 
-public extension FriendServiceProtocol {
+public extension FriendProvidable {
     /// Groups friends by their location and returns a sorted list of FriendsLocation objects.
     /// - Parameter friends: An array of `Friend`` objects to be grouped by location.
     /// - Returns: A list of `FriendsLocation` objects, sorted by the number of friends in each location.

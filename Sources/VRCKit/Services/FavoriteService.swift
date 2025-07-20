@@ -9,7 +9,7 @@ import Foundation
 import MemberwiseInit
 
 @MemberwiseInit(.public)
-public final actor FavoriteService: APIService, FavoriteServiceProtocol {
+public final actor FavoriteService: APIService, FavoriteProvidable {
     public let client: APIClient
     private let limit = 100
     private let maxCount = 400

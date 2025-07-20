@@ -9,7 +9,7 @@ import Foundation
 import MemberwiseInit
 
 @MemberwiseInit(.public)
-public final actor WorldService: APIService, WorldServiceProtocol {
+public final actor WorldService: APIService, WorldProvidable {
     public let client: APIClient
     private let path = "worlds"
     private let limit = 100

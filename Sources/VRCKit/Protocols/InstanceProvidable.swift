@@ -1,11 +1,11 @@
 //
-//  InstanceServiceProtocol.swift
+//  InstanceProvidable.swift
 //  VRCKit
 //
 //  Created by makinosp on 2024/07/14.
 //
 
-public protocol InstanceServiceProtocol: Sendable {
+public protocol InstanceProvidable: Sendable {
     /// Fetches an instance of a world using the specified world ID and instance ID.
     /// - Parameters:
     ///   - worldId: The ID of the world to fetch the instance from.

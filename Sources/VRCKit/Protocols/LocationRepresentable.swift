@@ -1,5 +1,5 @@
 //
-//  LocationProtocols.swift
+//  LocationRepresentable.swift
 //  VRCKit
 //
 //  Created by makinosp on 2024/06/16.
