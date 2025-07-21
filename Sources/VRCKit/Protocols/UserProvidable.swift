@@ -1,11 +1,11 @@
 //
-//  UserServiceProtocol.swift
+//  UserProvidable.swift
 //  VRCKit
 //
 //  Created by makinosp on 2024/07/14.
 //
 
-public protocol UserServiceProtocol: Sendable {
+public protocol UserProvidable: Sendable {
     /// Fetches detailed information about a specific user.
     /// - Parameter userId: The ID of the user to retrieve.
     /// - Returns: A `UserDetail` object containing detailed information about the specified user.

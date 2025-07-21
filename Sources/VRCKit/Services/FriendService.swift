@@ -9,7 +9,7 @@ import Foundation
 import MemberwiseInit
 
 @MemberwiseInit(.public)
-public final actor FriendService: APIService, FriendServiceProtocol {
+public final actor FriendService: APIService, FriendProvidable {
     public let client: APIClient
     private let path = "auth/user/friends"
 

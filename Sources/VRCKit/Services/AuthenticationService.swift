@@ -9,7 +9,7 @@ import Foundation
 import MemberwiseInit
 
 @MemberwiseInit(.public)
-public final actor AuthenticationService: APIService, AuthenticationServiceProtocol {
+public final actor AuthenticationService: APIService, AuthenticationProvidable {
     public let client: APIClient
     private let authPath = "auth"
 
