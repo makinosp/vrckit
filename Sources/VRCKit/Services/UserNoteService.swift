@@ -8,7 +8,7 @@
 import MemberwiseInit
 
 @MemberwiseInit(.public)
-public final actor UserNoteService: APIService, UserNoteServiceProtocol {
+public final actor UserNoteService: APIService, UserNoteProvidable {
     public let client: APIClient
     private let path = "userNotes"
 

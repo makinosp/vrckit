@@ -1,11 +1,11 @@
 //
-//  WorldService.swift
+//  WorldProvidable.swift
 //  VRCKit
 //
 //  Created by kiripoipoi on 2024/09/07.
 //
 
-public protocol WorldServiceProtocol: Sendable {
+public protocol WorldProvidable: Sendable {
     /// Fetches detailed information about a specific world.
     /// - Parameter worldId: The ID of the world to retrieve.
     /// - Returns: A `World` object containing the details of the specified world.

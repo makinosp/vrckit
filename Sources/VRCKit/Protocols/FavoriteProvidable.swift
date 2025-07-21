@@ -1,11 +1,11 @@
 //
-//  FavoriteServiceProtocol.swift
+//  FavoriteProvidable.swift
 //  VRCKit
 //
 //  Created by makinosp on 2024/07/14.
 //
 
-public protocol FavoriteServiceProtocol: Sendable {
+public protocol FavoriteProvidable: Sendable {
     /// Asynchronously retrieves a list of favorite groups from the server.
     /// - Returns: An array of `FavoriteGroup` objects.
     func listFavoriteGroups() async throws -> [FavoriteGroup]

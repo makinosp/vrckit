@@ -8,7 +8,7 @@
 import MemberwiseInit
 
 @MemberwiseInit(.public)
-public final actor InstanceService: APIService, InstanceServiceProtocol {
+public final actor InstanceService: APIService, InstanceProvidable {
     public let client: APIClient
     private let path = "instances"
 
