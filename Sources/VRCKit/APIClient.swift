@@ -112,9 +112,13 @@ public final actor APIClient {
 
     private func performRequest(_ request: URLRequest) async throws -> HTTPResponse {
         #if canImport(FoundationNetworking)
-        return try await requestWithFoundationNetworking(request)
+        let response = try await requestWithFoundationNetworking(request)
+        try await cookieManager.saveCookies()
+        return response
         #else
-        return try await requestWithFoundation(request)
+        let response = try await requestWithFoundation(request)
+        try await cookieManager.saveCookies()
+        return response
         #endif
     }
 
