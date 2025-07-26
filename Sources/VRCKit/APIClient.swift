@@ -33,7 +33,7 @@ public final actor APIClient {
 
     /// Set username and password.
     /// - Parameter credential: The username and password for basic authentication.
-    public func setCledentials(_ credential: Credential) {
+    public func setCredentials(_ credential: Credential) {
         self.credential = credential
     }
 
@@ -60,10 +60,27 @@ public final actor APIClient {
     func request(
         path: String,
         method: Method,
-        basic: Bool = false,
+        requiresAuthorization: Bool = false,
         queryItems: [URLQueryItem] = [],
         body: Data? = nil
     ) async throws -> HTTPResponse {
+        let request = try await buildURLRequest(
+            path: path,
+            method: method,
+            requiresAuthorization: requiresAuthorization,
+            queryItems: queryItems,
+            body: body
+        )
+        return try await performRequest(request)
+    }
+
+    private func buildURLRequest(
+        path: String,
+        method: Method,
+        requiresAuthorization: Bool,
+        queryItems: [URLQueryItem],
+        body: Data?
+    ) async throws -> URLRequest {
         guard var urlComponents = URLComponents(string: "\(baseUrl)/\(path)") else {
             throw VRCKitError.urlError
         }
@@ -77,7 +94,7 @@ public final actor APIClient {
         request.httpMethod = method.description
 
         // Add authorization header if required.
-        if basic, let credential = credential {
+        if requiresAuthorization, let credential = credential {
             let authorizationHeader = try encodeAuthorization(credential)
             request.addValue(authorizationHeader, forHTTPHeaderField: "Authorization")
         }
@@ -90,11 +107,18 @@ public final actor APIClient {
             request.addValue(ContentType.json.rawValue, forHTTPHeaderField: "Content-Type")
             request.httpBody = body
         }
+        return request
+    }
 
+    private func performRequest(_ request: URLRequest) async throws -> HTTPResponse {
         #if canImport(FoundationNetworking)
-        return try await requestWithFoundationNetworking(request)
+        let response = try await requestWithFoundationNetworking(request)
+        try await cookieManager.saveCookies()
+        return response
         #else
-        return try await requestWithFoundation(request)
+        let response = try await requestWithFoundation(request)
+        try await cookieManager.saveCookies()
+        return response
         #endif
     }
 
@@ -116,7 +140,6 @@ public final actor APIClient {
             .resume()
         }
     }
-
     #else
     private func requestWithFoundation(_ request: URLRequest) async throws -> HTTPResponse {
         let (data, response) = try await URLSession.shared.data(for: request)
